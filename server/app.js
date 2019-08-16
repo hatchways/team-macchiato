@@ -28,7 +28,7 @@ app.use(function(req, res, next) {
 // Require the DATABASE (Sequelize)
 const db = require("./config/database");
 
-// Connect to the DATABASE
+// Cnonnect
 db.authenticate()
   .then(() => {
     console.log("Connection to ☕ database is succesful!");
