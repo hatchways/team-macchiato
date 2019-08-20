@@ -4,11 +4,12 @@ import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 const Sequelize = require("sequelize");
+var cors = require("cors");
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import userRouter from "./routes/users";
-import registerRouter from "./routes/api/register";
-import loginRouter from "./routes/api/login";
+import authRouter from "./routes/api/auth";
+
 const config = require("./config/config");
 var app = express();
 
@@ -21,13 +22,19 @@ app.use(express.static(join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/users", userRouter);
-app.use("/api/auth", registerRouter);
-app.use("/login", loginRouter);
+app.use("/api/auth", authRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.get("/endpoint", function(req, res, next) {
+  res.json({ msg: "💖 This is CORS-enabled for all origins!" });
+});
+
+app.use(cors());
 
 // Require the DATABASE (Sequelize)
 const db = require("./config/database");
