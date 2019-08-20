@@ -34,7 +34,6 @@ const loginPageStyle = theme => ({
    },
    logInHeader: { fontSize: 38, marginBottom: theme.spacing(5), },
    formControl: {
-      margin: theme.spacing(1),
       marginBottom: theme.spacing(3),
       display: 'flex',
    },
@@ -64,48 +63,50 @@ class LoginPage extends Component {
    render() {
       const { classes } = this.props;
       return (
-         <Grid container className={classes.loginContainer} p={0}>
-            <Grid item className={classes.imageWrapper} lg={5}>
-               <Hidden lgDown>
-                  <img className={classes.image} src={Image} alt='login-photo' />
-               </Hidden>
-            </Grid>
-            <Grid item className={classes.loginWrapper} xs={12} lg={7}>
-               <Toolbar className={classes.toolBar}>
-                  <div className={classes.toSignUpButton}>
-                     <Link to="/signup">Sign Up</Link>
-                  </div>
-               </Toolbar>
-               <div className={classes.loginContent}>
-                  <Box className={classes.logInHeader}>
-                     Log In
-                  </Box>
-                  <form onSubmit={this.handleSubmit.bind(this)}>
-                     <FormControl className={classes.formControl}>
-                        <label className={classes.label} htmlFor="email" >Email Address</label>
-                        <OutlinedInput className={classes.input}
-                           id="email" type="email" autoComplete="email"
-                           variant="outlined"
-                           onChange={this.handleChange.bind(this)} />
-                     </FormControl>
-                     <FormControl className={classes.formControl}>
-                        <label className={classes.label} htmlFor="password" >Password</label>
-                        <OutlinedInput className={classes.input}
-                           id="password" type="password" autoComplete="current-password"
-                           margin="normal"
-                           variant="outlined"
-                           onChange={this.handleChange.bind(this)} />
-                     </FormControl>
-                     <Typography>
-                        <a>Forget password?</a>
-                     </Typography>
-                     <div >
-                        <Button type="submit" name="login" className={classes.loginButton}>Log In</Button>
+         <Typography>
+            <Grid container className={classes.loginContainer} p={0}>
+               <Grid item className={classes.imageWrapper} lg={5}>
+                  <Hidden lgDown>
+                     <img className={classes.image} src={Image} alt='login-photo' />
+                  </Hidden>
+               </Grid>
+               <Grid item className={classes.loginWrapper} xs={12} lg={7}>
+                  <Toolbar className={classes.toolBar}>
+                     <div className={classes.toSignUpButton}>
+                        <Link to="/signup">Sign Up</Link>
                      </div>
-                  </form>
-               </div>
+                  </Toolbar>
+                  <div className={classes.loginContent}>
+                     <Box className={classes.logInHeader}>
+                        Log In
+                  </Box>
+                     <form onSubmit={this.handleSubmit.bind(this)}>
+                        <FormControl className={classes.formControl}>
+                           <label className={classes.label} htmlFor="email" >Email Address</label>
+                           <OutlinedInput className={classes.input}
+                              id="email" type="email" autoComplete="email"
+                              variant="outlined"
+                              onChange={this.handleChange.bind(this)} />
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                           <label className={classes.label} htmlFor="password" >Password</label>
+                           <OutlinedInput className={classes.input}
+                              id="password" type="password" autoComplete="current-password"
+                              margin="normal"
+                              variant="outlined"
+                              onChange={this.handleChange.bind(this)} />
+                        </FormControl>
+                        <Typography>
+                           <a>Forget password?</a>
+                        </Typography>
+                        <div >
+                           <Button type="submit" name="login" className={classes.loginButton}>Log In</Button>
+                        </div>
+                     </form>
+                  </div>
+               </Grid>
             </Grid>
-         </Grid>
+         </Typography>
       )
    }
 }
