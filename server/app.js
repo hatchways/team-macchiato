@@ -13,6 +13,8 @@ import authRouter from "./routes/api/auth";
 const config = require("./config/config");
 var app = express();
 
+app.use(cors());
+
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
@@ -29,12 +31,6 @@ app.use("/api/auth", authRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-app.get("/endpoint", function(req, res, next) {
-  res.json({ msg: "💖 This is CORS-enabled for all origins!" });
-});
-
-app.use(cors());
 
 // Require the DATABASE (Sequelize)
 const db = require("./config/database");

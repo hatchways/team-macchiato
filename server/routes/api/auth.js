@@ -27,16 +27,15 @@ router.post(
       return res.status(422).json({ errors: errors.array() });
     }
     const { name, email, password } = req.body;
-    try {
+    try {      
       // Check to see if email is present...
       let user = await User.findOne({
         where: {
           email: email
         }
       });
-
+      
       if (user) {
-        console.log(user);
         res.status(400).json({ error: "Email already exists" });
         // throw new Error(err.message);
       }
@@ -46,9 +45,7 @@ router.post(
         name,
         email,
         password
-      };
-
-      // bcrypt allows you to hash the password by using a generated salt.
+      };      // bcrypt allows you to hash the password by using a generated salt.
       // This allows for encryption of password (security reasonings).
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);

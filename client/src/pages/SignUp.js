@@ -79,15 +79,20 @@ class SignUpPage extends Component {
    handleSubmit(event) {
       event.preventDefault()
       let { name, email, password } = this.state;
-      console.log(this.state)
+      let user = { name, email, password }
       fetch('http://localhost:3001/api/auth/register', {
          method: 'post',
          headers: { 'Content-Type': 'application/json' },
-         body: {
-            userName: name,
-            email: email,
-            password: password,
-         }
+         body: JSON.stringify(user)
+      })
+      .then(res => res.json())
+      .then(data => {
+         // Do stuff with token
+         let token = data.token
+         console.log(data)
+      })
+      .catch(err => {
+         console.log(err)
       });
    }
    render() {
