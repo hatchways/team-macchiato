@@ -11,7 +11,7 @@ const { check, validationResult } = require("express-validator");
 router.post(
   "/register",
   [
-    check("userName", "Username is required")
+    check("name", "Name is required")
       .not()
       .isEmpty(),
     check("email", "Email must be valid").isEmail(),
@@ -26,7 +26,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    const { userName, email, password } = req.body;
+    const { name, email, password } = req.body;
     try {
       // Check to see if email is present...
       let user = await User.findOne({
@@ -43,7 +43,7 @@ router.post(
 
       // User object is created with the relevant infomration from the req.body
       user = {
-        userName,
+        name,
         email,
         password
       };
@@ -59,7 +59,7 @@ router.post(
         const payload = {
           user: {
             id: x.id,
-            userName,
+            name,
             email
           }
         };
@@ -114,7 +114,7 @@ router.post("/login", async (req, res, next) => {
     const payload = {
       user: {
         id: user.id,
-        userName: user.userName,
+        name: user.name,
         email
       }
     };
