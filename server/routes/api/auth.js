@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const db = require("../../config/database");
 const User = db.import("../../models/user");
 const { check, validationResult } = require("express-validator");
-// @route   GET /register/
+// @route   POST /api/auth/register
 // @desc    Register Route
 // @access  Public
 router.post(
@@ -37,7 +37,7 @@ router.post(
 
       if (user) {
         console.log(user);
-        res.status(400).json({ Error: "Email already exists" });
+        res.status(400).json({ error: "Email already exists" });
         // throw new Error(err.message);
       }
 
@@ -71,7 +71,7 @@ router.post(
           { expiresIn: 360000 },
           (err, token) => {
             if (err) throw err;
-            res.json({ token, user: payload.user });
+            res.status(201).json({ token, user: payload.user });
           }
         );
       });
@@ -81,4 +81,60 @@ router.post(
     }
   }
 );
+
+// @route   POST /api/auth/login
+// @desc    Login Route
+// @access  Public
+
+router.post("/login", async (req, res, next) => {
+  // initialize errors here..
+
+  const { email, password } = req.body;
+  try {
+    // Check Email..
+    let user = await User.findOne({
+      where: {
+        email: email
+      }
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "Invalid credentials" });
+    }
+
+    // Check password against db password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    // Error if isMatch is false (stranger danger)
+    if (!isMatch) {
+      res.status(404).json({ error: "Invalid credentials" });
+    }
+
+    // Payload (includes the necessary user details)
+    const payload = {
+      user: {
+        id: user.id,
+        userName: user.userName,
+        email
+      }
+    };
+
+    jwt.sign(
+      payload,
+      process.env.SECRET,
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        res.status(200).json({ token, user: payload.user });
+      }
+    );
+
+    console.log(payload);
+    // if match then we send Jwt token
+  } catch (err) {
+    // res.status(500).send("server error");
+    throw new Error(err.message);
+  }
+});
+
 module.exports = router;
