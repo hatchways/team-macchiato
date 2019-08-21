@@ -31,3 +31,179 @@
     transform: rotate(360deg);
   }
 }
+
+nav {
+  display: flex;
+  justify-content: space-round;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  background:rgb(36, 31, 31);
+  color: whitesmoke;
+
+}
+
+.nav-links{
+  width:50%;
+  display: flex;
+  justify-content: space-round;
+  align-items: center;
+  list-style :none;
+}
+
+.profile-image{
+  margin-left: 100px;
+  margin-top: 40px;
+  border: circle;
+  border-radius: 50px;
+  width:50px;
+  length:50px;
+  align: center;
+}
+
+.name-text{
+  margin-left: 60px;
+  margin-top: 10px;
+}
+
+.profile-detail{
+ border:line;
+ border-right-color:grey;
+ margin-left:40px;
+
+}
+.orange-button{
+  background-color: coral;
+  border-radius: 60px;
+  color: whitesmoke;
+  font-size:10px;
+  text-align: center;
+  
+}
+.hire-button{
+  margin-left:60px;
+}
+
+.white-button{
+  background-color: white;
+  border-radius: 60px;
+  font-size:10px;
+  text-align: center;
+  margin-left: 5px;
+}
+.black-button{
+  background:rgb(36, 31, 31);
+  border-color: none;
+  border:none;
+  font-size:10px;
+  text-align: center;
+  margin-left: 700px;
+  width:170px;
+ 
+}
+.sign-text{
+  color:whitesmoke;
+}
+.verticalLine {
+  border-left: thick solid #f0efef;
+}
+.col-lg-3{
+  border:box;
+  border-right-color:grey;
+}
+.project-image{
+  margin: 10px 50px 10px 90px;
+  padding: 20px 10px 20px 10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 7%;
+  box-sizing: border-box;
+}
+
+.about-text{
+  color: lightgrey;
+  font-size :10px;
+  align-content: center;
+  display:flex;
+}
+
+.title-text{
+  color: lightgrey;
+  font-size :10px;
+  margin-left:50px;
+}
+.city-text{
+  color: lightgrey;
+  font-size :10px;
+  margin-left:80px;
+}
+
+.about-title{
+
+  font-size :15px;
+  margin-left:100px;
+  margin-top: 80px;
+}
+.skill-title{
+  margin-top: 50px;
+  margin-top: 50px;
+  font-size :10px;
+  margin-left:110px;
+  font-weight: bold;
+}
+.skill-box{
+  box-sizing: border-box;
+  border-color: grey;
+  border:line;
+  margin:10px;
+  padding: 3px 5px 3px 5px;
+  font-size :10px;
+  font-weight: bold;
+ 
+}
+
+.skill-product{
+  width:110px;
+
+}
+
+.skill-UI{
+  margin-left: 30px;
+
+}
+.skill-row{
+  margin-left:10px;
+}
+.login-button{
+  
+  margin-right: 30px;
+}
+.top-text{
+  margin-left:30px;
+  width: 250px;
+}
+.last-row{
+ margin-top: 20px;
+ margin-left: auto;
+ margin-right: auto;
+} 
+.first-row{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.mid-row{
+  margin-left: auto;
+  margin-right: auto;
+}
+.menu {
+  width: 20px;
+  height: 3px;
+  background-color: rgb(238, 230, 230);
+  margin: 5px 0;
+}
+.container{
+  margin-left: 10px;
+ 
+}
