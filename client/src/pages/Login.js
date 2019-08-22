@@ -1,46 +1,15 @@
 import React, { Component } from 'react'
 
-import { Typography, Box, Grid, Button, AppBar, Toolbar, Hidden } from "@material-ui/core"
-import { FormControl, FormGroup, FormControlLabel, OutlinedInput, Input, InputLabel as label } from "@material-ui/core"
+import { Typography, Box, Grid, Button, Toolbar, Hidden } from "@material-ui/core"
+import { FormControl, FormHelperText, OutlinedInput } from "@material-ui/core"
 import { withStyles } from "@material-ui/core/styles"
 import { Link } from "react-router-dom"
 
-import Image from '../assets/images/login-photo.png'
+import { formsPageStyle } from '../themes/signUpLoginTheme'
 
 const loginPageStyle = theme => ({
    imageWrapper: {
-      backgroundSize: '100%',
-      backgroundImage: `url(${Image})`,
-      backgroundRepeat: 'no-repeat',
       minHeight: '600px',
-      height: '100vh',
-      overflow: 'hidden',
-   },
-   image: { width: '100%' },
-   loginWrapper: { minHeight: '600px', },
-   toolBar: { background: 'white', boxShadow: 'none' }, // Used to wrap the signUp Button
-   toSignUpButton: {
-      top: theme.spacing(5),
-      right: theme.spacing(5),
-      left: 'auto',
-      position: 'absolute',
-   },
-   loginContent: {
-      maxWidth: '50%',
-      marginLeft: '20%',
-      marginTop: '10%',
-      flex: '1 1 auto',
-      overflow: 'auto',
-   },
-   logInHeader: { fontSize: 38, marginBottom: theme.spacing(5), },
-   formControl: {
-      marginBottom: theme.spacing(3),
-      display: 'flex',
-   },
-   label: { marginBottom: theme.spacing(1) },
-   loginButton: {
-      margin: theme.spacing(1),
-      marginTop: theme.spacing(5),
    },
 });
 
@@ -62,22 +31,24 @@ class LoginPage extends Component {
    }
    render() {
       const { classes } = this.props;
+      let emailErrorText = ''
+      let passwordErrorText = ''
       return (
          <Typography>
-            <Grid container className={classes.loginContainer} p={0}>
-               <Grid item className={classes.imageWrapper} lg={5}>
+            <Grid container p={0}>
+               <Grid item className={classes.imageWrapper} md={5}>
                   <Hidden lgDown>
                      <img className={classes.image} src={Image} alt='login-photo' />
                   </Hidden>
                </Grid>
-               <Grid item className={classes.loginWrapper} xs={12} lg={7}>
+               <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
-                     <div className={classes.toSignUpButton}>
+                     <div className={classes.navButton}>
                         <Link to="/signup">Sign Up</Link>
                      </div>
                   </Toolbar>
-                  <div className={classes.loginContent}>
-                     <Box className={classes.logInHeader}>
+                  <div className={classes.content}>
+                     <Box className={classes.header}>
                         Log In
                   </Box>
                      <form onSubmit={this.handleSubmit.bind(this)}>
@@ -87,6 +58,7 @@ class LoginPage extends Component {
                               id="email" type="email" autoComplete="email"
                               variant="outlined"
                               onChange={this.handleChange.bind(this)} />
+                           <FormHelperText>{emailErrorText}</FormHelperText>
                         </FormControl>
                         <FormControl className={classes.formControl}>
                            <label className={classes.label} htmlFor="password" >Password</label>
@@ -95,12 +67,12 @@ class LoginPage extends Component {
                               margin="normal"
                               variant="outlined"
                               onChange={this.handleChange.bind(this)} />
+                           <FormHelperText>{passwordErrorText}</FormHelperText>
                         </FormControl>
-                        <Typography>
-                           <a>Forget password?</a>
-                        </Typography>
+                        <Link>Forget password?</Link>
                         <div >
-                           <Button type="submit" name="login" className={classes.loginButton}>Log In</Button>
+                           <Button className={classes.submitButton}
+                              type="submit" name="login">Log In</Button>
                         </div>
                      </form>
                   </div>
@@ -111,4 +83,4 @@ class LoginPage extends Component {
    }
 }
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default withStyles(formsPageStyle)(LoginPage);
