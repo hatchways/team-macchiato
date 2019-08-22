@@ -26,8 +26,7 @@ class LoginPage extends Component {
    handleChange(event) {               // Bind to text inputs to update state
       const { id, value } = event.target
       this.setState({
-         [id+"ErrorText"]: '', 
-         [id]: value
+         [id]: value,
       })
    }
    handleSubmit(event) {
@@ -101,6 +100,7 @@ class LoginPage extends Component {
                               className={classes.input}
                               id="email" type="email" autoComplete="email"
                               variant="outlined"
+                              onBlur={this.handleValidation}
                               onChange={this.handleChange.bind(this)} />
                            <FormHelperText className={classes.errorText}>{emailErrorText}</FormHelperText>
                         </FormControl>
@@ -112,6 +112,7 @@ class LoginPage extends Component {
                               id="password" type="password" autoComplete="current-password"
                               margin="normal"
                               variant="outlined"
+                              onBlur={this.handleValidation}
                               onChange={this.handleChange.bind(this)} />
                            <FormHelperText className={classes.errorText}>{passwordErrorText}</FormHelperText>
                         </FormControl>

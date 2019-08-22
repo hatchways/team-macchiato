@@ -57,18 +57,16 @@ class SignUpPage extends Component {
       const { id, value, type, checked } = event.target
       if (type === 'checkbox')
          this.setState({
-            agree: checked,
+            agree: checked,         // Update error msg only when checkbox re-checked
             checkedErrorText: ''
          })
       else
          this.setState({
-            // [id+"ErrorText"]: '',   // Reset Error msg when entering into error
             [id]: value,
          })
    }
    handleSubmit(event) {
       event.preventDefault()
-      console.log(this.state.agree)
       if (this.handleValidation() && this.state.agree) { // Validate form
          let { name, email, password } = this.state;
          let user = { name, email, password }
