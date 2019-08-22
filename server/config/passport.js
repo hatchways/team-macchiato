@@ -1,6 +1,8 @@
+const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 const passport = require("passport");
+const User = require("../models").User;
 
 passport.use(
   new JWTStrategy(
