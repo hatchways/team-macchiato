@@ -4,8 +4,11 @@ const User = require("../models").User;
 
 router.get("/", function(req, res, next) {
   try {
-    User.findAll().then(users => {
-      res.send(users);
+    User.create({
+      name: "DangAsian",
+      email: "dan.justin.ang@gmail.com"
+    }).then(user => {
+      console.log(user);
     });
   } catch (err) {
     console.log(err);
