@@ -1,14 +1,33 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models").User;
+const Project = require("../models").Project;
 
 router.get("/", function(req, res, next) {
   try {
     User.create({
-      name: "DangAsian",
-      email: "dan.justin.ang@gmail.com"
+      name: "albert",
+      email: "albertkong@gmail.com"
     }).then(user => {
-      console.log(user);
+      user
+        .createProject({
+          title: "Dan's Project",
+          desc: "Wowowow",
+          photos: ["img1", "img2"]
+        })
+        .then(console.log("workded"));
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/all", function(req, res, next) {
+  try {
+    User.findAll({
+      include: [Project]
+    }).then(users => {
+      console.log(users[0].Projects);
     });
   } catch (err) {
     console.log(err);

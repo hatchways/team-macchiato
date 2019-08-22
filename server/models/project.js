@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "Project",
     {
       photos: DataTypes.ARRAY(DataTypes.TEXT, { defaultValue: null }),
-      description: DataTypes.STRING,
+      desc: DataTypes.STRING,
       title: DataTypes.STRING,
       link: DataTypes.STRING
     },
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Project.associate = function(models) {
     // Project belongs to a User
-    Project.belongsTo(models.User);
+    Project.belongsTo(models.User, { foreignKey: "userId" });
   };
   return Project;
 };
