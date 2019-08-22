@@ -10,8 +10,6 @@ module.exports = {
       },
       photos: {
         type: Sequelize.ARRAY(Sequelize.STRING)
-        // allowNull: false,
-        // unique: true
       },
       title: {
         type: Sequelize.STRING
@@ -25,8 +23,8 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
-        allowNull: false
-        // references: { model: "Users", key: "id" }
+        allowNull: false,
+        references: { model: "Users", key: "id" }
       },
       createdAt: {
         allowNull: false,
