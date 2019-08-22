@@ -3,14 +3,12 @@ import express, { json, urlencoded } from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-const Sequelize = require("sequelize");
-var cors = require("cors");
+import cors from "cors";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import userRouter from "./routes/users";
 import authRouter from "./routes/api/auth";
 
-const config = require("./config/config");
 var app = express();
 
 app.use(logger("dev"));
@@ -24,7 +22,6 @@ app.use("/ping", pingRouter);
 app.use("/users", userRouter);
 app.use("/api/auth", authRouter);
 
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -34,19 +31,8 @@ app.get("/endpoint", function(req, res, next) {
   res.json({ msg: "💖 This is CORS-enabled for all origins!" });
 });
 
+// cors
 app.use(cors());
-
-// Require the DATABASE (Sequelize)
-const db = require("./config/database");
-
-// Cnonnect
-db.authenticate()
-  .then(() => {
-    console.log("Connection to ☕ database is succesful!");
-  })
-  .catch(err => {
-    console.error("Unable to connect to ☕ database", err);
-  });
 
 // error handler
 app.use(function(err, req, res, next) {
