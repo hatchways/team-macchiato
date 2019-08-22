@@ -10,19 +10,12 @@ import userRouter from "./routes/users";
 import authRouter from "./routes/api/auth";
 
 var app = express();
-const passport = require("passport");
 
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
-
-// Passport Middleware
-require("./config/passport");
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
@@ -40,6 +33,9 @@ app.get("/endpoint", function(req, res, next) {
 
 // cors
 app.use(cors());
+
+// Passport Middleware
+require("./config/passport");
 
 // error handler
 app.use(function(err, req, res, next) {
