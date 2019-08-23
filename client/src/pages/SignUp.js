@@ -64,7 +64,7 @@ class SignUpPage extends Component {
             .then(res => res.json())
             .then(data => {
                // Do stuff with token
-               // - Such as automatically log-in user?
+               // - Store token to local or sessionStorage
                let token = data.token
                console.log(token)
             })
