@@ -10,13 +10,13 @@ import { formsPageStyle } from '../styles/formsStyles'
 
 import { userService } from '../services/userServices'
 
-const StyledFormControlLabel = withStyles(theme => ({
+const StyledFormControlLabel = withStyles({
    root: {
       marginRight: 3,
       color: '#aaa',
       marginBottom: 1,
    },
-}))(FormControlLabel)
+})(FormControlLabel)
 
 class SignUpPage extends Component {
    constructor(props) {
@@ -60,11 +60,8 @@ class SignUpPage extends Component {
          let user = { name, email, password }
          userService.register(user)
             .then(data => {
-               // TODO
-               // - Redirect to login
-               let token = data.token
-               console.log(token)
-               console.log("Redirecting to login")
+               // Redirect to login
+               this.props.history.push("/login")
             })
             .catch(err => {
                // Do stuff with error message

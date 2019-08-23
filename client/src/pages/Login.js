@@ -43,11 +43,9 @@ class LoginPage extends Component {
       if (this.handleValidation()) {
          let { email, password } = this.state
          userService.login(email, password)
-            .then(user => {
-               console.log(user)
-               console.log("Login success, redirecting to profile page")
-               // TODO:
-               // - Redirect to profile page
+            .then(data => {
+               // Redirect to profile page
+               this.props.history.push(`/profile/${data.user.id}`)
             })
             .catch(err => {
                console.log(err)
