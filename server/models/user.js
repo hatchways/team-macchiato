@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
   );
   User.associate = function(models) {
     User.hasMany(models.Project, { foreignKey: "userId" });
+    User.belongsToMany(models.Skill, {
+      through: models.UserSkill,
+      as: "skills",
+      foreignKey: "userId"
+    });
   };
   return User;
 };
