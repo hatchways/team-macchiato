@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom'
 
 import { formsPageStyle } from '../styles/formsStyles'
 
+import { userService } from '../services/userServices'
+
 const StyledFormControlLabel = withStyles(theme => ({
    root: {
       marginRight: 3,
@@ -56,23 +58,19 @@ class SignUpPage extends Component {
       if (this.handleValidation() && this.state.agree) { // Validate form
          let { name, email, password } = this.state;
          let user = { name, email, password }
-         fetch('http://localhost:3001/api/auth/register', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
-         })
-            .then(res => res.json())
+         userService.register(user)
             .then(data => {
-               // Do stuff with token
-               // - Such as automatically log-in user?
+               // TODO
+               // - Redirect to login
                let token = data.token
                console.log(token)
+               console.log("Redirecting to login")
             })
             .catch(err => {
                // Do stuff with error message
                // - Such as user already exists
                console.log(err)
-            });
+            })
       }
    }
    handleValidation() {

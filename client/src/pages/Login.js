@@ -7,6 +7,8 @@ import { Link } from "react-router-dom"
 
 import { formsPageStyle } from '../styles/formsStyles'
 
+import { userService } from '../services/userServices'
+
 class LoginPage extends Component {
    constructor(props) {
       super(props)
@@ -35,16 +37,24 @@ class LoginPage extends Component {
    handleSubmit(event) {
       event.preventDefault()
       this.setState({ formSubmitted: true })
-      console.log(this.state)
       // 
       // TODO: Change so login implements Redux (Maybe)
       //
       if (this.handleValidation()) {
-         // Do login Stuff Here
-
-         // Possibly something to do with authentication
-         // - Display error msg (helperText) if login failed
-         console.log("Validation Successful, proceed to login")
+         let { email, password } = this.state
+         userService.login(email, password)
+            .then(user => {
+               console.log(user)
+               console.log("Login success, redirecting to profile page")
+               // TODO:
+               // - Redirect to profile page
+            })
+            .catch(err => {
+               console.log(err)
+               // Example errors:
+               // - Not Found
+               //    - Display msg: user does not exist
+            })
       }
    }
    handleValidation() {
