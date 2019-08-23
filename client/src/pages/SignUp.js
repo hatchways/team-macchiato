@@ -132,7 +132,7 @@ class SignUpPage extends Component {
       let { nameErrorText, emailErrorText, passwordErrorText, password2ErrorText, checkedErrorText } = this.state
 
       return (
-         <Typography>
+         <Typography className={classes.typography}>
             <Grid container p={0}>
                <Grid item className={classes.imageWrapper} md={5}>
                   <Hidden lgDown>

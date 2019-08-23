@@ -122,7 +122,7 @@ class LoginPage extends Component {
                         </FormControl>
                         <Link className={classes.textLink}
                            onClick={this.forgotPassword}>Forget password?</Link>
-                        <div >
+                        <div>
                            <Button className={classes.submitButton}
                               type="submit" name="login">Log In</Button>
                         </div>
