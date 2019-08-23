@@ -115,9 +115,9 @@ class LoginPage extends Component {
                ]} />
             <Grid container p={0}>
                <Grid item className={classes.imageWrapper} md={5}>
-                  <Hidden lgDown>
-                     {/* <img className={classes.image} src={Image} alt='login-photo' /> */}
-                  </Hidden>
+                  {/* <Hidden lgDown>
+                     <img className={classes.image} src={Image} alt='login-photo' />
+                  </Hidden> */}
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>

@@ -22,7 +22,6 @@ class SignUpPage extends Component {
          password: '', passwordErrorText: '',
          password2: '', password2ErrorText: '',
          agree: false, checkedErrorText: '',
-         open: true
       }
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
@@ -123,7 +122,7 @@ class SignUpPage extends Component {
       let { nameErrorText, emailErrorText, passwordErrorText, password2ErrorText, checkedErrorText } = this.state
 
       return (
-         <Typography>
+         <Typography className={classes.typography}>
             <Snackbar className={classes.snackbar}
                anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
                open={this.state.open} onClose={this.handleClose} autoHideDuration={6000}
@@ -159,9 +158,9 @@ class SignUpPage extends Component {
             </Dialog>
             <Grid container p={0}>
                <Grid item className={classes.imageWrapper} md={5}>
-                  <Hidden lgDown>
-                     {/* <img className={classes.image} src={Image} alt='login-photo' /> */}
-                  </Hidden>
+                  {/* <Hidden lgDown>
+                     <img className={classes.image} src={Image} alt='login-photo' />
+                  </Hidden> */}
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
