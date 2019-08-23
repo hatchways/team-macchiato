@@ -1,6 +1,3 @@
-import { withStyles } from "@material-ui/core/styles"
-import { TextField } from '@material-ui/core'
-
 import Image from '../assets/images/login-photo.png'
 
 export const formsPageStyle = theme => ({
@@ -43,6 +40,9 @@ export const formsPageStyle = theme => ({
       marginBottom: theme.spacing(1),
       color: '#a9b0d0',
       fontWeight: theme.typography.fontWeightMedium,
+   },
+   errorText: {
+      color: '#f44336',
    },
    submitButton: {
       marginTop: theme.spacing(5),
