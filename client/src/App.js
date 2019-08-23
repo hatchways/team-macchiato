@@ -16,7 +16,7 @@ function App() {
    return (
       <MuiThemeProvider theme={theme}>
          <BrowserRouter>
-            <Route path="/" component={LandingPage} />
+            <Route path="/" component={LandingPage} exact/>
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUpPage} />
             <Route path="/profile/:profileId" component={ProfilePage} />
