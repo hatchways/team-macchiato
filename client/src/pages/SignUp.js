@@ -6,7 +6,7 @@ import { FormHelperText } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 
-import { formsPageStyle } from '../themes/signUpLoginTheme'
+import { formsPageStyle } from '../styles/formsStyles'
 
 const StyledFormControlLabel = withStyles(theme => ({
    root: {
@@ -18,19 +18,6 @@ const StyledFormControlLabel = withStyles(theme => ({
       marginBottom: 1,
    },
 }))(FormControlLabel)
-
-const signUpPageStyle = theme => ({
-   ...formsPageStyle(theme),
-   imageWrapper: {
-      ...formsPageStyle(theme).imageWrapper,
-      minHeight: '750px',
-   },
-   termsAndConditions: {
-      fontWeight: theme.typography.fontWeightMedium,
-      color: 'black',
-      textDecoration: 'none',
-   }
-});
 
 class SignUpPage extends Component {
    constructor(props) {
@@ -232,4 +219,4 @@ class SignUpPage extends Component {
    }
 }
 
-export default withStyles(signUpPageStyle)(SignUpPage);
+export default withStyles(formsPageStyle)(SignUpPage);

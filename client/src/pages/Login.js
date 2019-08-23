@@ -5,15 +5,7 @@ import { FormControl, FormHelperText, OutlinedInput } from "@material-ui/core"
 import { withStyles } from "@material-ui/core/styles"
 import { Link } from "react-router-dom"
 
-import { formsPageStyle } from '../themes/signUpLoginTheme'
-
-const loginPageStyle = theme => ({
-   ...formsPageStyle(theme),
-   imageWrapper: {
-      ...formsPageStyle(theme).imageWrapper,
-      minHeight: '750px',
-   },
-});
+import { formsPageStyle } from '../styles/formsStyles'
 
 class LoginPage extends Component {
    constructor(props) {
@@ -138,4 +130,4 @@ class LoginPage extends Component {
    }
 }
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default withStyles(formsPageStyle)(LoginPage);

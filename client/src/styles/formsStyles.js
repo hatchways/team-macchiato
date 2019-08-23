@@ -6,6 +6,7 @@ export const formsPageStyle = theme => ({
       backgroundImage: `url(${Image})`,
       backgroundRepeat: 'no-repeat',
       height: '100vh',
+      minHeight: '750px',
    },
    contentWrapper: {
       minHeight: '600px',
@@ -46,6 +47,11 @@ export const formsPageStyle = theme => ({
    },
    submitButton: {
       marginTop: theme.spacing(5),
+   },
+   termsAndConditions: {
+      fontWeight: theme.typography.fontWeightMedium,
+      color: 'black',
+      textDecoration: 'none',
    }
 });
 
