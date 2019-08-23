@@ -3,8 +3,6 @@ const router = express.Router();
 const User = require("../models").User;
 const passport = require("passport");
 const Project = require("../models").Project;
-const Skill = require("../models").Skill;
-const UserSkill = require("../models").UserSkill;
 
 router.get("/", function(req, res, next) {
   try {
@@ -25,23 +23,6 @@ router.get("/", function(req, res, next) {
   }
 });
 
-router.get("/skill", function(req, res, next) {
-  try {
-    User.create({
-      name: "Daniel",
-      email: "Daniel@gmail.com"
-    }).then(user => {
-      user
-        .createSkill({
-          skill: "React"
-        })
-        .then(console.log("Skill added!"));
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 router.get("/all", function(req, res, next) {
   try {
     User.findAll({
@@ -49,18 +30,6 @@ router.get("/all", function(req, res, next) {
     }).then(users => {
       console.log(users[0].Projects);
     });
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-router.get("/skill/all", async function(req, res, next) {
-  try {
-    const SkilledUsers = await User.findAll({
-      include: [{ model: Skill, as: "skills" }]
-    });
-
-    console.log(SkilledUsers[0].skills);
   } catch (err) {
     console.log(err);
   }
