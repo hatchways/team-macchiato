@@ -5,7 +5,6 @@ import {
    LOGIN,
 } from './types'
 
-
 /**
  * 
  * dispatch( LOGINUSER ) -> calls action

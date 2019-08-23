@@ -46,7 +46,7 @@ class LoginPage extends Component {
          // Possibly something to do with authentication
          // - Display error msg (helperText) if login failed
          console.log("Validation Successful, proceed to login")
-         dispatch(LOGIN, user)
+         // dispatch(LOGIN, user)
       }
    }
    handleValidation() {
