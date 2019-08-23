@@ -34,6 +34,9 @@ app.get("/endpoint", function(req, res, next) {
 // cors
 app.use(cors());
 
+// Passport Middleware
+require("./config/passport");
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
