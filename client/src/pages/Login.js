@@ -1,113 +1,133 @@
 import React, { Component } from 'react'
 
-import { Typography, Box, Grid, Button, AppBar, Toolbar, Hidden } from "@material-ui/core"
-import { FormControl, FormGroup, FormControlLabel, OutlinedInput, Input, InputLabel as label } from "@material-ui/core"
+import { Typography, Box, Grid, Button, Toolbar, Hidden } from "@material-ui/core"
+import { FormControl, FormHelperText, OutlinedInput } from "@material-ui/core"
 import { withStyles } from "@material-ui/core/styles"
 import { Link } from "react-router-dom"
 
-import Image from '../assets/images/login-photo.png'
-
-const loginPageStyle = theme => ({
-   imageWrapper: {
-      backgroundSize: '100%',
-      backgroundImage: `url(${Image})`,
-      backgroundRepeat: 'no-repeat',
-      minHeight: '600px',
-      height: '100vh',
-      overflow: 'hidden',
-   },
-   image: { width: '100%' },
-   loginWrapper: { minHeight: '600px', },
-   toolBar: { background: 'white', boxShadow: 'none' }, // Used to wrap the signUp Button
-   toSignUpButton: {
-      top: theme.spacing(5),
-      right: theme.spacing(5),
-      left: 'auto',
-      position: 'absolute',
-   },
-   loginContent: {
-      maxWidth: '50%',
-      marginLeft: '20%',
-      marginTop: '10%',
-      flex: '1 1 auto',
-      overflow: 'auto',
-   },
-   logInHeader: { fontSize: 38, marginBottom: theme.spacing(5), },
-   formControl: {
-      margin: theme.spacing(1),
-      marginBottom: theme.spacing(3),
-      display: 'flex',
-   },
-   label: { marginBottom: theme.spacing(1) },
-   loginButton: {
-      margin: theme.spacing(1),
-      marginTop: theme.spacing(5),
-   },
-});
+import { formsPageStyle } from '../styles/formsStyles'
 
 class LoginPage extends Component {
-   state = {
-      email: '',
-      password: '',
+   constructor(props) {
+      super(props)
+      this.state = {
+         email: '',
+         password: '',
+         emailErrorText: '',
+         passwordErrorText: '',
+         formSubmitted: false
+      }
+      this.handleChange = this.handleChange.bind(this)
+      this.handleSubmit = this.handleSubmit.bind(this)
+      this.handleValidation = this.handleValidation.bind(this)
    }
 
-   handleChange(event) {               // Bind to text inputs to update state
+   handleChange(event) {
       const { id, value } = event.target
       this.setState({
-         [id]: value
+         [id]: value,
       })
    }
    handleSubmit(event) {
       event.preventDefault()
+      this.setState({ formSubmitted: true })
       console.log(this.state)
+      // 
+      // TODO: Change so login implements Redux (Maybe)
+      //
+      if (this.handleValidation()) {
+         // Do login Stuff Here
+
+         // Possibly something to do with authentication
+         // - Display error msg (helperText) if login failed
+         console.log("Validation Successful, proceed to login")
+      }
+   }
+   handleValidation() {
+      const notNull = (val) => val && val.length;
+      const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+
+      const errors = {
+         emailErrorText: '',
+         passwordErrorText: '',
+      };
+
+      let { email, password } = this.state
+
+      // Validate email
+      if (!notNull(email)) errors.emailErrorText = 'this field is required'
+      else if (!validEmail(email)) errors.emailErrorText = 'invalid email'
+
+      // Validate password
+      if (!notNull(password)) errors.passwordErrorText = 'this field is required'
+
+      // Set error messages
+      this.setState({
+         emailErrorText: errors.emailErrorText,
+         passwordErrorText: errors.passwordErrorText,
+      })
+
+      return errors.emailErrorText === '' &&
+         errors.passwordErrorText === ''
    }
    render() {
       const { classes } = this.props;
+      let { emailErrorText, passwordErrorText } = this.state
+
       return (
-         <Grid container className={classes.loginContainer} p={0}>
-            <Grid item className={classes.imageWrapper} lg={5}>
-               <Hidden lgDown>
-                  <img className={classes.image} src={Image} alt='login-photo' />
-               </Hidden>
-            </Grid>
-            <Grid item className={classes.loginWrapper} xs={12} lg={7}>
-               <Toolbar className={classes.toolBar}>
-                  <div className={classes.toSignUpButton}>
-                     <Link to="/signup">Sign Up</Link>
-                  </div>
-               </Toolbar>
-               <div className={classes.loginContent}>
-                  <Box className={classes.logInHeader}>
-                     Log In
+         <Typography className={classes.typography}>
+            <Grid container p={0}>
+               <Grid item className={classes.imageWrapper} md={5}>
+                  <Hidden lgDown>
+                     {/* <img className={classes.image} src={Image} alt='login-photo' /> */}
+                  </Hidden>
+               </Grid>
+               <Grid item className={classes.contentWrapper} xs={12} md={7}>
+                  <Toolbar className={classes.toolBar}>
+                     <Link to="/signup" className={classes.navButtonWrapper}>
+                        <Button className={classes.navButton}>Sign Up</Button>
+                     </Link>
+                  </Toolbar>
+                  <div className={classes.content}>
+                     <Box className={classes.header}>
+                        Log In
                   </Box>
-                  <form onSubmit={this.handleSubmit.bind(this)}>
-                     <FormControl className={classes.formControl}>
-                        <label className={classes.label} htmlFor="email" >Email Address</label>
-                        <OutlinedInput className={classes.input}
-                           id="email" type="email" autoComplete="email"
-                           variant="outlined"
-                           onChange={this.handleChange.bind(this)} />
-                     </FormControl>
-                     <FormControl className={classes.formControl}>
-                        <label className={classes.label} htmlFor="password" >Password</label>
-                        <OutlinedInput className={classes.input}
-                           id="password" type="password" autoComplete="current-password"
-                           margin="normal"
-                           variant="outlined"
-                           onChange={this.handleChange.bind(this)} />
-                     </FormControl>
-                     <Typography>
-                        <a>Forget password?</a>
-                     </Typography>
-                     <div >
-                        <Button type="submit" name="login" className={classes.loginButton}>Log In</Button>
-                     </div>
-                  </form>
-               </div>
+                     <form onSubmit={this.handleSubmit} noValidate>
+                        <FormControl className={classes.formControl}>
+                           <label className={classes.label} htmlFor="email" >EMAIL ADDRESS</label>
+                           <OutlinedInput
+                              error={emailErrorText !== ''}
+                              className={classes.input}
+                              id="email" type="email" autoComplete="email"
+                              variant="outlined"
+                              onBlur={this.state.formSubmitted && this.handleValidation}
+                              onChange={this.handleChange} />
+                           <FormHelperText className={classes.errorText}>{emailErrorText}</FormHelperText>
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
+                           <label className={classes.label} htmlFor="password" >PASSWORD</label>
+                           <OutlinedInput
+                              error={passwordErrorText !== ''}
+                              className={classes.input}
+                              id="password" type="password" autoComplete="current-password"
+                              margin="normal"
+                              variant="outlined"
+                              onBlur={this.state.formSubmitted && this.handleValidation}
+                              onChange={this.handleChange} />
+                           <FormHelperText className={classes.errorText}>{passwordErrorText}</FormHelperText>
+                        </FormControl>
+                        <Link>Forget password?</Link>
+                        <div >
+                           <Button className={classes.submitButton}
+                              type="submit" name="login">Log In</Button>
+                        </div>
+                     </form>
+                  </div>
+               </Grid>
             </Grid>
-         </Grid>
+         </Typography>
       )
    }
 }
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default withStyles(formsPageStyle)(LoginPage);

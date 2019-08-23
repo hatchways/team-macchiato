@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { Route, Link } from "react-router-dom";
+// import { Route, Link } from "react-router-dom";
 
-import Ping from "./Ping";
+// import Ping from "./Ping";
 
 const landinPageStyle = theme => ({
   landingContainer: {
