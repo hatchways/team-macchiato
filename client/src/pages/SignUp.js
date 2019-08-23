@@ -12,9 +12,9 @@ const StyledFormControlLabel = withStyles(theme => ({
    root: {
       marginRight: 3,
       color: '#aaa',
-      fontWeight: theme.typography.fontWeightMedium,
    },
    label: {
+      // fontWeight: theme.typography.fontWeightRegular,
       marginBottom: 1,
    },
 }))(FormControlLabel)
@@ -95,22 +95,22 @@ class SignUpPage extends Component {
       let { name, email, password, password2, agree } = this.state
 
       // Validate name
-      if (!notNull(name))                 errors.nameErrorText = 'this field is required'
+      if (!notNull(name)) errors.nameErrorText = 'this field is required'
 
       // Validate email
-      if (!notNull(email))                errors.emailErrorText = 'this field is required'
-      else if (!validEmail(email))        errors.emailErrorText = 'invalid email'
+      if (!notNull(email)) errors.emailErrorText = 'this field is required'
+      else if (!validEmail(email)) errors.emailErrorText = 'invalid email'
 
       // Validate password
-      if (!notNull(password))             errors.passwordErrorText = 'this field is required'
-      else if (!minLength(6)(password))   errors.passwordErrorText = 'Password must be 6 or more chars'
+      if (!notNull(password)) errors.passwordErrorText = 'this field is required'
+      else if (!minLength(6)(password)) errors.passwordErrorText = 'Password must be 6 or more chars'
       else { // Validate password 2
-         if (!notNull(password2))         errors.password2ErrorText = 'Please re-enter your password'
+         if (!notNull(password2)) errors.password2ErrorText = 'Please re-enter your password'
          else if (password !== password2) errors.password2ErrorText = 'Passwords must match.'
       }
-      
+
       // Checkbox
-      if (!agree)                         errors.checkedErrorText = 'You must agree to terms and conditions to sign up.'
+      if (!agree) errors.checkedErrorText = 'You must agree to terms and conditions to sign up.'
 
       // Set error messages
       this.setState({
@@ -145,9 +145,9 @@ class SignUpPage extends Component {
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
-                     <div className={classes.navButton}>
-                        <Link to="/login">Log In</Link>
-                     </div>
+                     <Link to="/login" className={classes.navButtonWrapper}>
+                        <Button className={classes.navButton}>Log In</Button>
+                     </Link>
                   </Toolbar>
                   <div className={classes.content}>
                      <Box className={classes.header}>
@@ -199,13 +199,13 @@ class SignUpPage extends Component {
                            <FormHelperText className={classes.errorText}>{password2ErrorText}</FormHelperText>
                         </FormControl>
                         <StyledFormControlLabel
-                           control={<Checkbox style={checkedErrorText ? {color: '#f44336'} : {}} color="primary" id="agree" />}
+                           control={<Checkbox style={checkedErrorText ? { color: '#f44336' } : {}} color="primary" id="agree" />}
                            label="By signing up I agree with"
                            onChange={this.handleChange}>
                         </StyledFormControlLabel>
                         <Link className={classes.termsAndConditions}
                            onClick={this.openTermsAndConditions}>terms and conditions</Link>
-                        <FormHelperText style={{marginTop:0}} className={classes.errorText}>{checkedErrorText}</FormHelperText>
+                        <FormHelperText style={{ marginTop: 0 }} className={classes.errorText}>{checkedErrorText}</FormHelperText>
                         <div>
                            <Button className={classes.submitButton}
                               type="submit" name="create">Create</Button>

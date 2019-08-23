@@ -1,6 +1,9 @@
 import Image from '../assets/images/login-photo.png'
 
 export const formsPageStyle = theme => ({
+   typography: {
+      fontWeight: theme.typography.fontWeightMedium,
+   },
    imageWrapper: {
       backgroundSize: '100%',
       backgroundImage: `url(${Image})`,
@@ -16,11 +19,20 @@ export const formsPageStyle = theme => ({
       background: 'white',
       boxShadow: 'none',
    },
-   navButton: {
+   navButtonWrapper: {
       top: theme.spacing(5),
       right: theme.spacing(5),
       left: 'auto',
       position: 'absolute',
+      textDecoration: 'none',
+   },
+   navButton: {
+      width: 140,
+      height: 48,
+      border: '1px #e0e0e0 solid',
+      borderRadius: 90,
+      fontSize: 14,
+      textTransform: 'capitalize'
    },
    content: {
       maxWidth: '50%',
@@ -31,7 +43,6 @@ export const formsPageStyle = theme => ({
    header: {
       marginBottom: theme.spacing(5),
       fontSize: 40,
-      fontWeight: theme.typography.fontWeightMedium,
    },
    formControl: {
       marginBottom: theme.spacing(1),
@@ -40,13 +51,19 @@ export const formsPageStyle = theme => ({
    label: {
       marginBottom: theme.spacing(1),
       color: '#a9b0d0',
-      fontWeight: theme.typography.fontWeightMedium,
    },
    errorText: {
       color: '#f44336',
    },
    submitButton: {
       marginTop: theme.spacing(5),
+      width: 140,
+      height: 48,
+      color: 'white',
+      borderRadius: 90,
+      fontSize: 14,
+      textTransform: 'capitalize',
+      backgroundImage: 'linear-gradient(to right, #ff9400, #ff3963)',
    },
    termsAndConditions: {
       fontWeight: theme.typography.fontWeightMedium,

@@ -75,7 +75,7 @@ class LoginPage extends Component {
       let { emailErrorText, passwordErrorText } = this.state
 
       return (
-         <Typography>
+         <Typography className={classes.typography}>
             <Grid container p={0}>
                <Grid item className={classes.imageWrapper} md={5}>
                   <Hidden lgDown>
@@ -84,9 +84,9 @@ class LoginPage extends Component {
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
-                     <div className={classes.navButton}>
-                        <Link to="/signup">Sign Up</Link>
-                     </div>
+                     <Link to="/signup" className={classes.navButtonWrapper}>
+                        <Button className={classes.navButton}>Sign Up</Button>
+                     </Link>
                   </Toolbar>
                   <div className={classes.content}>
                      <Box className={classes.header}>
