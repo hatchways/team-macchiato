@@ -65,7 +65,7 @@ export const formsPageStyle = theme => ({
       textTransform: 'capitalize',
       backgroundImage: 'linear-gradient(to right, #ff9400, #ff3963)',
    },
-   termsAndConditions: {
+   textLink: {
       fontWeight: theme.typography.fontWeightMedium,
       color: 'black',
       textDecoration: 'none',
