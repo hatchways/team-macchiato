@@ -36,6 +36,7 @@ class LoginPage extends Component {
       event.preventDefault()
       this.setState({ formSubmitted: true })
       console.log(this.state)
+      let { email, password } = this.state
       // 
       // TODO: Change so login implements Redux (Maybe)
       //
@@ -45,6 +46,7 @@ class LoginPage extends Component {
          // Possibly something to do with authentication
          // - Display error msg (helperText) if login failed
          console.log("Validation Successful, proceed to login")
+         dispatch(LOGIN, user)
       }
    }
    handleValidation() {

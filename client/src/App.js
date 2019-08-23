@@ -8,6 +8,7 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
+import ProfilePage from "./pages/Profile";
 
 import store from "./store/store";
 
