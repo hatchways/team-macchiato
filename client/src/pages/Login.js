@@ -17,11 +17,15 @@ class LoginPage extends Component {
          passwordErrorText: '',
          formSubmitted: false
       }
+      this.forgotPassword = this.forgotPassword.bind(this)
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
       this.handleValidation = this.handleValidation.bind(this)
    }
-
+   forgotPassword() {
+      // Do Something
+      console.log("Forgot password Clicked")
+   }
    handleChange(event) {
       const { id, value } = event.target
       this.setState({
@@ -116,7 +120,8 @@ class LoginPage extends Component {
                               onChange={this.handleChange} />
                            <FormHelperText className={classes.errorText}>{passwordErrorText}</FormHelperText>
                         </FormControl>
-                        <Link>Forget password?</Link>
+                        <Link className={classes.textLink}
+                           onClick={this.forgotPassword}>Forget password?</Link>
                         <div >
                            <Button className={classes.submitButton}
                               type="submit" name="login">Log In</Button>

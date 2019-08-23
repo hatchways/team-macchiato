@@ -12,9 +12,6 @@ const StyledFormControlLabel = withStyles(theme => ({
    root: {
       marginRight: 3,
       color: '#aaa',
-   },
-   label: {
-      // fontWeight: theme.typography.fontWeightRegular,
       marginBottom: 1,
    },
 }))(FormControlLabel)
@@ -59,7 +56,6 @@ class SignUpPage extends Component {
       if (this.handleValidation() && this.state.agree) { // Validate form
          let { name, email, password } = this.state;
          let user = { name, email, password }
-         console.log(user)
          fetch('http://localhost:3001/api/auth/register', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -203,7 +199,7 @@ class SignUpPage extends Component {
                            label="By signing up I agree with"
                            onChange={this.handleChange}>
                         </StyledFormControlLabel>
-                        <Link className={classes.termsAndConditions}
+                        <Link className={classes.textLink}
                            onClick={this.openTermsAndConditions}>terms and conditions</Link>
                         <FormHelperText style={{ marginTop: 0 }} className={classes.errorText}>{checkedErrorText}</FormHelperText>
                         <div>
