@@ -6,8 +6,9 @@ import logger from "morgan";
 import cors from "cors";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
-import userRouter from "./routes/users";
+import testRouter from "./routes/test";
 import authRouter from "./routes/api/auth";
+import userRouter from "./routes/api/users";
 
 var app = express();
 
@@ -21,8 +22,9 @@ app.use(express.static(join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
-app.use("/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/test", testRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
