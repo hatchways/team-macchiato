@@ -52,6 +52,11 @@ export const formsPageStyle = theme => ({
       marginBottom: theme.spacing(1),
       color: '#a9b0d0',
    },
+   formControlLabel :{
+      marginRight: 3,
+      color: '#aaa',
+      marginBottom: 1,
+   },
    errorText: {
       color: '#f44336',
    },
@@ -69,6 +74,11 @@ export const formsPageStyle = theme => ({
       fontWeight: theme.typography.fontWeightMedium,
       color: 'black',
       textDecoration: 'none',
+   },
+   snackbar: {
+      '& div': {
+         backgroundColor: theme.palette.error.dark
+      }
    }
 });
 

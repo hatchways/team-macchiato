@@ -2,40 +2,34 @@ import React, { Component } from 'react'
 
 import { Typography, Box, Grid, Button, Toolbar, Hidden, Checkbox } from '@material-ui/core'
 import { FormControl, FormControlLabel, OutlinedInput } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { Snackbar, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { FormHelperText } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 
 import { formsPageStyle } from '../styles/formsStyles'
 
-const StyledFormControlLabel = withStyles(theme => ({
-   root: {
-      marginRight: 3,
-      color: '#aaa',
-      marginBottom: 1,
-   },
-}))(FormControlLabel)
+import { userService } from '../services/userServices'
 
 class SignUpPage extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         name: '',
-         email: '',
-         password: '',
-         password2: '',
-         agree: false,
-         nameErrorText: '',
-         emailErrorText: '',
-         passwordErrorText: '',
-         password2ErrorText: '',
-         checkedErrorText: '',
-         formSubmitted: false,
+         name: '', nameErrorText: '',
+         email: '', emailErrorText: '',
+         password: '', passwordErrorText: '',
+         password2: '', password2ErrorText: '',
+         agree: false, checkedErrorText: '',
       }
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
       this.handleValidation = this.handleValidation.bind(this)
+      this.handleOpen = this.handleOpen.bind(this)
+      this.handleClose = this.handleClose.bind(this)
       this.openTermsAndConditions = this.openTermsAndConditions.bind(this)
+      this.handleTACClose = this.handleTACClose.bind(this)
    }
 
    handleChange(event) {
@@ -56,23 +50,17 @@ class SignUpPage extends Component {
       if (this.handleValidation() && this.state.agree) { // Validate form
          let { name, email, password } = this.state;
          let user = { name, email, password }
-         fetch('http://localhost:3001/api/auth/register', {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
-         })
-            .then(res => res.json())
+         userService.register(user)
             .then(data => {
-               // Do stuff with token
-               // - Such as automatically log-in user?
-               let token = data.token
-               console.log(token)
+               // Redirect to login
+               this.props.history.push("/login")
             })
             .catch(err => {
                // Do stuff with error message
                // - Such as user already exists
                console.log(err)
-            });
+               this.handleOpen();
+            })
       }
    }
    handleValidation() {
@@ -123,21 +111,56 @@ class SignUpPage extends Component {
          errors.password2ErrorText === '' &&
          errors.checkedErrorText === ''
    }
-   openTermsAndConditions() {
-      // Do something
-      console.log("TAC clicked")
-   }
+
+   handleOpen() { this.setState({ open: true }) }
+   handleClose() { this.setState({ open: false }) }
+
+   openTermsAndConditions() { this.setState({ tacOpen: true }) }
+   handleTACClose() { this.setState({ tacOpen: false }) }
    render() {
       const { classes } = this.props;
       let { nameErrorText, emailErrorText, passwordErrorText, password2ErrorText, checkedErrorText } = this.state
 
       return (
-         <Typography>
+         <Typography className={classes.typography}>
+            <Snackbar className={classes.snackbar}
+               anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+               open={this.state.open} onClose={this.handleClose} autoHideDuration={6000}
+               message={<span>User already exists</span>}
+               action={[
+                  <IconButton
+                     key="close" aria-label="close"
+                     color="inherit"
+                     className={classes.close}
+                     onClick={this.handleClose} >
+                     <CloseIcon />
+                  </IconButton>,
+               ]} />
+            <Dialog open={this.state.tacOpen}
+               onClose={this.handleTACClose}
+               aria-labelledby="scroll-dialog-title">
+               <DialogTitle id="scroll-dialog-title">Terms and Conditions</DialogTitle>
+               <DialogContent dividers={'paper'}>
+                  <DialogContentText>
+                     {[...new Array(50)]
+                        .map(() => `Cras mattis consectetur purus sit amet fermentum.
+                                    Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+                                    Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,)
+                        .join('\n')}
+                  </DialogContentText>
+               </DialogContent>
+               <DialogActions>
+                  <Button onClick={this.handleTACClose} color="primary">
+                     Close
+                  </Button>
+               </DialogActions>
+            </Dialog>
             <Grid container p={0}>
                <Grid item className={classes.imageWrapper} md={5}>
-                  <Hidden lgDown>
-                     {/* <img className={classes.image} src={Image} alt='login-photo' /> */}
-                  </Hidden>
+                  {/* <Hidden lgDown>
+                     <img className={classes.image} src={Image} alt='login-photo' />
+                  </Hidden> */}
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
@@ -194,11 +217,11 @@ class SignUpPage extends Component {
                               onChange={this.handleChange} />
                            <FormHelperText className={classes.errorText}>{password2ErrorText}</FormHelperText>
                         </FormControl>
-                        <StyledFormControlLabel
+                        <FormControlLabel className={classes.formControlLabel}
                            control={<Checkbox style={checkedErrorText ? { color: '#f44336' } : {}} color="primary" id="agree" />}
                            label="By signing up I agree with"
                            onChange={this.handleChange}>
-                        </StyledFormControlLabel>
+                        </FormControlLabel>
                         <Link className={classes.textLink}
                            onClick={this.openTermsAndConditions}>terms and conditions</Link>
                         <FormHelperText style={{ marginTop: 0 }} className={classes.errorText}>{checkedErrorText}</FormHelperText>
@@ -210,6 +233,7 @@ class SignUpPage extends Component {
                   </div>
                </Grid>
             </Grid>
+
          </Typography>
       )
    }

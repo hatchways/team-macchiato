@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 
 import { Typography, Box, Grid, Button, Toolbar, Hidden } from "@material-ui/core"
 import { FormControl, FormHelperText, OutlinedInput } from "@material-ui/core"
-import { withStyles } from "@material-ui/core/styles"
+import { Snackbar, IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { Link } from "react-router-dom"
+import { withStyles } from "@material-ui/core/styles"
 
 import { formsPageStyle } from '../styles/formsStyles'
+
+import { userService } from '../services/userServices'
 
 class LoginPage extends Component {
    constructor(props) {
@@ -15,16 +19,28 @@ class LoginPage extends Component {
          password: '',
          emailErrorText: '',
          passwordErrorText: '',
-         formSubmitted: false
+         formSubmitted: false,
       }
       this.forgotPassword = this.forgotPassword.bind(this)
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
       this.handleValidation = this.handleValidation.bind(this)
+      this.handleOpen = this.handleOpen.bind(this)
+      this.handleClose = this.handleClose.bind(this)
    }
    forgotPassword() {
       // Do Something
       console.log("Forgot password Clicked")
+      this.setState({ })
+   }
+   // Snackbar
+   handleOpen() { this.setState({ open: true }) }
+   handleClose(event, reason) {
+      if (reason === 'clickaway') {
+         return;
+      }
+
+      this.setState({ open: false });
    }
    handleChange(event) {
       const { id, value } = event.target
@@ -35,16 +51,20 @@ class LoginPage extends Component {
    handleSubmit(event) {
       event.preventDefault()
       this.setState({ formSubmitted: true })
-      console.log(this.state)
       // 
       // TODO: Change so login implements Redux (Maybe)
       //
       if (this.handleValidation()) {
-         // Do login Stuff Here
-
-         // Possibly something to do with authentication
-         // - Display error msg (helperText) if login failed
-         console.log("Validation Successful, proceed to login")
+         let { email, password } = this.state
+         userService.login(email, password)
+            .then(data => {
+               // Redirect to profile page
+               this.props.history.push(`/profile/${data.user.id}`)
+            })
+            .catch(err => {
+               console.log(err)
+               this.handleOpen();
+            })
       }
    }
    handleValidation() {
@@ -80,11 +100,24 @@ class LoginPage extends Component {
 
       return (
          <Typography className={classes.typography}>
+            <Snackbar className={classes.snackbar}
+               anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+               open={this.state.open} onClose={this.handleClose} autoHideDuration={6000}
+               message={<span>Incorrect email or password</span>}
+               action={[
+                  <IconButton
+                     key="close" aria-label="close"
+                     color="inherit"
+                     className={classes.close}
+                     onClick={this.handleClose} >
+                     <CloseIcon />
+                  </IconButton>,
+               ]} />
             <Grid container p={0}>
                <Grid item className={classes.imageWrapper} md={5}>
-                  <Hidden lgDown>
-                     {/* <img className={classes.image} src={Image} alt='login-photo' /> */}
-                  </Hidden>
+                  {/* <Hidden lgDown>
+                     <img className={classes.image} src={Image} alt='login-photo' />
+                  </Hidden> */}
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
