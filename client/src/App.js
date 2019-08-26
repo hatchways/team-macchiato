@@ -7,6 +7,7 @@ import LandingPage from "./pages/Landing";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
 import CreateProjectForm from "./pages/CreateProjectForm";
+import CreateProjectFormHook from "./pages/CreateProjectFormHook";
 import ProfilePage from "./pages/Profile";
 
 import "./App.css";
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignUpPage} />
         <Route path="/project" component={CreateProjectForm} />
+        <Route path="/project-hook" component={CreateProjectFormHook} />
         <Route path="/profile/:profileId" component={ProfilePage} />
       </BrowserRouter>
     </MuiThemeProvider>
