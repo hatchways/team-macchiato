@@ -36,6 +36,7 @@ router.post(
       
       if (user) {
         res.status(400).json({ error: "Email already exists" });
+        return;
         // throw new Error(err.message);
       }
 
