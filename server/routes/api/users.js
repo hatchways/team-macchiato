@@ -25,6 +25,10 @@ router.get("/:userId", (req, res) => {
 });
 module.exports = router;
 
+// @route   PUT /api/users/:userId
+// @desc    Edit a user with id 'userId'
+// @body    Any number of user attributes ... verification TBD
+// @access  Authorized
 router.put("/:userId", (req, res) => {
    
    // Do user verification
