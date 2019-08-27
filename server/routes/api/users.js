@@ -24,3 +24,21 @@ router.get("/:userId", (req, res) => {
   });
 });
 module.exports = router;
+
+router.put("/:userId", (req, res) => {
+   
+   // Do user verification
+   // - Users can only edit their own projects
+   const userId = req.params.userId
+   const data = req.body
+   // Verification of data here or as param in router.put
+
+   User.findByPk(userId).then(user => {
+      if (user){
+         user.update(data).then(user => {
+            console.log(`User with id ${user.id} updated`)
+            return res.send(user)
+         })
+      }
+   })
+})
