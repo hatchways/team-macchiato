@@ -9,6 +9,7 @@ import pingRouter from "./routes/ping";
 import testRouter from "./routes/test";
 import authRouter from "./routes/api/auth";
 import userRouter from "./routes/api/users";
+import relationshipRouter from "./routes/api/relationships";
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/relationships", relationshipRouter);
 app.use("/test", testRouter);
 
 // catch 404 and forward to error handler
