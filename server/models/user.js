@@ -22,12 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       
       User.belongsToMany(models.User, {
          through: models.Relationship,
-         as: "lower_user",
+         as: "requester",
          foreignKey: "requester_id"
       });
       User.belongsToMany(models.User, {
          through: models.Relationship,
-         as: "upper_user",
+         as: "requestee",
          foreignKey: "requestee_id"
       });
       // User.belongsToMany(models.User, {
