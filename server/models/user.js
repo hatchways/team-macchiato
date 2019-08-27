@@ -18,6 +18,22 @@ module.exports = (sequelize, DataTypes) => {
       as: "skills",
       foreignKey: "userId"
     });
+    // Relationships table
+    User.belongsToMany(models.User, {
+      through: models.Relationships,
+      as: "Relationship",
+      foreignKey: "user_one_id"
+    });
+    User.belongsToMany(models.User, {
+      through: models.Relationships,
+      as: "Relationship",
+      foreignKey: "user_two_id"
+    });
+    User.belongsToMany(models.User), {
+       through: models.Relationships,
+       as: "Relationship",
+       foreignKey: "action_user_id"
+    }
   };
   return User;
 };
