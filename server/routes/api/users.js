@@ -9,19 +9,19 @@ const Skill = require("../../models").Skill;
 // @desc    Get all users (include: projects & skill)
 // @access  Public
 router.get("/all", (req, res) => {
-  User.findAll({
-    include: [{ all: true }]
-  }).then(users => {
-    console.log(users);
-  });
+   User.findAll({
+      include: [{ all: true }]
+   }).then(users => {
+      console.log(users);
+   });
 });
 
 // Route to play with params
 router.get("/:userId", (req, res) => {
-  let userId = req.params.userId;
-  User.findByPk(userId).then(user => {
-    console.log(user);
-  });
+   let userId = req.params.userId;
+   User.findByPk(userId).then(user => {
+      console.log(user);
+   });
 });
 module.exports = router;
 
@@ -29,20 +29,22 @@ module.exports = router;
 // @desc    Edit a user with id 'userId'
 // @body    Any number of user attributes ... verification TBD
 // @access  Authorized
-router.put("/:userId", (req, res) => {
-   
-   // Do user verification
-   // - Users can only edit their own projects
-   const userId = req.params.userId
-   const data = req.body
-   // Verification of data here or as param in router.put
+router.put(
+   "/edit",
+   passport.authenticate("jwt", { session: false }),
+   (req, res) => {
+      // - Users can only edit their own projects
+      const userId = req.user.id
+      const data = req.body
 
-   User.findByPk(userId).then(user => {
-      if (user){
-         user.update(data).then(user => {
-            console.log(`User with id ${user.id} updated`)
-            return res.send(user)
-         })
-      }
-   })
-})
+      User.findByPk(userId).then(user => {
+         if (user) {
+            user.update(data).then(user => {
+               console.log(`User with id ${user.id} updated`)
+               return res.send(user)
+            })
+         }
+         return res.status(500).send("Error: User does not exist")
+      })
+   }
+);
