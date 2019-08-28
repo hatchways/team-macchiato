@@ -8,33 +8,33 @@ module.exports = {
             primaryKey: true,
             type: Sequelize.INTEGER
          },
-         first_id: {
+         requester_id: {
             type: Sequelize.INTEGER,
             references: {
                model: "Users",
                key: "id",
-               as: "lower_user_id"
+               as: "requester"
             }
          },
-         user_two_id: {
+         requestee_id: {
             type: Sequelize.INTEGER,
             references: {
                model: "Users",
                key: "id",
-               as: "upper_user_id"
+               as: "requestee"
             }
          },
          status: {
             type: Sequelize.SMALLINT
          },
-         action_user_id: {
-            type: Sequelize.INTEGER,
-            references: {
-               model: "Users",
-               key: "id",
-               as: "initiator_id"
-            }
-         },
+         // action_user_id: {
+         //    type: Sequelize.INTEGER,
+         //    references: {
+         //       model: "Users",
+         //       key: "id",
+         //       as: "initiator_id"
+         //    }
+         // },
          createdAt: {
             allowNull: false,
             type: Sequelize.DATE
