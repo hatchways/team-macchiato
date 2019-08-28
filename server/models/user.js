@@ -19,22 +19,22 @@ module.exports = (sequelize, DataTypes) => {
          as: "skills",
          foreignKey: "userId"
       });
-      // Relationships table
+      
       User.belongsToMany(models.User, {
          through: models.Relationship,
          as: "lower_user",
-         foreignKey: "first_id"
+         foreignKey: "requester_id"
       });
       User.belongsToMany(models.User, {
          through: models.Relationship,
          as: "upper_user",
-         foreignKey: "user_two_id"
+         foreignKey: "requestee_id"
       });
-      User.belongsToMany(models.User, {
-         through: models.Relationship,
-         as: "initiator",
-         foreignKey: "action_user_id"
-      });
+      // User.belongsToMany(models.User, {
+      //    through: models.Relationship,
+      //    as: "initiator",
+      //    foreignKey: "action_user_id"
+      // });
    };
    return User;
 };
