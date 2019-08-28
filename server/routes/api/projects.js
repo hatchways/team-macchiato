@@ -6,51 +6,64 @@ const Project = require("../../models").Project;
 const Skill = require("../../models").Skill;
 
 // Upload new project
-router.post("/", async (req, res) => {
-   // Possibly check if project already exists?
-   // - using title and link maybe                 LOW PRIO
+router.post(
+   "/",
+   passport.authenticate("jwt", { session: false }),
+   async (req, res) => {
+      try {
+         const userId = req.user.id;
+         const { photos, title, desc, link } = req.body;
+         // TODO
+         // Do stuff with photos to upload them to s3
+         // Create photos array of s3 links
+         let photoS3 = photos.split(',');
+         photoS3 = ['one', 'two'];
 
-   // Do some verification
-   // Do something with userId
-   // - front-end sends some sort of thing that can be linked to userId
-   const { photos, title, desc, link } = req.body;
-   // Do stuff with photos to upload them to s3
-   // Create photos array of s3 links
-   let photoS3 = photos.split(',');
-   photoS3 = ['one', 'two'];
-   
-   const userId = 25;   // Replace
+         let project = {   // use photoS3
+            photoS3, title, desc, link, userId
+         };
 
-   let project = {   // use photoS3
-      photoS3, title, desc, link, userId
-   };
-   // project.userId = userId;
-   Project.create(project).then(x => {
-      console.log(`Successfully created project with projId ${x.id}`);
-      return res.send(x);
-   })
-});
+         // Possibly check if project already exists?
+         // - using title and link maybe                 LOW PRIO
+
+         Project.create(project).then(proj => {
+            console.log(`Successfully created project with projId ${proj.id}`);
+            return res.send(proj);
+         })
+      } catch(err) {
+         console.log(err)
+         res.status(500).send(err)
+      }
+   }
+);
 
 // Update existing project
-router.put("/:projectId", (req, res) => {
-   // Do user verification
-   // - Users can only edit their own projects
-   const projectId = req.params.projectId
-   const data = req.body
-   data.photos = ['one', 'two']
-   
-   Project.findOne({
-      where: {
-         id: projectId
-      }
-   }).then(proj => {
-      if (proj){
-         proj.update(data).then(proj => {
-            console.log(`Project with id '${proj.id}' named '${proj.title}' updated!`)
-            return res.send(proj)
-         })
-      }
-   })
+router.put(
+   "/:projectId",
+   passport.authenticate("jwt", { session: false }),
+   async (req, res) => {
+      const userId = req.user.id
+      const projectId = req.params.projectId
+      const data = req.body
 
-});
+      try {
+         Project.findOne({
+            where: {
+               userId: userId,
+               id: projectId,
+            }
+         }).then(proj => {
+            if (proj) {
+               proj.update(data).then(proj => {
+                  console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
+                  return res.send(proj)
+               })
+            }
+         })
+      } catch (err) {
+         console.log(err)
+         res.status(500).send(err)
+      }
+   }
+);
 module.exports = router;
