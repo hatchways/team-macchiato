@@ -35,8 +35,7 @@ router.post(
       });
       
       if (user) {
-        res.status(400).json({ error: "Email already exists" });
-        return;
+        return res.status(400).json({ error: "Email already exists" });
         // throw new Error(err.message);
       }
 
@@ -96,7 +95,7 @@ router.post("/login", async (req, res, next) => {
     });
 
     if (!user) {
-      res.status(404).json({ error: "Invalid credentials" });
+      return res.status(404).json({ error: "Invalid credentials" });
     }
 
     // Check password against db password
@@ -104,7 +103,7 @@ router.post("/login", async (req, res, next) => {
 
     // Error if isMatch is false (stranger danger)
     if (!isMatch) {
-      res.status(404).json({ error: "Invalid credentials" });
+      return res.status(404).json({ error: "Invalid credentials" });
     }
 
     // Payload (includes the necessary user details)
