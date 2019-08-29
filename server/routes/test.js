@@ -42,6 +42,7 @@ router.get(
     try {
       // console.log(req.user.id);
       const user = await User.findByPk(req.user.id);
+      console.log(req.user)
       res.json(user);
     } catch (err) {
       console.log(err);
