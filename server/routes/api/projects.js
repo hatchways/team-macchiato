@@ -5,6 +5,22 @@ const passport = require("passport");
 const Project = require("../../models").Project;
 const Skill = require("../../models").Skill;
 
+// Get all projects of a user
+router.get("/:userId", async (req, res) => {
+      try {
+         const userId = req.params.userId
+         Project.findAll({
+            where: {
+               userId: userId
+            }
+         }).then(projs => res.send(projs))
+      } catch(err) {
+         console.log(err)
+         res.status(500).send(err)
+      }
+   }
+)
+
 // Upload new project
 router.post(
    "/",
