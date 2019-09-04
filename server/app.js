@@ -13,8 +13,12 @@ import projectRouter from "./routes/api/projects";
 import relationshipRouter from "./routes/api/relationships";
 
 var app = express();
+var bodyParser = require('body-parser')
 
 app.use(cors());
+
+// app.use(express.bodyParser({limit: '50mb'}));
+app.use(bodyParser.json({ limit: '5mb' }))
 
 app.use(logger("dev"));
 app.use(json());

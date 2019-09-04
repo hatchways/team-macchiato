@@ -28,24 +28,35 @@ router.post(
    async (req, res) => {
       try {
          const userId = req.user.id;
+         // console.log(req.body)
          const { photos, title, desc, link } = req.body;
+         console.log(photos)
+         console.log(title)
+         console.log(desc)
+         console.log(link)
+         // If any are undefined
+         if(!photos || !title || !desc || !link)
+            return res.status(500).send("Sorry, all fields required")
          // TODO
          // Do stuff with photos to upload them to s3
          // Create photos array of s3 links
-         let photoS3 = photos.split(',');
-         photoS3 = ['one', 'two'];
+         // let photoS3 = photos.split(',');
+         let photoS3 = ['one', 'two'];
 
          let project = {   // use photoS3
             photoS3, title, desc, link, userId
          };
 
+         console.log(project)
+         
+         res.send("Yes")
          // Possibly check if project already exists?
          // - using title and link maybe                 LOW PRIO
 
-         Project.create(project).then(proj => {
-            console.log(`Successfully created project with projId ${proj.id}`);
-            return res.send(proj);
-         })
+         // Project.create(project).then(proj => {
+         //    console.log(`Successfully created project with projId ${proj.id}`);
+         //    return res.send(proj);
+         // })
       } catch(err) {
          console.log(err)
          res.status(500).send(err)
