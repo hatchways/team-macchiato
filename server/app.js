@@ -14,7 +14,10 @@ import relationshipRouter from "./routes/api/relationships";
 
 var app = express();
 
+// cors
 app.use(cors());
+
+app.use(bodyParser.json({ limit: '10mb' }))
 
 app.use(logger("dev"));
 app.use(json());
@@ -38,9 +41,6 @@ app.use(function(req, res, next) {
 app.get("/endpoint", function(req, res, next) {
   res.json({ msg: "💖 This is CORS-enabled for all origins!" });
 });
-
-// cors
-app.use(cors());
 
 // Passport Middleware
 require("./config/passport");
