@@ -1,30 +1,28 @@
-"use strict";
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Projects", {
+    return queryInterface.createTable('Liked_Entities', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      photos: {
-        type: Sequelize.ARRAY(Sequelize.TEXT)
-      },
-      title: {
-        type: Sequelize.STRING
-      },
-      desc: {
-        type: Sequelize.TEXT
-      },
-      link: {
-        type: Sequelize.STRING
-      },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
-        onDelete: "CASCADE",
-        allowNull: false,
-        references: { model: "Users", key: "id" }
+        references: {
+          model: "Users",
+          key: "id",
+          as: "user_id"
+        }
+      },
+      entity_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Entities",
+          key: "entity_id",
+          as: "entity_id",
+        }
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Projects");
+    return queryInterface.dropTable('Liked_Entities');
   }
 };
