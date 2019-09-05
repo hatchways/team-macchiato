@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "Project",
     {
       photos: DataTypes.ARRAY(DataTypes.TEXT, { defaultValue: null }),
-      desc: DataTypes.STRING,
+      desc: DataTypes.TEXT,
       title: DataTypes.STRING,
       link: DataTypes.STRING
     },
