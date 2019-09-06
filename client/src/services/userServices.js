@@ -5,7 +5,7 @@ function authHeader() {
    let user = JSON.parse(localStorage.getItem('user'));
 
    if (user && user.token) {
-      return { 'Authorization': 'Bearer ' + user.token };
+      return { 'Authorization': user.token };
    } else {
       return {};
    }
@@ -15,6 +15,7 @@ export const userService = {
    login,
    logout,
    register,
+   uploadProj,
    // getAll,
    // getById,
    // update,
@@ -53,6 +54,25 @@ function register(user) {
    return fetch(`${apiUrl}/auth/register`, requestOptions).then(handleResponse);
 }
 
+function uploadProj(proj) {
+   console.log("PROJECT")
+   console.log(proj)
+   console.log(proj.photos)
+   const requestOptions = {
+      method: 'POST',
+      headers: {
+         ...authHeader(),
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(proj),
+   };
+   fetch(`${apiUrl}/projects/`, requestOptions)
+      .then(res => res.text())
+      .then(text => console.log(text))
+   // fetch(`${apiUrl}/projects/`, requestOptions)
+   //    .then(ret => console.log(ret))
+   // console.log(proj)
+}
 // function getAll() {
 //    const requestOptions = {
 //        method: 'GET',
