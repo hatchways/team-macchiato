@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   Entity.associate = function(models) {
     // associations can be defined here
 <<<<<<< HEAD
+<<<<<<< HEAD
     Entity.belongsToMany(models.User, {
       through: models.Liked_Entity,
       as: "liked_entity",
@@ -13,6 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     });
 =======
 >>>>>>> #43
+=======
+    Entity.belongsToMany(models.User, {
+      throught: models.Liked_Entity,
+      as: "liked_entity",
+      foreignKey: "entity_id"
+    });
+>>>>>>> Refactored some db col naming:
   };
   return Entity;
 };
