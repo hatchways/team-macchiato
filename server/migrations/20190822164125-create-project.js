@@ -20,9 +20,9 @@ module.exports = {
       link: {
         type: Sequelize.STRING
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",       
         allowNull: false,
         references: { model: "Users", key: "id" }
       },
