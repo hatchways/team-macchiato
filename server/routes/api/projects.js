@@ -11,7 +11,7 @@ router.get("/:userId", async (req, res) => {
          const userId = req.params.userId
          Project.findAll({
             where: {
-               userId: userId
+               user_id: userId
             }
          }).then(projs => res.send(projs))
       } catch(err) {
@@ -76,13 +76,13 @@ router.put(
       try {
          Project.findOne({
             where: {
-               userId: userId,
+               user_id: userId,
                id: projectId,
             }
          }).then(proj => {
             if (proj) {
                proj.update(data).then(proj => {
-                  console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
+                  console.log(`Project with id '${proj.id}' belonging to ${proj.user_id} updated!`)
                   return res.send(proj)
                })
             }
