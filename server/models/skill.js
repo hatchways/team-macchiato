@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
   );
   Skill.associate = function(models) {
     Skill.belongsToMany(models.User, {
-      through: models.UserSkill,
+      through: models.User_Skill,
       as: "users",
-      foreignKey: "skillId"
+      foreignKey: "skill_id"
     });
   };
   return Skill;
