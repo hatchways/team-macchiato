@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
     // Liked_Entity
     User.belongsToMany(models.Entity, {
-      throught: models.Liked_Entity,
+      through: models.Liked_Entity,
       as: "user_id",
       foreignKey: "user_id"
     });
