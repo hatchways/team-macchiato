@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   Entity.associate = function(models) {
     // associations can be defined here
     Entity.belongsToMany(models.User, {
-      throught: models.Liked_Entity,
+      through: models.Liked_Entity,
       as: "liked_entity",
       foreignKey: "entity_id"
     });
