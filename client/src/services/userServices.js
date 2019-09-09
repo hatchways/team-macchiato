@@ -55,9 +55,6 @@ function register(user) {
 }
 
 function uploadProj(proj) {
-   console.log("PROJECT")
-   console.log(proj)
-   console.log(proj.photos)
    const requestOptions = {
       method: 'POST',
       headers: {
