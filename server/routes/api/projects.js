@@ -23,9 +23,7 @@ router.get("/:userId", async (req, res) => {
 }
 )
 
-import { signS3 } from './awsController'
-
-const handleUpload = async (fileName, imageData) => {
+const handleUpload = async (fileName, imageData, userId) => {
    var aws = require('aws-sdk')
    aws.config.update({
       region: 'us-east-2', // Put your aws region here
@@ -42,7 +40,7 @@ const handleUpload = async (fileName, imageData) => {
    // WIP //
    /////////
    // bucketName var below crates a "folder" for each user
-   var bucketName = S3_BUCKET + '/myUserNameAndId';
+   var bucketName = S3_BUCKET + `/user_${userId}`;
 
    var params = {
       Bucket: bucketName,
@@ -96,7 +94,7 @@ router.post(
          let photoS3Data = photos.map(async data => {
             let fileName = data.fileName
             let imageData = data.imageData
-            return handleUpload(fileName, imageData)
+            return handleUpload(fileName, imageData, userId)
          });
 
          Promise.all(photoS3Data)
@@ -137,6 +135,9 @@ router.put(
             }
          }).then(proj => {
             if (proj) {
+               if (proj.photos) {
+                  // Fetch, compare diff, upload new and delete removed
+               }
                proj.update(data).then(proj => {
                   console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
                   return res.send(proj)
