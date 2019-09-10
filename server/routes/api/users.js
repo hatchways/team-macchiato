@@ -26,6 +26,26 @@ router.get("/:userId", (req, res) => {
 });
 module.exports = router;
 
+// Search and filter through "all" users, with limit and offset optional
+// body requires: 
+//  - where
+//  - optional: limit, offset
+router.get("/allWhere", (req, res) => {
+   let options = req.body
+   try {
+      User.findAll({
+         options
+      }).then(users => {
+         res.send(users)
+      })
+   }
+   catch (err) {
+      res.status(500).send(err)
+   }
+})
+
+////////////////////////
+
 // @route   PUT /api/users/:userId
 // @desc    Edit a user with id 'userId'
 // @body    Any number of user attributes ... verification TBD
@@ -34,7 +54,7 @@ router.put(
    "/edit",
    passport.authenticate("jwt", { session: false }),
    (req, res) => {
-      // - Users can only edit their own projects
+      // - Users can only edit their own profiles
       const userId = req.user.id
       const data = req.body
 
@@ -69,6 +89,7 @@ router.post(
       const user = req.user
       const { skillName } = req.body
       try {
+         // Could replace with findOrCreate
          // Look for skill
          let skill = await Skill.findOne({
             where: {
