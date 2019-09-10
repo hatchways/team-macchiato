@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      entity_type: {
+         allowNull: false,
+         type: Sequelize.SMALLINT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

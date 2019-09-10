@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Entity = sequelize.define('Entity', {
     entity_id: DataTypes.INTEGER,
+    entity_type: DataTypes.SMALLINT
   }, {});
   Entity.associate = function(models) {
     // associations can be defined here

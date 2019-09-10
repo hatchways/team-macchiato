@@ -8,6 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      entity_id: {
+         allowNull: false,
+         type: Sequelize.INTEGER,
+         references: {
+            model: "Entities",
+            key: "entity_id",
+            as: "entity_id",
+          }
+      },
       photos: {
         type: Sequelize.ARRAY(Sequelize.TEXT)
       },
