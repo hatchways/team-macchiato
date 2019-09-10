@@ -10,6 +10,7 @@ import testRouter from "./routes/test";
 import authRouter from "./routes/api/auth";
 import userRouter from "./routes/api/users";
 import projectRouter from "./routes/api/projects";
+import discoveryRouter from "./routes/api/discovery";
 import relationshipRouter from "./routes/api/relationships";
 
 var app = express();
@@ -36,6 +37,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/projects", projectRouter);
 app.use("/api/relationships", relationshipRouter);
+app.use("/api/discovery", discoveryRouter);
 app.use("/test", testRouter);
 
 // catch 404 and forward to error handler
