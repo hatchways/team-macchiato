@@ -99,29 +99,34 @@ router.put(
 );
 
 // Fetch all pending requests where you are the accepter/requester
+const fetchPending = (option) => (req, res) => {
+   try {
+      const userId = req.user.id
+
+      Relationship.findAll({
+         where: {
+            status: PENDING,
+            [option]: userId
+         }
+      }).then(rel => {
+         return res.send(rel)
+      })
+   } catch (err) {
+      console.log(err)
+      res.status(500).send(err)
+   }
+}
+// Where user is the accepter
 router.get(
    "/pending",
    passport.authenticate("jwt", { session: false }),
-   (req, res) => {
-      try {
-         const userId = req.user.id;
-
-         Relationship.findAll({
-            where: {
-               status: PENDING,
-               [or]: [
-                  { requester_id: userId },
-                  { requestee_id: userId },
-               ]
-            }
-         }).then(rel => {
-            return res.send(rel)
-         })
-      } catch (err) {
-         console.log(err)
-         res.status(500).send(err)
-      }
-   }
+   fetchPending('requestee_id')
+);
+// Where user is the requester
+router.get(
+   "/pending/req",
+   passport.authenticate("jwt", { session: false }),
+   fetchPending('requester_id')
 );
 
 // Fetch all of your connections
