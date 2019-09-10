@@ -29,9 +29,8 @@ router.get("/user/:userId", async (req, res) => {
       }).then(projs => {
          // Retrieve images from s3
          let photos = projs.photos.map(async data => {
-            let Key = data.Key
-            let data = awsController.handleRetrieve(Key)
-            return data.Body
+            let key = data.Key
+            return awsController.handleRetrieve(key).Body
          });
 
          Promise.all(photos)
@@ -45,6 +44,13 @@ router.get("/user/:userId", async (req, res) => {
       res.status(500).send(err)
    }
 })
+
+const addToS3 = (photos, userId) => photos.map(async data => {
+   // key will be of form UNIXTIMESTAMP_FILENAME_IMGBASE64LENGTH
+   let key = Date.now() + '_' + data.fileName
+   let imageData = data.imageData
+   return awsController.handleUpload(key, imageData, userId)
+});
 
 // Upload new project
 router.post(
@@ -71,13 +77,7 @@ router.post(
          }
           */
 
-         let photoS3Data = photos.map(async data => {
-            let fileName = data.fileName
-            let imageData = data.imageData
-            return awsController.handleUpload(fileName, imageData, userId)
-         });
-
-         Promise.all(photoS3Data)
+         Promise.all(addToS3(photos, userId))
             .then(photoS3Data => {
                let project = {   // use photoS3
                   photos: photoS3Data, title, desc, link, userId
@@ -99,6 +99,9 @@ router.post(
 );
 
 // Update existing project
+// Note: when updating photos, photos param must be like:
+// photos: { removed: [...], added: [...]}
+//  removed contains s3Keys, while added contains base64 imageData
 router.put(
    "/update/:projectId",
    passport.authenticate("jwt", { session: false }),
@@ -115,21 +118,43 @@ router.put(
             }
          }).then(proj => {
             if (proj) {
-               if (proj.photos) {
-                  // Fetch, compare diff, upload new and delete removed
-                  /////////
-                  // WIP //
-                  /////////
-                  let photoS3Data = photos.map(async data => {
-                     let fileName = data.fileName
-                     let imageData = data.imageData
-                     return awsController.handleUpload(fileName, imageData, userId)
-                  });
+               let updateProject = (data) => {
+                  proj.update(data).then(proj => {
+                     console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
+                     return res.send(proj)
+                  })
                }
-               proj.update(data).then(proj => {
-                  console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
-                  return res.send(proj)
-               })
+               // If we're updating photos
+               if (data.photos) {
+                  // removed contains s3 key of stored photos
+                  let removed = data.photos.removed
+                  // added contains: { fileName: ... , imageData: ... }
+                  let added = data.photos.added
+
+                  // Remove all removed photos
+                  for (let e of removed) {
+                     let key = e.Key
+                     awsController.handleDelete(key)
+                  }
+                  // Filter removed from proj.photos
+                  let photos = proj.photos.filter(e => !removed.includes(e.Key))
+                  // Add new photos
+                  Promise.all(addToS3(added))
+                     .then(photoS3Data => {
+                        photos.concat(photoS3Data)
+                        // Set data.photos to updated photos
+                        data.photos = photos
+                        updateProject(data)
+                     })
+               }
+               else {
+                  updateProject(data)
+               }
+            }
+            else {
+               let err = `Project with id '${proj.id}' Does Not Exist!`
+               console.log(err)
+               return res.status(500).send({ error: err })
             }
          })
       } catch (err) {

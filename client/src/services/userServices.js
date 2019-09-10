@@ -16,6 +16,7 @@ export const userService = {
    logout,
    register,
    uploadProj,
+   updateProj,
    // getAll,
    // getById,
    // update,
@@ -38,12 +39,10 @@ function login(email, password) {
          return user;
       });
 }
-
 function logout() {
    // remove user from local storage to log user out
    localStorage.removeItem('user');
 }
-
 function register(user) {
    const requestOptions = {
       method: 'POST',
@@ -51,36 +50,49 @@ function register(user) {
       body: JSON.stringify(user)
    };
 
-   return fetch(`${apiUrl}/auth/register`, requestOptions).then(handleResponse);
+   return fetch(`${apiUrl}/auth/register`, requestOptions)
+      .then(handleResponse);
 }
 
 const hitProjRoute = (options) => {
    const requestOptions = {
-      method: options.method,
+      ...options.requestOptions,
       headers: {
          ...authHeader(),
          'Content-Type': 'application/json',
       },
-      body: JSON.stringify(options.body),
    };
-   fetch(`${apiUrl}/projects/${options.route}`, requestOptions)
+   fetch(`${apiUrl}/projects${options.route}`, requestOptions)
       .then(res => res.text())
       .then(text => console.log(text))
 }
+function getProj(userId) {
+   hitProjRoute({
+      requestOptions: {
+         method: 'GET'
+      },
+      route: '/user/' + userId
+   })
+}
 function uploadProj(proj) {
    hitProjRoute({
-      method: 'POST',
-      body: proj,
-      route: '' 
+      requestOptions: {
+         method: 'POST',
+         body: JSON.stringify(proj),
+      },
+      route: '/upload'
+   })
+}
+function updateProj(proj, projectId) {
+   hitProjRoute(proj, {
+      requestOptions: {
+         method: 'PUT',
+         body: JSON.stringify(proj),
+      },
+      route: '/update/' + projectId
    })
 }
 
-function updateProj(proj, projectId) {
-   hitProjRoute(proj, {
-      method: 'PUT',
-      body: proj,
-      route: projectId })
-}
 // function getAll() {
 //    const requestOptions = {
 //        method: 'GET',

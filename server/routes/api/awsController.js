@@ -13,6 +13,20 @@ export const awsController = {
    handleUpload,
 }
 
+async function handleDelete(key) {
+   let deleteParams = {
+      Bucket: S3_BUCKET,
+      Key: key
+   }
+
+   return new Promise((resolve, reject) => {
+      s3.deleteObject(deleteParams, function (err, data) {
+         if (err) reject({ error: err })
+         resolve(data)
+      })
+   })
+}
+
 async function handleRetrieve(key) {
    let getParams = {
       Bucket: S3_BUCKET,
@@ -47,16 +61,16 @@ async function handleRetrieve(key) {
    });
 }
 
-async function handleUpload(fileName, imageData, userId) {
+async function handleUpload(key, imageData, userId) {
    let buf = new Buffer(imageData.replace(/^data:image\/\w+;base64,/, ""), 'base64')
    let fileType = imageData.split(';')[0].split(':')[1]
    // bucketName var below crates a "folder" for each user
-   var bucketName = `${S3_BUCKET}/user_${userId}`
+   var bucketName = S3_BUCKET + '/user_' + userId
    // var bucketName = S3_BUCKET + '/' + userEmail
 
    var params = {
       Bucket: bucketName,
-      Key: fileName,
+      Key: key,
       Body: buf,
       ContentType: fileType,
    };
