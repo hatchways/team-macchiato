@@ -5,68 +5,50 @@ const passport = require("passport");
 const Project = require("../../models").Project;
 const Skill = require("../../models").Skill;
 
-const axios = require('axios')
+import { awsController } from "./awsController"
 
 // Get all projects of a user
-router.get("/:userId", async (req, res) => {
+// photos are in form:
+/*
+{
+   "type": "Buffer",
+   "data": [
+      137,
+      80,
+      ...
+   ]
+}
+*/
+router.get("/user/:userId", async (req, res) => {
    try {
       const userId = req.params.userId
       Project.findAll({
          where: {
             userId: userId
          }
-      }).then(projs => res.send(projs))
+      }).then(projs => {
+         // Retrieve images from s3
+         let photos = projs.photos.map(async data => {
+            let Key = data.Key
+            let data = awsController.handleRetrieve(Key)
+            return data.Body
+         });
+
+         Promise.all(photos)
+            .then(photos => {
+               projs.photos = photos
+               res.send(projs)
+            })
+      })
    } catch (err) {
       console.log(err)
       res.status(500).send(err)
    }
-}
-)
+})
 
-const handleUpload = async (fileName, imageData, userId) => {
-   var aws = require('aws-sdk')
-   aws.config.update({
-      region: 'us-east-2', // Put your aws region here
-      accessKeyId: process.env.AWS_ACCESS_KEY,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-   })
-   const S3_BUCKET = process.env.S3_BUCKET
-   var s3 = new aws.S3()
-   // var s3Bucket = new aws.S3({ params: { Bucket: S3_BUCKET } })
-
-   let buf = new Buffer(imageData.replace(/^data:image\/\w+;base64,/, ""), 'base64')
-   let fileType = imageData.split(';')[0].split(':')[1];
-   /////////
-   // WIP //
-   /////////
-   // bucketName var below crates a "folder" for each user
-   var bucketName = S3_BUCKET + `/user_${userId}`;
-
-   var params = {
-      Bucket: bucketName,
-      Key: fileName,
-      Body: buf,
-      ContentType: fileType,
-   };
-
-   return new Promise((resolve, reject) => {
-      s3.upload(params, function (err, data) {
-         if (err) {
-            reject({ error: err })
-         }
-
-         // TODO: save data to DB
-         let location = data.Location
-         console.log(location);
-         console.log(data);
-
-         resolve({ data: data })
-      })
-   });
-}
 // Upload new project
 router.post(
-   "/",
+   "/upload",
    passport.authenticate("jwt", { session: false }),
    async (req, res) => {
       try {
@@ -87,20 +69,18 @@ router.post(
             Key: 'myUserNameAndId/INSTALL_GENTOO.png',
             Bucket: 'teammacchiatoapp' 
          }
-
-            Right now we only care about Location
           */
 
          let photoS3Data = photos.map(async data => {
             let fileName = data.fileName
             let imageData = data.imageData
-            return handleUpload(fileName, imageData, userId)
+            return awsController.handleUpload(fileName, imageData, userId)
          });
 
          Promise.all(photoS3Data)
-            .then(res => {
+            .then(photoS3Data => {
                let project = {   // use photoS3
-                  photoS3: photoS3Data, title, desc, link, userId
+                  photos: photoS3Data, title, desc, link, userId
                };
 
                // Possibly check if project already exists?
@@ -120,7 +100,7 @@ router.post(
 
 // Update existing project
 router.put(
-   "/:projectId",
+   "/update/:projectId",
    passport.authenticate("jwt", { session: false }),
    async (req, res) => {
       const userId = req.user.id
@@ -137,6 +117,14 @@ router.put(
             if (proj) {
                if (proj.photos) {
                   // Fetch, compare diff, upload new and delete removed
+                  /////////
+                  // WIP //
+                  /////////
+                  let photoS3Data = photos.map(async data => {
+                     let fileName = data.fileName
+                     let imageData = data.imageData
+                     return awsController.handleUpload(fileName, imageData, userId)
+                  });
                }
                proj.update(data).then(proj => {
                   console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
