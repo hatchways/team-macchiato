@@ -22,6 +22,7 @@ function App() {
         <Route path="/project" component={CreateProjectForm} />
         <Route path="/project-hook" component={CreateProjectFormHook} />
         <Route path="/profile/:profileId" component={ProfilePage} />
+        <Route path="/profile/:profileId" component={ProfilePage} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
