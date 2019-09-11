@@ -10,7 +10,7 @@ import CreateProjectForm from "./pages/CreateProjectForm";
 import CreateProjectFormHook from "./pages/CreateProjectFormHook";
 import ProfilePage from "./pages/Profile";
 
-import "./App.css";
+import "./styles/App.css";
 
 function App() {
   return (

@@ -4,8 +4,8 @@ import { Route, Link } from "react-router-dom";
 import Dropzone from 'react-dropzone';
 
 import Nav from "./Nav";
-import img1 from './creativedesignerediting34199.jpg';
-import img6 from './profilepic.jpg';
+import img1 from '../assets/images/creativedesignerediting34199.jpg';
+import img6 from '../assets/images/profilepic.jpg';
 
 class ProfilePage extends Component {
   render() {
@@ -67,6 +67,7 @@ class ProfilePage extends Component {
                     
                             <img className='project-image' src= {img1} />
                        </div>
+
                        <div className="col-lg-5  ">
                     
                             <img  className='project-image' src= {img1} />
