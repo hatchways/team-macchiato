@@ -14,13 +14,17 @@ import DirectionsIcon from "@material-ui/icons/Directions";
 import Icon from "@mdi/react";
 import { mdiCloseCircle } from "@mdi/js";
 import { mdiKarate } from "@mdi/js";
+import { mdiUfoOutline } from "@mdi/js";
 
-//Grid?
+// Grid? Nah
 
-//Card?
+// Card?
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+
+// Chip?
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles(theme => ({
   // Do this Wrapper stuff for now till we have more content on the page
@@ -33,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     width: "55%",
     margin: "auto",
     padding: "0",
-    boxShadow: "5px 5px 5px 5px rgba(157, 157, 157, 0.5)"
+    boxShadow: "5px 2px 15px 5px rgba(157, 157, 157, 0.3)"
   },
   form_container: {
     width: "75%"
@@ -80,22 +84,126 @@ const useStyles = makeStyles(theme => ({
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr",
     gridGap: "30px 20px",
-    padding: "20px 20px"
+    padding: "1rem 3rem"
   },
   card: {
     width: "100%",
     margin: "4px",
     display: "inline-block",
     margin: "auto",
-    height: "15rem"
+    height: "20rem",
+    boxShadow: "5px 2px 15px 5px rgba(157, 157, 157, 0.1)"
+  },
+  card_profile: {
+    height: "50%",
+    borderBottom: "1px solid rgba(157, 157, 157, 0.2)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  card_profile_section: {
+    margin: "auto",
+    padding: "1rem 0"
+  },
+  card_profile_image: {
+    borderRadius: "50%",
+    background: "palevioletred",
+    height: "65px",
+    width: "65px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "auto"
+  },
+  card_profile_text: {
+    textAlign: "center",
+    padding: "1rem 0"
+  },
+  card_skills: {
+    height: "35%",
+    borderBottom: "1px solid rgba(157, 157, 157, 0.2)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  card_experience: {
+    height: "15%",
+    borderBottom: "1px solid rgba(157, 157, 157, 0.2)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  tag: {
+    margin: theme.spacing(1),
+    padding: "2px 10px",
+    margin: "3px 5px",
+    background: "transparent",
+    color: "black",
+    border: "2px solid rgba(157, 157, 157, 0.2)",
+    display: "inline-block",
+    borderRadius: "5%",
+    textTransform: "uppercase"
   }
 }));
+
+// Bring this into helper methods
+// Only works for array right now
+function isEmpty(array) {
+  if (array.length < 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+const SkillTag = props => {
+  const classes = useStyles();
+  return <span className={classes.tag}>{props.skill}</span>;
+};
 
 const UserCard = props => {
   const classes = useStyles();
   return (
     <Card className={classes.card}>
-      <CardContent>{props.name}</CardContent>
+      <div className={classes.card_profile}>
+        <div className={classes.card_profile_section}>
+          <div className={classes.card_profile_image}>
+            <Icon
+              path={mdiUfoOutline}
+              title="User Profile"
+              size={2}
+              color="pink"
+            />
+          </div>
+          <Typography variant="h6" component="h6">
+            <div className={classes.card_profile_text}>
+              <div>{props.name}</div>
+              <div>Put a city here</div>
+            </div>
+          </Typography>
+        </div>
+      </div>
+      <div className={classes.card_skills}>
+        {props.loading && !isEmpty(props.skills)
+          ? props.skills.map(skillTags => {
+              return <SkillTag skill={skillTags.skill} />;
+            })
+          : "Sorry No Skills"}
+      </div>
+      <div className={classes.card_experience}>
+        <div>
+          <Typography variant="h6" component="h6">
+            0 years experience
+            <Icon
+              path={mdiUfoOutline}
+              title="User Profile"
+              size={1}
+              color="pink"
+              spin
+            />
+          </Typography>
+        </div>
+      </div>
     </Card>
   );
 };
@@ -106,14 +214,17 @@ export default function Discovery() {
   const [loading, setLoading] = React.useState(true);
   const [searchedUsers, setSearchedUsers] = React.useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3001/api/discovery")
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false);
-        return setSearchedUsers(data);
-      });
-  }, []);
+  useEffect(
+    () => {
+      fetch(`http://localhost:3001/api/discovery`)
+        .then(response => response.json())
+        .then(data => {
+          setLoading(false);
+          return setSearchedUsers(data);
+        });
+    },
+    [search]
+  );
 
   return (
     <div className={classes.wrapper}>
@@ -122,11 +233,11 @@ export default function Discovery() {
           <div className={classes.search_container}>
             <div className={classes.textField}>
               <IconButton className={classes.iconButton} aria-label="search">
-                <SearchIcon color="red" />
+                <SearchIcon />
               </IconButton>
               <InputBase
                 className={classes.input}
-                placeholder="UI / UX"
+                placeholder="UX/ UI"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -163,7 +274,13 @@ export default function Discovery() {
           {!loading
             ? searchedUsers.map(user => {
                 console.log(user);
-                return <UserCard name={user.name} />;
+                return (
+                  <UserCard
+                    name={user.name}
+                    skills={user.skills}
+                    loading={loading}
+                  />
+                );
               })
             : "loading"}
         </div>
