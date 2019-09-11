@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
   },
   flex: {
     display: "flex",
-    height: "75px"
-    // borderBottom: "1px solid rgba(157, 157, 157, 0.5)"
+    height: "75px",
+    borderBottom: "1px solid rgba(157, 157, 157, 0.5)"
   },
   form: {
     display: "flex",
@@ -68,16 +68,20 @@ const useStyles = makeStyles(theme => ({
   },
   filter: {
     width: "30%",
+    background: props => props.background || "white",
+    color: props => props.color || "black",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    "&:hover": {
+      background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)"
+    }
   },
   square_close_container: {
     padding: "20px",
     cursor: "pointer"
   },
   card_container: {
-    borderTop: "1px solid rgba(157, 157, 157, 0.5)",
     width: "100%",
     position: "relative",
     height: "100%",
@@ -157,7 +161,7 @@ function isEmpty(array) {
 }
 
 const SkillTag = props => {
-  const classes = useStyles();
+  const classes = useStyles([]);
   return <span className={classes.tag}>{props.skill}</span>;
 };
 
@@ -209,10 +213,20 @@ const UserCard = props => {
 };
 
 export default function Discovery() {
-  const classes = useStyles();
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [searchedUsers, setSearchedUsers] = React.useState([]);
+
+  // Open Filter
+  const [filter, setFilter] = React.useState(false);
+
+  const props = filter
+    ? {
+        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+        color: "white"
+      }
+    : { background: "white", color: "black" };
+  const classes = useStyles(props);
 
   useEffect(() => {
     fetch("http://localhost:3001/api/discovery")
@@ -249,17 +263,18 @@ export default function Discovery() {
               />
             </div>
           </div>
-          <div className={classes.filter}>
+          <div
+            className={classes.filter}
+            isActive={filter}
+            onClick={e => setFilter(!filter)}
+          >
             <div>
               <Typography variant="h6" component="h6">
                 <Icon
                   path={mdiKarate}
                   title="User Profile"
                   size={1}
-                  // horizontal
-                  // vertical
-                  // rotate={90}
-                  color="black"
+                  color={filter ? "white" : "black"}
                   // spin
                 />
                 Filter
@@ -267,10 +282,11 @@ export default function Discovery() {
             </div>
           </div>
         </div>
+        {/* Open Filter Div */}
+        {filter ? "how would you filter" : ""}
         <div className={classes.card_container}>
           {!loading
             ? searchedUsers.map(user => {
-                console.log(user);
                 return (
                   <UserCard
                     name={user.name}
