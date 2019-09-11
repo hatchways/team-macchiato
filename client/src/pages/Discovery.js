@@ -184,7 +184,7 @@ const UserCard = props => {
         </div>
       </div>
       <div className={classes.card_skills}>
-        {props.loading && !isEmpty(props.skills)
+        {!isEmpty(props.skills)
           ? props.skills.map(skillTags => {
               return <SkillTag skill={skillTags.skill} />;
             })
@@ -214,17 +214,14 @@ export default function Discovery() {
   const [loading, setLoading] = React.useState(true);
   const [searchedUsers, setSearchedUsers] = React.useState([]);
 
-  useEffect(
-    () => {
-      fetch(`http://localhost:3001/api/discovery`)
-        .then(response => response.json())
-        .then(data => {
-          setLoading(false);
-          return setSearchedUsers(data);
-        });
-    },
-    [search]
-  );
+  useEffect(() => {
+    fetch("http://localhost:3001/api/discovery")
+      .then(response => response.json())
+      .then(data => {
+        setLoading(false);
+        return setSearchedUsers(data);
+      });
+  }, []);
 
   return (
     <div className={classes.wrapper}>
