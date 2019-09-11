@@ -5,59 +5,93 @@ const passport = require("passport");
 const Project = require("../../models").Project;
 const Skill = require("../../models").Skill;
 
+import { awsController } from "./awsController"
+
 // Get all projects of a user
-router.get("/:userId", async (req, res) => {
-      try {
-         const userId = req.params.userId
-         Project.findAll({
-            where: {
-               userId: userId
-            }
-         }).then(projs => res.send(projs))
-      } catch(err) {
-         console.log(err)
-         res.status(500).send(err)
-      }
+// photos are in form:
+/*
+{
+   "type": "Buffer",
+   "data": [
+      137,
+      80,
+      ...
+   ]
+}
+*/
+router.get("/user/:userId", async (req, res) => {
+   try {
+      const userId = req.params.userId
+      Project.findAll({
+         where: {
+            userId: userId
+         }
+      }).then(projs => {
+         // Retrieve images from s3
+         let photos = projs.photos.map(async data => {
+            let key = data.Key
+            return awsController.handleRetrieve(key).Body
+         });
+
+         Promise.all(photos)
+            .then(photos => {
+               projs.photos = photos
+               res.send(projs)
+            })
+      })
+   } catch (err) {
+      console.log(err)
+      res.status(500).send(err)
    }
-)
+})
+
+const addToS3 = (photos, userId) => photos.map(async data => {
+   // key will be of form UNIXTIMESTAMP_FILENAME_IMGBASE64LENGTH
+   let key = Date.now() + '_' + data.fileName
+   let imageData = data.imageData
+   return awsController.handleUpload(key, imageData, userId)
+});
 
 // Upload new project
 router.post(
-   "/",
+   "/upload",
    passport.authenticate("jwt", { session: false }),
    async (req, res) => {
       try {
          const userId = req.user.id;
-         // console.log(req.body)
          const { photos, title, desc, link } = req.body;
-         console.log(photos)
-         console.log(title)
-         console.log(desc)
-         console.log(link)
+
          // If any are undefined
-         if(!photos || !title || !desc || !link)
+         if (!photos || !title || !desc || !link)
             return res.status(500).send("Sorry, all fields required")
-         // TODO
-         // Do stuff with photos to upload them to s3
-         // Create photos array of s3 links
-         // let photoS3 = photos.split(',');
-         let photoS3 = ['one', 'two'];
 
-         let project = {   // use photoS3
-            photoS3, title, desc, link, userId
-         };
+         // Example of what handleUpload returns
+         /*
+         { 
+            ETag: '"36bac1f605b776e2ddedfbe80f773952"',
+            Location:
+            'https://teammacchiatoapp.s3.us-east-2.amazonaws.com/myUserNameAndId/INSTALL_GENTOO.png',
+            key: 'myUserNameAndId/INSTALL_GENTOO.png',
+            Key: 'myUserNameAndId/INSTALL_GENTOO.png',
+            Bucket: 'teammacchiatoapp' 
+         }
+          */
 
-         console.log(project)
-         
-         res.send("Yes")
-         // Possibly check if project already exists?
-         // - using title and link maybe                 LOW PRIO
+         Promise.all(addToS3(photos, userId))
+            .then(photoS3Data => {
+               let project = {   // use photoS3
+                  photos: photoS3Data, title, desc, link, userId
+               };
 
-         // Project.create(project).then(proj => {
-         //    console.log(`Successfully created project with projId ${proj.id}`);
-         //    return res.send(proj);
-         // })
-      } catch(err) {
+               // Possibly check if project already exists?
+               // - using title and link maybe                 LOW PRIO
+
+               Project.create(project).then(proj => {
+                  console.log(`Successfully created project with projId ${proj.id}`);
+                  return res.send(proj);
+               })
+            })
+      } catch (err) {
          console.log(err)
          res.status(500).send(err)
       }
@@ -65,8 +99,11 @@ router.post(
 );
 
 // Update existing project
+// Note: when updating photos, photos param must be like:
+// photos: { removed: [...], added: [...]}
+//  removed contains s3Keys, while added contains base64 imageData
 router.put(
-   "/:projectId",
+   "/update/:projectId",
    passport.authenticate("jwt", { session: false }),
    async (req, res) => {
       const userId = req.user.id
@@ -81,10 +118,43 @@ router.put(
             }
          }).then(proj => {
             if (proj) {
-               proj.update(data).then(proj => {
-                  console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
-                  return res.send(proj)
-               })
+               let updateProject = (data) => {
+                  proj.update(data).then(proj => {
+                     console.log(`Project with id '${proj.id}' belonging to ${proj.userId} updated!`)
+                     return res.send(proj)
+                  })
+               }
+               // If we're updating photos
+               if (data.photos) {
+                  // removed contains s3 key of stored photos
+                  let removed = data.photos.removed
+                  // added contains: { fileName: ... , imageData: ... }
+                  let added = data.photos.added
+
+                  // Remove all removed photos
+                  for (let e of removed) {
+                     let key = e.Key
+                     awsController.handleDelete(key)
+                  }
+                  // Filter removed from proj.photos
+                  let photos = proj.photos.filter(e => !removed.includes(e.Key))
+                  // Add new photos
+                  Promise.all(addToS3(added))
+                     .then(photoS3Data => {
+                        photos.concat(photoS3Data)
+                        // Set data.photos to updated photos
+                        data.photos = photos
+                        updateProject(data)
+                     })
+               }
+               else {
+                  updateProject(data)
+               }
+            }
+            else {
+               let err = `Project with id '${proj.id}' Does Not Exist!`
+               console.log(err)
+               return res.status(500).send({ error: err })
             }
          })
       } catch (err) {
@@ -93,4 +163,4 @@ router.put(
       }
    }
 );
-module.exports = router;
+module.exports = router

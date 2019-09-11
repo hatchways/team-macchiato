@@ -16,6 +16,7 @@ export const userService = {
    logout,
    register,
    uploadProj,
+   updateProj,
    // getAll,
    // getById,
    // update,
@@ -24,55 +25,74 @@ export const userService = {
 
 function login(email, password) {
    const requestOptions = {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ email, password })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
    };
 
    return fetch(`${apiUrl}/auth/login`, requestOptions)
-       .then(handleResponse)
-       .then(user => {
-           // store user details and jwt token in local storage to keep user logged in between page refreshes
-           localStorage.setItem('user', JSON.stringify(user));
+      .then(handleResponse)
+      .then(user => {
+         // store user details and jwt token in local storage to keep user logged in between page refreshes
+         localStorage.setItem('user', JSON.stringify(user));
 
-           return user;
-       });
+         return user;
+      });
 }
-
 function logout() {
    // remove user from local storage to log user out
    localStorage.removeItem('user');
 }
-
 function register(user) {
    const requestOptions = {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(user)
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
    };
 
-   return fetch(`${apiUrl}/auth/register`, requestOptions).then(handleResponse);
+   return fetch(`${apiUrl}/auth/register`, requestOptions)
+      .then(handleResponse);
 }
 
-function uploadProj(proj) {
-   console.log("PROJECT")
-   console.log(proj)
-   console.log(proj.photos)
+const hitProjRoute = (options) => {
    const requestOptions = {
-      method: 'POST',
+      ...options.requestOptions,
       headers: {
          ...authHeader(),
          'Content-Type': 'application/json',
       },
-      body: JSON.stringify(proj),
    };
-   fetch(`${apiUrl}/projects/`, requestOptions)
+   fetch(`${apiUrl}/projects${options.route}`, requestOptions)
       .then(res => res.text())
       .then(text => console.log(text))
-   // fetch(`${apiUrl}/projects/`, requestOptions)
-   //    .then(ret => console.log(ret))
-   // console.log(proj)
 }
+function getProj(userId) {
+   hitProjRoute({
+      requestOptions: {
+         method: 'GET'
+      },
+      route: '/user/' + userId
+   })
+}
+function uploadProj(proj) {
+   hitProjRoute({
+      requestOptions: {
+         method: 'POST',
+         body: JSON.stringify(proj),
+      },
+      route: '/upload'
+   })
+}
+function updateProj(proj, projectId) {
+   hitProjRoute(proj, {
+      requestOptions: {
+         method: 'PUT',
+         body: JSON.stringify(proj),
+      },
+      route: '/update/' + projectId
+   })
+}
+
 // function getAll() {
 //    const requestOptions = {
 //        method: 'GET',
@@ -114,19 +134,19 @@ function uploadProj(proj) {
 // the service checks if the http response from the api is 401 Unauthorized, logs the user out
 // This happens if the JWT token expires or is no longer valid for any reason.
 
-function handleResponse(response) {
+const handleResponse = (response) => {
    return response.text().then(text => {
-       const data = text && JSON.parse(text);
-       if (!response.ok) {
-           if (response.status === 401) {
-               // auto logout if 401 response returned from api
-               logout();
-           }
+      const data = text && JSON.parse(text);
+      if (!response.ok) {
+         if (response.status === 401) {
+            // auto logout if 401 response returned from api
+            logout();
+         }
 
-           const error = (data && data.message) || response.statusText;
-           return Promise.reject(error);
-       }
+         const error = (data && data.message) || response.statusText;
+         return Promise.reject(error);
+      }
 
-       return data;
+      return data;
    });
 }
