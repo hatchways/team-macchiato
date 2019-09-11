@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     padding: theme.spacing(3, 2),
-    width: "55%",
+    width: "80%",
     margin: "auto",
     padding: "0",
     boxShadow: "5px 2px 15px 5px rgba(157, 157, 157, 0.3)"
@@ -95,7 +95,7 @@ const useStyles = makeStyles(theme => ({
     margin: "4px",
     display: "inline-block",
     margin: "auto",
-    height: "20rem",
+    height: "25rem",
     boxShadow: "5px 2px 15px 5px rgba(157, 157, 157, 0.1)"
   },
   card_profile: {
@@ -147,6 +147,24 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block",
     borderRadius: "5%",
     textTransform: "uppercase"
+  },
+  // This is for the FilterModal
+  filter_modal: {
+    height: "400px",
+    background: "rgba(157, 157, 157, 0.1)"
+  },
+  filter_modal_refine: {
+    height: "75%",
+    background: "tomato",
+    borderBottom: "rgba(157, 157, 157, 0.3)",
+    display: "flex"
+  },
+  filter_modal_refine_section: {
+    width: "33.33%"
+  },
+  filter_modal_button_search: {
+    height: "25%",
+    background: "yellow"
   }
 }));
 
@@ -209,6 +227,31 @@ const UserCard = props => {
         </div>
       </div>
     </Card>
+  );
+};
+
+const FilterModal = () => {
+  const classes = useStyles();
+  return (
+    <div className={classes.filter_modal}>
+      <div className={classes.filter_modal_refine}>
+        <div className={classes.filter_modal_refine_section}>
+          <div>
+            <TextField />
+            <TextField />
+          </div>
+        </div>
+        <div className={classes.filter_modal_refine_section}>
+          location years
+        </div>
+        <div className={classes.filter_modal_refine_section}>
+          location years
+        </div>
+      </div>
+      <div className={classes.filter_modal_button_search}>
+        <h1>Button</h1>
+      </div>
+    </div>
   );
 };
 
@@ -283,7 +326,7 @@ export default function Discovery() {
           </div>
         </div>
         {/* Open Filter Div */}
-        {filter ? "how would you filter" : ""}
+        {filter ? <FilterModal /> : ""}
         <div className={classes.card_container}>
           {!loading
             ? searchedUsers.map(user => {
