@@ -150,8 +150,24 @@ const useStyles = makeStyles(theme => ({
   },
   // This is for the FilterModal
   filter_modal: {
-    height: "400px",
-    background: "rgba(157, 157, 157, 0.1)"
+    height: "0px",
+    overflow: "hidden",
+    background: "rgba(157, 157, 157, 0.1)",
+    "-webkit-transition": "all 1s ease",
+    "-moz-transition": "all 1s ease",
+    "-o-transition": "all 1s ease",
+    "-ms-transition": "all 1s ease",
+    transition: "all 1s ease"
+  },
+  // transform: {
+  //   "-webkit-transition": "all 2s ease",
+  //   "-moz-transition": "all 2s ease",
+  //   "-o-transition": "all 2s ease",
+  //   "-ms-transition": "all 2s ease",
+  //   transition: "all 2s ease"
+  // },
+  transform_active: {
+    height: "400px"
   },
   filter_modal_refine: {
     height: "75%",
@@ -230,10 +246,14 @@ const UserCard = props => {
   );
 };
 
-const FilterModal = () => {
+const FilterModal = props => {
   const classes = useStyles();
   return (
-    <div className={classes.filter_modal}>
+    <div
+      className={`${classes.filter_modal} ${
+        props.isActive ? classes.transform_active : classes.transform
+      }`}
+    >
       <div className={classes.filter_modal_refine}>
         <div className={classes.filter_modal_refine_section}>
           <div>
@@ -326,7 +346,7 @@ export default function Discovery() {
           </div>
         </div>
         {/* Open Filter Div */}
-        {filter ? <FilterModal /> : ""}
+        <FilterModal isActive={filter} />
         <div className={classes.card_container}>
           {!loading
             ? searchedUsers.map(user => {
