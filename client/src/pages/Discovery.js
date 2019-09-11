@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -11,18 +11,27 @@ import SearchIcon from "@material-ui/icons/Search";
 import DirectionsIcon from "@material-ui/icons/Directions";
 
 // Icon?
-import { mdiAccount } from "@mdi/js";
+import Icon from "@mdi/react";
+import { mdiCloseCircle } from "@mdi/js";
+import { mdiKarate } from "@mdi/js";
+
+//Grid?
+
+//Card?
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles(theme => ({
   // Do this Wrapper stuff for now till we have more content on the page
   wrapper: {
-    margin: "100px"
+    margin: "100px",
+    boxSizing: "border-box"
   },
   root: {
     padding: theme.spacing(3, 2),
-    width: "75%",
+    width: "55%",
     margin: "auto",
-    height: "500px",
     padding: "0",
     boxShadow: "5px 5px 5px 5px rgba(157, 157, 157, 0.5)"
   },
@@ -59,13 +68,52 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center"
   },
-  magic: {
-    borderTop: "1px solid rgba(157, 157, 157, 0.5)"
+  square_close_container: {
+    padding: "20px",
+    cursor: "pointer"
+  },
+  card_container: {
+    borderTop: "1px solid rgba(157, 157, 157, 0.5)",
+    width: "100%",
+    position: "relative",
+    height: "100%",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr",
+    gridGap: "30px 20px",
+    padding: "20px 20px"
+  },
+  card: {
+    width: "100%",
+    margin: "4px",
+    display: "inline-block",
+    margin: "auto",
+    height: "15rem"
   }
 }));
 
+const UserCard = props => {
+  const classes = useStyles();
+  return (
+    <Card className={classes.card}>
+      <CardContent>{props.name}</CardContent>
+    </Card>
+  );
+};
+
 export default function Discovery() {
   const classes = useStyles();
+  const [search, setSearch] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+  const [searchedUsers, setSearchedUsers] = React.useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/api/discovery")
+      .then(response => response.json())
+      .then(data => {
+        setLoading(false);
+        return setSearchedUsers(data);
+      });
+  }, []);
 
   return (
     <div className={classes.wrapper}>
@@ -76,27 +124,48 @@ export default function Discovery() {
               <IconButton className={classes.iconButton} aria-label="search">
                 <SearchIcon color="red" />
               </IconButton>
-              <InputBase className={classes.input} placeholder="UI / UX" />
+              <InputBase
+                className={classes.input}
+                placeholder="UI / UX"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
               <Divider className={classes.divider} orientation="vertical" />
+            </div>
+            <div className={classes.square_close_container}>
+              <Icon
+                path={mdiCloseCircle}
+                size={1}
+                color="gray"
+                onClick={e => setSearch("")}
+              />
             </div>
           </div>
           <div className={classes.filter}>
             <div>
               <Typography variant="h6" component="h6">
+                <Icon
+                  path={mdiKarate}
+                  title="User Profile"
+                  size={1}
+                  // horizontal
+                  // vertical
+                  // rotate={90}
+                  color="black"
+                  // spin
+                />
                 Filter
-                <i class="fas fa-pastafarianism" />
               </Typography>
             </div>
           </div>
         </div>
-        <div className={classes.magic}>
-          <Typography variant="h5" component="h3">
-            This is a sheet of paper.
-          </Typography>
-          <Typography component="p">
-            Paper can be used to build surface or other elements for your
-            application.
-          </Typography>
+        <div className={classes.card_container}>
+          {!loading
+            ? searchedUsers.map(user => {
+                console.log(user);
+                return <UserCard name={user.name} />;
+              })
+            : "loading"}
         </div>
       </Paper>
     </div>
