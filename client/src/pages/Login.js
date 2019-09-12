@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import { Typography, Box, Grid, Button, Toolbar, Hidden } from "@material-ui/core"
+import { Typography, Box, Grid, Toolbar } from "@material-ui/core"
+// import { Hidden } from "@material-ui/core"
 import { FormControl, FormHelperText, OutlinedInput } from "@material-ui/core"
 import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -8,6 +9,8 @@ import { Link } from "react-router-dom"
 import { withStyles } from "@material-ui/core/styles"
 
 import { formsPageStyle } from '../styles/formsStyles'
+import Button from '../components/ButtonComponents'
+import { LinkButton } from '../components/ButtonComponents'
 
 import { userService } from '../services/userServices'
 
@@ -25,17 +28,17 @@ class LoginPage extends Component {
       this.handleChange = this.handleChange.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
       this.handleValidation = this.handleValidation.bind(this)
-      this.handleOpen = this.handleOpen.bind(this)
-      this.handleClose = this.handleClose.bind(this)
+      this.openSnackbar = this.openSnackbar.bind(this)
+      this.closeSnackbar = this.closeSnackbar.bind(this)
    }
    forgotPassword() {
       // Do Something
       console.log("Forgot password Clicked")
-      this.setState({ })
+      this.setState({})
    }
    // Snackbar
-   handleOpen() { this.setState({ open: true }) }
-   handleClose(event, reason) {
+   openSnackbar() { this.setState({ open: true }) }
+   closeSnackbar(event, reason) {
       if (reason === 'clickaway') {
          return;
       }
@@ -58,12 +61,14 @@ class LoginPage extends Component {
          let { email, password } = this.state
          userService.login(email, password)
             .then(data => {
+               // Update App state
+               console.log(this.props.updateAuthenticationStatus(true))
                // Redirect to profile page
                this.props.history.push(`/profile/${data.user.id}`)
             })
             .catch(err => {
                console.log(err)
-               this.handleOpen();
+               this.openSnackbar();
             })
       }
    }
@@ -102,14 +107,14 @@ class LoginPage extends Component {
          <Typography className={classes.typography}>
             <Snackbar className={classes.snackbar}
                anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-               open={this.state.open} onClose={this.handleClose} autoHideDuration={6000}
+               open={this.state.open} onClose={this.closeSnackbar} autoHideDuration={6000}
                message={<span>Incorrect email or password</span>}
                action={[
                   <IconButton
                      key="close" aria-label="close"
                      color="inherit"
                      className={classes.close}
-                     onClick={this.handleClose} >
+                     onClick={this.closeSnackbar} >
                      <CloseIcon />
                   </IconButton>,
                ]} />
@@ -121,14 +126,13 @@ class LoginPage extends Component {
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
-                     <Link to="/signup" className={classes.navButtonWrapper}>
-                        <Button className={classes.navButton}>Sign Up</Button>
-                     </Link>
+                     <div className={classes.grow} />
+                     <LinkButton to="/signup" text="Sign Up" />
                   </Toolbar>
                   <div className={classes.content}>
                      <Box className={classes.header}>
                         Log In
-                  </Box>
+                     </Box>
                      <form onSubmit={this.handleSubmit} noValidate>
                         <FormControl className={classes.formControl}>
                            <label className={classes.label} htmlFor="email" >EMAIL ADDRESS</label>
@@ -153,7 +157,7 @@ class LoginPage extends Component {
                               onChange={this.handleChange} />
                            <FormHelperText className={classes.errorText}>{passwordErrorText}</FormHelperText>
                         </FormControl>
-                        <Link className={classes.textLink}
+                        <Link className={classes.textLink} to="/signup"
                            onClick={this.forgotPassword}>Forget password?</Link>
                         <div >
                            <Button className={classes.submitButton}

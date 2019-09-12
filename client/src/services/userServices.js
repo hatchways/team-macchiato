@@ -12,6 +12,7 @@ function authHeader() {
 }
 
 export const userService = {
+   authHeader,
    login,
    logout,
    register,

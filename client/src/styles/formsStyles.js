@@ -18,27 +18,15 @@ export const formsPageStyle = theme => ({
    toolBar: {
       background: 'white',
       boxShadow: 'none',
+      height: theme.spacing(20)
    },
-   navButtonWrapper: {
-      top: theme.spacing(5),
-      right: theme.spacing(5),
-      left: 'auto',
-      position: 'absolute',
-      textDecoration: 'none',
-   },
-   navButton: {
-      width: 140,
-      height: 48,
-      border: '1px #e0e0e0 solid',
-      borderRadius: 90,
-      fontSize: 14,
-      textTransform: 'capitalize'
+   grow: {
+      flexGrow: 1,
    },
    content: {
       maxWidth: '50%',
       marginLeft: '20%',
       margin: '0 auto',
-      marginTop: '5%',
    },
    header: {
       marginBottom: theme.spacing(5),
@@ -62,12 +50,7 @@ export const formsPageStyle = theme => ({
    },
    submitButton: {
       marginTop: theme.spacing(5),
-      width: 140,
-      height: 48,
       color: 'white',
-      borderRadius: 90,
-      fontSize: 14,
-      textTransform: 'capitalize',
       backgroundImage: 'linear-gradient(to right, #ff9400, #ff3963)',
    },
    textLink: {

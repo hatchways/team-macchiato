@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import { Typography, Box, Grid, Button, Toolbar, Hidden, Checkbox } from '@material-ui/core'
+import { Typography, Box, Grid, Toolbar, Checkbox } from '@material-ui/core'
+// import { Hidden } from "@material-ui/core"
 import { FormControl, FormControlLabel, OutlinedInput } from '@material-ui/core'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import { Snackbar, IconButton } from '@material-ui/core';
@@ -10,6 +11,8 @@ import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 
 import { formsPageStyle } from '../styles/formsStyles'
+import Button from '../components/ButtonComponents'
+import { LinkButton } from '../components/ButtonComponents'
 
 import { userService } from '../services/userServices'
 
@@ -164,9 +167,8 @@ class SignUpPage extends Component {
                </Grid>
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
-                     <Link to="/login" className={classes.navButtonWrapper}>
-                        <Button className={classes.navButton}>Log In</Button>
-                     </Link>
+                     <div className={classes.grow} />
+                     <LinkButton to="/login" text="Log In" />
                   </Toolbar>
                   <div className={classes.content}>
                      <Box className={classes.header}>
