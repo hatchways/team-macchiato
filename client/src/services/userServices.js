@@ -16,8 +16,10 @@ export const userService = {
    login,
    logout,
    register,
+   getProj,
    uploadProj,
    updateProj,
+   getPendingConnections,
    // getAll,
    // getById,
    // update,
@@ -56,21 +58,16 @@ function register(user) {
 }
 
 const hitProjRoute = (options) => {
-   const requestOptions = {
-      ...options.requestOptions,
-      headers: {
-         ...authHeader(),
-         'Content-Type': 'application/json',
-      },
-   };
+   const requestOptions = options.requestOptions
    fetch(`${apiUrl}/projects${options.route}`, requestOptions)
+      .then(handleResponse)
       .then(res => res.text())
       .then(text => console.log(text))
 }
 function getProj(userId) {
    hitProjRoute({
       requestOptions: {
-         method: 'GET'
+         method: 'GET',
       },
       route: '/user/' + userId
    })
@@ -79,6 +76,10 @@ function uploadProj(proj) {
    hitProjRoute({
       requestOptions: {
          method: 'POST',
+         headers: {
+            ...authHeader(),
+            'Content-Type': 'application/json',
+         },
          body: JSON.stringify(proj),
       },
       route: '/upload'
@@ -88,10 +89,30 @@ function updateProj(proj, projectId) {
    hitProjRoute(proj, {
       requestOptions: {
          method: 'PUT',
+         headers: {
+            ...authHeader(),
+            'Content-Type': 'application/json',
+         },
          body: JSON.stringify(proj),
       },
       route: '/update/' + projectId
    })
+}
+
+function getPendingConnections() {
+   const requestOptions = {
+      method: 'GET',
+      headers: {
+         ...authHeader(),
+         'Content-Type': 'application/json', // Probably not necessary
+      },
+   };
+   return fetch(`${apiUrl}/relationships/pending`, requestOptions)
+      .then(handleResponse)
+      // .then(text => {
+      //    console.log(text)
+      //    return text
+      // })
 }
 
 // function getAll() {

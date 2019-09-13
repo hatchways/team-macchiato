@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core'
 import { Box, Avatar } from '@material-ui/core'
-import { MenuItem } from '@material-ui/core'
+import { MenuItem, CircularProgress } from '@material-ui/core'
 import { MailOutlined, NotificationsOutlined, AccountCircle, More } from '@material-ui/icons'
 import { withStyles } from '@material-ui/styles'
 
@@ -11,6 +11,8 @@ import Button from './ButtonComponents'
 import { LinkButton } from './ButtonComponents'
 
 import Menu from './MenuComponent'
+
+import { userService } from '../services/userServices'
 
 const breakPoint = 'xs'
 const navBarStyle = theme => ({
@@ -73,24 +75,24 @@ class NavBar extends Component {
       this.state = {
          anchorEl: null,
       }
-      this.handleNotificationsMenuOpen = this.handleNotificationsMenuOpen.bind(this)
-      this.handleProfileMenuOpen = this.handleProfileMenuOpen.bind(this)
       this.handleMenuOpen = this.handleMenuOpen.bind(this)
       this.handleMenuClose = this.handleMenuClose.bind(this)
    }
 
-   handleNotificationsMenuOpen() {
-
-   }
-
-   handleProfileMenuOpen() {
-
+   componentWillMount() {
+      if (this.props.authDetails) {
+         userService.getPendingConnections()
+            .then(res => {
+               this.setState({ notifs: res })
+            })
+      }
    }
 
    // Sets anchor position to caller
    handleMenuOpen(e) {
-      console.log(e.currentTarget)
-      console.log(e.currentTarget.id)
+      let id = e.currentTarget.id
+      console.log(id)
+
       this.setState({ anchorEl: e.currentTarget })
    }
    handleMenuClose() { this.setState({ anchorEl: null }) }
@@ -102,14 +104,17 @@ class NavBar extends Component {
       // Placeholder
       const avatarSrc = "https://api.adorable.io/avatars/30/abel@adorable.io.png";
 
+      let notifs = this.state.notifs
+      let menuNotifications = notifs ?
+         notifs.map(n => <MenuItem onClick={this.handleMenuClose}>{n.requester_id}</MenuItem>) :
+         <CircularProgress className={classes.progress} />
       // Placeholder
       const renderMenu = (
          <Menu
             anchorEl={this.state.anchorEl}
             open={!!this.state.anchorEl}
             onClose={this.handleMenuClose}>
-            <MenuItem onClick={this.handleMenuClose}>Notification One</MenuItem>
-            <MenuItem onClick={this.handleMenuClose}>Notificatoin Two</MenuItem>
+            {menuNotifications}
          </Menu>
       );
 
@@ -130,7 +135,7 @@ class NavBar extends Component {
                      <LinkButton to="/discover" buttonClass={classes.coloredButton} buttonInner="Discover" />
                      {/* OnClick, show a menu of up to n (maybe have it scrollable) notifications/requests */}
                      <IconButton id="notif" color="inherit" onClick={this.handleMenuOpen} style={{ marginLeft: 10 }}>
-                        <Badge badgeContent={17} color="secondary">
+                        <Badge badgeContent={this.state.notifs && this.state.notifs.length} color="secondary">
                            <NotificationsOutlined />
                         </Badge>
                      </IconButton>

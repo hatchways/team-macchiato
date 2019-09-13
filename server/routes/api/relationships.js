@@ -109,6 +109,7 @@ const fetchAllWhere = (status, option) => (req, res) => {
             ...option(userId)
          }
       }).then(rel => {
+         console.log(rel)
          return res.send(rel)
       })
    } catch (err) {
