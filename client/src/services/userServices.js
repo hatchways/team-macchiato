@@ -34,7 +34,6 @@ function login(email, password) {
    };
 
    return fetch(`${apiUrl}/auth/login`, requestOptions)
-<<<<<<< HEAD
       .then(handleResponse)
       .then(user => {
          // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -42,14 +41,6 @@ function login(email, password) {
 
          return user;
       });
-=======
-       .then(handleResponse)
-       .then(user => {
-           // store user details and jwt token in local storage to keep user logged in between page refreshes
-           localStorage.setItem('user', JSON.stringify(user));
-           return user;
-       });
->>>>>>> b4a4251c137e37d00bdb881a364f5ad740cf8574
 }
 function logout() {
    // remove user from local storage to log user out
