@@ -168,7 +168,11 @@ class SignUpPage extends Component {
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
                      <div className={classes.grow} />
+<<<<<<< HEAD
                      <LinkButton to="/login" buttonInner="Log In" />
+=======
+                     <LinkButton to="/login" text="Log In" />
+>>>>>>> b4a4251c137e37d00bdb881a364f5ad740cf8574
                   </Toolbar>
                   <div className={classes.content}>
                      <Box className={classes.header}>

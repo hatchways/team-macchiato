@@ -127,12 +127,20 @@ class LoginPage extends Component {
                <Grid item className={classes.contentWrapper} xs={12} md={7}>
                   <Toolbar className={classes.toolBar}>
                      <div className={classes.grow} />
+<<<<<<< HEAD
                      <LinkButton to="/signup" buttonInner="Sign Up" />
+=======
+                     <LinkButton to="/signup" text="Sign Up" />
+>>>>>>> b4a4251c137e37d00bdb881a364f5ad740cf8574
                   </Toolbar>
                   <div className={classes.content}>
                      <Typography className={classes.header}>
                         Log In
+<<<<<<< HEAD
                      </Typography>
+=======
+                     </Box>
+>>>>>>> b4a4251c137e37d00bdb881a364f5ad740cf8574
                      <form onSubmit={this.handleSubmit} noValidate>
                         <FormControl className={classes.formControl}>
                            <Typography className={classes.label} htmlFor="email" >EMAIL ADDRESS</Typography>
