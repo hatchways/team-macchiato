@@ -22,8 +22,10 @@ const MyLink = styled(Link)({
 
 export function LinkButton(props) {
    return (
-      <MyLink className={props.linkClass} to={props.to} >
-         <MyButton className={props.buttonClass}>{props.text}</MyButton>
+      <MyLink className={props.linkClass} to={props.to} {...props.linkProps} >
+         <MyButton className={props.buttonClass} {...props.buttonProps}>
+            {props.buttonInner}
+         </MyButton>
       </MyLink>
    )
 }

@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const discoveryPageStyle = theme => ({
   container: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing(2)
   }
 });
 
