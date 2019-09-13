@@ -107,10 +107,9 @@ class NavBar extends Component {
       let notifs = this.state.notifs
       let menuNotifications = notifs ?
          notifs.map(n =>
-            <MenuItem onClick={this.handleMenuClose}>
-               <Typography>
-                  {n.requester_id}
-               </Typography>
+            <MenuItem onClick={this.handleMenuClose} id={n.requester_id}>
+               <Avatar alt="avatar" src={avatarSrc} className={classes.avatar} />
+               <Typography >Profile&nbsp;&nbsp;&nbsp;</Typography>
             </MenuItem>) :
          <CircularProgress className={classes.progress} />
       // Placeholder
