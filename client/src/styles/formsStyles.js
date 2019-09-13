@@ -1,9 +1,6 @@
 import Image from '../assets/images/login-photo.png'
 
 export const formsPageStyle = theme => ({
-   typography: {
-      fontWeight: theme.typography.fontWeightMedium,
-   },
    imageWrapper: {
       backgroundSize: '100%',
       backgroundImage: `url(${Image})`,
@@ -29,6 +26,7 @@ export const formsPageStyle = theme => ({
       margin: '0 auto',
    },
    header: {
+      fontWeight: theme.typography.fontWeightMedium,
       marginBottom: theme.spacing(5),
       fontSize: 40,
    },
@@ -37,10 +35,12 @@ export const formsPageStyle = theme => ({
       display: 'flex',
    },
    label: {
+      fontWeight: theme.typography.fontWeightMedium,
       marginBottom: theme.spacing(1),
       color: '#a9b0d0',
    },
-   formControlLabel :{
+   formControlLabel: {
+      fontWeight: theme.typography.fontWeightMedium,
       marginRight: 3,
       color: '#aaa',
       marginBottom: 1,

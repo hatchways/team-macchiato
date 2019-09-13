@@ -104,7 +104,7 @@ class LoginPage extends Component {
       let { emailErrorText, passwordErrorText } = this.state
 
       return (
-         <Typography className={classes.typography}>
+         <div>
             <Snackbar className={classes.snackbar}
                anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
                open={this.state.open} onClose={this.closeSnackbar} autoHideDuration={6000}
@@ -112,7 +112,7 @@ class LoginPage extends Component {
                action={[
                   <IconButton
                      key="close" aria-label="close"
-                     color="inherit"
+                     // color="inherit"
                      className={classes.close}
                      onClick={this.closeSnackbar} >
                      <CloseIcon />
@@ -130,36 +130,35 @@ class LoginPage extends Component {
                      <LinkButton to="/signup" buttonInner="Sign Up" />
                   </Toolbar>
                   <div className={classes.content}>
-                     <Box className={classes.header}>
+                     <Typography className={classes.header}>
                         Log In
-                     </Box>
+                     </Typography>
                      <form onSubmit={this.handleSubmit} noValidate>
                         <FormControl className={classes.formControl}>
-                           <label className={classes.label} htmlFor="email" >EMAIL ADDRESS</label>
+                           <Typography className={classes.label} htmlFor="email" >EMAIL ADDRESS</Typography>
                            <OutlinedInput
                               error={emailErrorText !== ''}
                               className={classes.input}
                               id="email" type="email" autoComplete="email"
                               variant="outlined"
-                              onBlur={this.state.formSubmitted && this.handleValidation}
+                              onBlur={this.state.formSubmitted ? this.handleValidation : null}
                               onChange={this.handleChange} />
                            <FormHelperText className={classes.errorText}>{emailErrorText}</FormHelperText>
                         </FormControl>
                         <FormControl className={classes.formControl}>
-                           <label className={classes.label} htmlFor="password" >PASSWORD</label>
+                           <Typography className={classes.label} htmlFor="password" >PASSWORD</Typography>
                            <OutlinedInput
                               error={passwordErrorText !== ''}
                               className={classes.input}
                               id="password" type="password" autoComplete="current-password"
-                              margin="normal"
                               variant="outlined"
-                              onBlur={this.state.formSubmitted && this.handleValidation}
+                              onBlur={this.state.formSubmitted ? this.handleValidation : null}
                               onChange={this.handleChange} />
                            <FormHelperText className={classes.errorText}>{passwordErrorText}</FormHelperText>
                         </FormControl>
                         <Link className={classes.textLink} to="/signup"
                            onClick={this.forgotPassword}>Forget password?</Link>
-                        <div >
+                        <div>
                            <Button className={classes.submitButton}
                               type="submit" name="login">Log In</Button>
                         </div>
@@ -167,7 +166,7 @@ class LoginPage extends Component {
                   </div>
                </Grid>
             </Grid>
-         </Typography>
+         </div>
       )
    }
 }

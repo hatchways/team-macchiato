@@ -125,10 +125,10 @@ class SignUpPage extends Component {
       let { nameErrorText, emailErrorText, passwordErrorText, password2ErrorText, checkedErrorText } = this.state
 
       return (
-         <Typography className={classes.typography}>
+         <div className={classes.typography}>
             <Snackbar className={classes.snackbar}
                anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-               open={this.state.open} onClose={this.handleClose} autoHideDuration={6000}
+               open={!!this.state.open} onClose={this.handleClose} autoHideDuration={6000}
                message={<span>User already exists</span>}
                action={[
                   <IconButton
@@ -139,7 +139,7 @@ class SignUpPage extends Component {
                      <CloseIcon />
                   </IconButton>,
                ]} />
-            <Dialog open={this.state.tacOpen}
+            <Dialog open={!!this.state.tacOpen}
                onClose={this.handleTACClose}
                aria-labelledby="scroll-dialog-title">
                <DialogTitle id="scroll-dialog-title">Terms and Conditions</DialogTitle>
@@ -176,7 +176,7 @@ class SignUpPage extends Component {
                      </Box>
                      <form onSubmit={this.handleSubmit} noValidate>
                         <FormControl className={classes.formControl}>
-                           <label className={classes.label} htmlFor="name" >NAME</label>
+                           <Typography className={classes.label} htmlFor="name" >NAME</Typography>
                            <OutlinedInput
                               error={nameErrorText !== ''}
                               className={classes.input}
@@ -187,7 +187,7 @@ class SignUpPage extends Component {
                            <FormHelperText className={classes.errorText}>{nameErrorText}</FormHelperText>
                         </FormControl>
                         <FormControl className={classes.formControl}>
-                           <label className={classes.label} htmlFor="email" >EMAIL ADDRESS</label>
+                           <Typography className={classes.label} htmlFor="email" >EMAIL ADDRESS</Typography>
                            <OutlinedInput
                               error={emailErrorText !== ''}
                               className={classes.input}
@@ -198,7 +198,7 @@ class SignUpPage extends Component {
                            <FormHelperText className={classes.errorText}>{emailErrorText}</FormHelperText>
                         </FormControl>
                         <FormControl className={classes.formControl}>
-                           <label className={classes.label} htmlFor="password" >PASSWORD</label>
+                           <Typography className={classes.label} htmlFor="password" >PASSWORD</Typography>
                            <OutlinedInput
                               error={passwordErrorText !== ''}
                               className={classes.input}
@@ -209,7 +209,7 @@ class SignUpPage extends Component {
                            <FormHelperText className={classes.errorText}>{passwordErrorText}</FormHelperText>
                         </FormControl>
                         <FormControl className={classes.formControl}>
-                           <label className={classes.label} htmlFor="password2" >REPEAT PASSWORD</label>
+                           <Typography className={classes.label} htmlFor="password2" >REPEAT PASSWORD</Typography>
                            <OutlinedInput
                               error={password2ErrorText !== ''}
                               className={classes.input}
@@ -224,7 +224,7 @@ class SignUpPage extends Component {
                            label="By signing up I agree with"
                            onChange={this.handleChange}>
                         </FormControlLabel>
-                        <Link className={classes.textLink}
+                        <Link className={classes.textLink} to="/signup"
                            onClick={this.openTermsAndConditions}>terms and conditions</Link>
                         <FormHelperText style={{ marginTop: 0 }} className={classes.errorText}>{checkedErrorText}</FormHelperText>
                         <div>
@@ -236,7 +236,7 @@ class SignUpPage extends Component {
                </Grid>
             </Grid>
 
-         </Typography>
+         </div>
       )
    }
 }
