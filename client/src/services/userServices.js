@@ -16,6 +16,7 @@ export const userService = {
    login,
    logout,
    register,
+   editProfile,
    // getAll,
    // getById,
    // update,
@@ -63,6 +64,20 @@ function register(user) {
    return fetch(`${apiUrl}/auth/register`, requestOptions)
       .then(handleResponse);
 }
+function editProfile(data) {
+   const requestOptions = {
+      method: 'PUT',
+      headers: { 
+         ...authHeader(),
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+   };
+
+   return fetch(`${apiUrl}/users/editProfile`, requestOptions)
+      .then(handleResponse);
+} 
+
 
 const hitProjRoute = (options) => {
    const requestOptions = options.requestOptions

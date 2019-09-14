@@ -6,6 +6,7 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
+import CreateProjectFormHook from "./pages/CreateProjectFormHook";
 import ProfilePage from "./pages/Profile";
 import DiscoverPage from "./pages/Discover";
 import CreateProjectForm from "./components/CreateProjectForm";
@@ -71,7 +72,6 @@ class App extends Component {
               Below are temp routes
             */}
             <Route path="/discover" component={DiscoverPage} />
-            <Route path="/project" component={CreateProjectForm} />
             <Route path="/project-hook" component={CreateProjectFormHook} />
           </Switch>
         </BrowserRouter>

@@ -31,7 +31,7 @@ module.exports = router;
 // @body    Any number of user attributes ... verification TBD
 // @access  Authorized
 router.put(
-   "/edit",
+   "/editProfile",
    passport.authenticate("jwt", { session: false }),
    (req, res) => {
       // - Users can only edit their own projects
@@ -45,7 +45,9 @@ router.put(
                return res.send(user)
             })
          }
-         return res.status(500).send("Error: User does not exist")
+         else {
+            return res.status(500).send("Error: User does not exist")
+         }
       })
    }
 );
