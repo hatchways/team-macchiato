@@ -3,6 +3,7 @@ import { AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/cor
 import { Box, Avatar } from '@material-ui/core'
 import { MenuItem, CircularProgress } from '@material-ui/core'
 import { MailOutlined, NotificationsOutlined, AccountCircle, More } from '@material-ui/icons'
+import { Check, Clear } from '@material-ui/icons'
 import { withStyles } from '@material-ui/styles'
 
 import { withRouter, Link } from 'react-router-dom'
@@ -11,8 +12,9 @@ import Button from './ButtonComponents'
 import { LinkButton } from './ButtonComponents'
 
 import Menu from './MenuComponent'
+import { MenuHeader, StyledMenuItem } from './MenuComponent'
 
-import { userService } from '../services/userServices'
+import { connectionService } from '../services/userServices'
 
 const breakPoint = 'xs'
 const navBarStyle = theme => ({
@@ -38,7 +40,7 @@ const navBarStyle = theme => ({
       },
    },
    avatar: {
-      marginLeft: 10,
+      // marginLeft: 10,
       marginRight: 10,
       width: 30,
       height: 30,
@@ -75,17 +77,24 @@ class NavBar extends Component {
       this.state = {
          anchorEl: null,
       }
+      this.updatePendingConnections = this.updatePendingConnections.bind(this)
       this.handleMenuOpen = this.handleMenuOpen.bind(this)
       this.handleMenuClose = this.handleMenuClose.bind(this)
+      this.handleAccept = this.handleAccept.bind(this)
+      this.handleDeny = this.handleDeny.bind(this)
    }
 
    componentWillMount() {
       if (this.props.authDetails) {
-         userService.getPendingConnections()
-            .then(res => {
-               this.setState({ notifs: res })
-            })
+         this.updatePendingConnections()
       }
+   }
+   updatePendingConnections() {
+      connectionService.getPendingConnections()
+         .then(res => {
+            // console.log(res)
+            this.setState({ notifs: res })
+         })
    }
 
    // Sets anchor position to caller
@@ -97,6 +106,21 @@ class NavBar extends Component {
    }
    handleMenuClose() { this.setState({ anchorEl: null }) }
 
+   handleAccept(e) {
+      let requester_id = e.currentTarget.parentNode.id
+      connectionService.respondToConnection(requester_id, true)
+         .then(res => {
+            this.updatePendingConnections()
+         })
+   }
+   handleDeny(e) {
+      let requester_id = e.currentTarget.parentNode.id
+      connectionService.respondToConnection(requester_id, false)
+         .then(res => {
+            this.updatePendingConnections()
+         })
+   }
+
    render() {
       const { classes, location } = this.props
 
@@ -107,10 +131,18 @@ class NavBar extends Component {
       let notifs = this.state.notifs
       let menuNotifications = notifs ?
          notifs.map(n =>
-            <MenuItem onClick={this.handleMenuClose} id={n.requester_id}>
+            <StyledMenuItem key={n.id.toString()} id={n.id}>
+               {/* Replace Avatar with actual pfp -- First set default pfp then set ability to upload pfp to users */}
                <Avatar alt="avatar" src={avatarSrc} className={classes.avatar} />
-               <Typography >Profile&nbsp;&nbsp;&nbsp;</Typography>
-            </MenuItem>) :
+               <Typography>{n.name}</Typography>
+               <div className={classes.grow} />
+               <IconButton style={{ color: 'green' }} onClick={this.handleAccept} >
+                  <Check />
+               </IconButton>
+               <IconButton color='secondary' onClick={this.handleDeny} >
+                  <Clear />
+               </IconButton>
+            </StyledMenuItem>) :
          <CircularProgress className={classes.progress} />
       // Placeholder
       const renderMenu = (
@@ -118,6 +150,9 @@ class NavBar extends Component {
             anchorEl={this.state.anchorEl}
             open={!!this.state.anchorEl}
             onClose={this.handleMenuClose}>
+            <MenuHeader>
+               <Typography>Notifications</Typography>
+            </MenuHeader>
             {menuNotifications}
          </Menu>
       );
@@ -152,7 +187,7 @@ class NavBar extends Component {
                      <LinkButton to={`/profile/${user.id}`} buttonClass={classes.profile} edge="end"
                         buttonInner={(
                            <> <Avatar alt="avatar" src={avatarSrc} className={classes.avatar} />
-                              <Typography className={classes.profileName}>Profile&nbsp;&nbsp;&nbsp;</Typography></>
+                              <Typography className={classes.profileName}>Profile</Typography></>
                         )} />
                   </div>
                   //    Responsive WIP

@@ -18,7 +18,7 @@ import List from "@material-ui/core/List";
 import CloseIcon from "@material-ui/icons/Close";
 
 // Services
-import { userService } from "../services/userServices"
+import { projectService } from "../services/userServices"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -94,7 +94,7 @@ export default function CreateProjectForm() {
           desc: description,
           link: link,
         }
-        userService.uploadProj(proj)
+        projectService.uploadProj(proj)
       }).catch(err => {
         console.error(err)
       })

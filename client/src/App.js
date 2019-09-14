@@ -19,7 +19,7 @@ import { userService } from './services/userServices'
 
 class App extends Component {
 
-  updateUserAuthInfo(user) {
+  handleUpdateUserState(user) {
     if (!user) {
       user = JSON.parse(localStorage.getItem('user')).user
       // If no user is in storage
@@ -36,7 +36,7 @@ class App extends Component {
   // false to logout user (With App updating state to reflect this)
   updateAuthenticationStatus = authenticated => {
     if (authenticated) {
-      this.updateUserAuthInfo()
+      this.handleUpdateUserState()
     } else {
       this.setState({ user: null })
       userService.logout()
@@ -45,7 +45,7 @@ class App extends Component {
 
   componentWillMount() {
     // Fetch user data from localStorage
-    this.updateUserAuthInfo()
+    this.handleUpdateUserState()
   }
 
   render() {

@@ -25,6 +25,11 @@ router.post(
          // Check if relationship already exists between two users
          Relationship.findOne({
             where: {
+               // Allows declined invites to be re-sent
+               [or]: [
+                  { status: PENDING },
+                  { status: ACCEPTED }
+               ],
                [or]: [
                   {
                      requester_id: init_id,
@@ -72,6 +77,7 @@ router.put(
       try {
          const accepterId = req.user.id;
          const requesterId = req.params.userId  // /:userId is the friend request to accept
+         const accept = req.body.accept
 
          Relationship.findOne({
             where: {
@@ -85,7 +91,8 @@ router.put(
                console.log(`Friend request from ${requesterId} to ${accepterId} DOES NOT EXIST`)
                return res.status(400).json({ error: `Friend request from ${requesterId} to ${accepterId} DOES NOT EXIST` })
             }
-            rel.update({ status: ACCEPTED })
+            let status = accept ? ACCEPTED : DECLINED
+            rel.update({ status })
                .then(rel => {
                   console.log(`${rel.requestee_id} has accepted friend request from ${rel.requester_id}!`);
                   return res.send(rel)

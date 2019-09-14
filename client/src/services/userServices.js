@@ -16,15 +16,22 @@ export const userService = {
    login,
    logout,
    register,
-   getProj,
-   uploadProj,
-   updateProj,
-   getPendingConnections,
    // getAll,
    // getById,
    // update,
    // delete: _delete
 };
+
+export const projectService = {
+   getProj,
+   uploadProj,
+   updateProj,
+}
+
+export const connectionService = {
+   getPendingConnections,
+   respondToConnection,
+}
 
 function login(email, password) {
    const requestOptions = {
@@ -104,7 +111,7 @@ function getPendingConnections() {
       method: 'GET',
       headers: {
          ...authHeader(),
-         'Content-Type': 'application/json', // Probably not necessary
+         'Content-Type': 'application/json',
       },
    };
    return fetch(`${apiUrl}/relationships/pending`, requestOptions)
@@ -113,6 +120,19 @@ function getPendingConnections() {
       //    console.log(text)
       //    return text
       // })
+}
+
+function respondToConnection(userId, accept) {
+   const requestOptions = {
+      method: 'PUT',
+      headers: {
+         ...authHeader(),
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ accept })
+   }
+   return fetch(`${apiUrl}/relationships/${userId}`, requestOptions)
+      .then(handleResponse)
 }
 
 // function getAll() {
