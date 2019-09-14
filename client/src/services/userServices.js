@@ -12,16 +12,26 @@ function authHeader() {
 }
 
 export const userService = {
+   authHeader,
    login,
    logout,
    register,
-   uploadProj,
-   updateProj,
    // getAll,
    // getById,
    // update,
    // delete: _delete
 };
+
+export const projectService = {
+   getProj,
+   uploadProj,
+   updateProj,
+}
+
+export const connectionService = {
+   getPendingConnections,
+   respondToConnection,
+}
 
 function login(email, password) {
    const requestOptions = {
@@ -55,21 +65,16 @@ function register(user) {
 }
 
 const hitProjRoute = (options) => {
-   const requestOptions = {
-      ...options.requestOptions,
-      headers: {
-         ...authHeader(),
-         'Content-Type': 'application/json',
-      },
-   };
+   const requestOptions = options.requestOptions
    fetch(`${apiUrl}/projects${options.route}`, requestOptions)
+      .then(handleResponse)
       .then(res => res.text())
       .then(text => console.log(text))
 }
 function getProj(userId) {
    hitProjRoute({
       requestOptions: {
-         method: 'GET'
+         method: 'GET',
       },
       route: '/user/' + userId
    })
@@ -78,6 +83,10 @@ function uploadProj(proj) {
    hitProjRoute({
       requestOptions: {
          method: 'POST',
+         headers: {
+            ...authHeader(),
+            'Content-Type': 'application/json',
+         },
          body: JSON.stringify(proj),
       },
       route: '/upload'
@@ -87,10 +96,43 @@ function updateProj(proj, projectId) {
    hitProjRoute(proj, {
       requestOptions: {
          method: 'PUT',
+         headers: {
+            ...authHeader(),
+            'Content-Type': 'application/json',
+         },
          body: JSON.stringify(proj),
       },
       route: '/update/' + projectId
    })
+}
+
+function getPendingConnections() {
+   const requestOptions = {
+      method: 'GET',
+      headers: {
+         ...authHeader(),
+         'Content-Type': 'application/json',
+      },
+   };
+   return fetch(`${apiUrl}/relationships/pending`, requestOptions)
+      .then(handleResponse)
+      // .then(text => {
+      //    console.log(text)
+      //    return text
+      // })
+}
+
+function respondToConnection(userId, accept) {
+   const requestOptions = {
+      method: 'PUT',
+      headers: {
+         ...authHeader(),
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ accept })
+   }
+   return fetch(`${apiUrl}/relationships/${userId}`, requestOptions)
+      .then(handleResponse)
 }
 
 // function getAll() {

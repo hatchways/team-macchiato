@@ -6,21 +6,21 @@ import { withStyles } from "@material-ui/core/styles";
 
 // import Ping from "./Ping";
 
-const landinPageStyle = theme => ({
-  landingContainer: {
+const discoveryPageStyle = theme => ({
+  container: {
     margin: theme.spacing(2)
   }
 });
 
-class LandingPage extends Component {
+class DiscoverPage extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.landingContainer}>
-        <Typography>Landing Page</Typography>
+      <div className={classes.container}>
+        <Typography>Discovery Page Placeholder</Typography>
       </div>
     );
   }
 }
 
-export default withStyles(landinPageStyle)(LandingPage);
+export default withStyles(discoveryPageStyle)(DiscoverPage);

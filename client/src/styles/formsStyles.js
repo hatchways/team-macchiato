@@ -1,9 +1,6 @@
 import Image from '../assets/images/login-photo.png'
 
 export const formsPageStyle = theme => ({
-   typography: {
-      fontWeight: theme.typography.fontWeightMedium,
-   },
    imageWrapper: {
       backgroundSize: '100%',
       backgroundImage: `url(${Image})`,
@@ -18,29 +15,18 @@ export const formsPageStyle = theme => ({
    toolBar: {
       background: 'white',
       boxShadow: 'none',
+      height: theme.spacing(20)
    },
-   navButtonWrapper: {
-      top: theme.spacing(5),
-      right: theme.spacing(5),
-      left: 'auto',
-      position: 'absolute',
-      textDecoration: 'none',
-   },
-   navButton: {
-      width: 140,
-      height: 48,
-      border: '1px #e0e0e0 solid',
-      borderRadius: 90,
-      fontSize: 14,
-      textTransform: 'capitalize'
+   grow: {
+      flexGrow: 1,
    },
    content: {
       maxWidth: '50%',
       marginLeft: '20%',
       margin: '0 auto',
-      marginTop: '5%',
    },
    header: {
+      fontWeight: theme.typography.fontWeightMedium,
       marginBottom: theme.spacing(5),
       fontSize: 40,
    },
@@ -49,10 +35,12 @@ export const formsPageStyle = theme => ({
       display: 'flex',
    },
    label: {
+      fontWeight: theme.typography.fontWeightMedium,
       marginBottom: theme.spacing(1),
       color: '#a9b0d0',
    },
-   formControlLabel :{
+   formControlLabel: {
+      fontWeight: theme.typography.fontWeightMedium,
       marginRight: 3,
       color: '#aaa',
       marginBottom: 1,
@@ -62,12 +50,7 @@ export const formsPageStyle = theme => ({
    },
    submitButton: {
       marginTop: theme.spacing(5),
-      width: 140,
-      height: 48,
       color: 'white',
-      borderRadius: 90,
-      fontSize: 14,
-      textTransform: 'capitalize',
       backgroundImage: 'linear-gradient(to right, #ff9400, #ff3963)',
    },
    textLink: {
