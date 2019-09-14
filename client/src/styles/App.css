@@ -61,6 +61,34 @@ nav {
   align: center;
 }
 
+hr{
+  width:900px;
+}
+
+.comm-line{
+  
+  width: 700px;
+}
+
+.comm-first{
+  
+  width: 700px;
+}
+.comm-second{
+  
+  width: 700px;
+}
+
+.comment-image{
+  margin-left: 10px;
+  margin-top: 40px;
+  border: circle;
+  border-radius: 30px;
+  width:30px;
+  length:30px;
+  align: center;
+}
+
 .name-text{
   margin-left: 60px;
   margin-top: 10px;
@@ -115,7 +143,7 @@ nav {
   
   height: 100%;
   width: 100%;
-  border-radius: 7%;
+  border-radius: 7%;  
   box-sizing: border-box;
 }
 
@@ -226,6 +254,129 @@ nav {
   line-height: 0%;
 }
 
+.detail-prof{
+  font-size: 16px;
+    margin-top: 9px;
+   
+    margin-bottom: 2px;
+}
+
+.detail-profpic{
+  font-size: 15px;
+  
+  margin-top: 2px;
+  margin-left: 5px;
+  padding: 2px;
+}
+
+.detail-title{
+  display: flex;
+  
+}
+
+.detail-pic{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+}
+
+.like-button{
+   height:25px;
+   width:min-content;
+   margin-top: 12px;
+   border-radius: 20px;
+   margin-left: 25px;
+   background-color: white;
+   border-block-color: white;
+}
+
+.submit-button{
+  height: 35px;
+  width: 100px;
+  margin-top: 12px;
+  border-radius: 20px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+  background-color: coral;
+  border-block-color: white;
+}
+
+.footer-button{
+  margin-left: 12px;
+  width: 120px;
+  margin-top: 10px;
+}
+
+.first-image{
+  padding:0px;
+  margin:0px
+}
+
+
+.second-image{
+  padding:0px;
+  margin:0px
+}
+
+.like-text{
+  color: black;
+  font-size: 12px;
+  margin-left: 10px;
+  border-block-color: white;
+  
+}
+.hr-prof{
+  width:300px;
+}
+
+.input-box{
+  height: 70px;
+  width: 250px;
+}
+.comment-desc{
+ margin-left: 20px;
+ margin-right: 20px;
+ margin-top:20px;
+}
+.detail-message{
+  font-size: 10px;
+}
+
+.detaildate-text{
+  margin-left:5px;
+  color: darkgrey;
+  font-size :10px;
+}
+
+.detailname-text{
+  font-size: 10px;
+  margin-top: 9px;
+  margin-left: 1px;
+  margin-bottom: 2px;
+}
+
+.detailtitle-text{
+  color: darkgrey;
+  font-size :10px;
+ 
+}
+
+.comment-add{
+  margin-top:40px;
+  width:700px;
+}
+
+.detailcomment-text{
+  color: darkgrey;
+  font-size :10px;
+  margin-left:4px;
+}
+
+modal.Body{
+  paddin:0px;
+}
+
 .modal-backdrop.fade {
   opacity: 0;
   filter: alpha(opacity=0);
@@ -234,3 +385,6 @@ nav {
   opacity: 0.5;
   filter: alpha(opacity=50);
   }
+  
+  
+ 
