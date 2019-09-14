@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Link } from "react-router-dom";
+<<<<<<< Updated upstream
 import { Modal, Form, Button } from "react-bootstrap";
 import {ProjectDetail} from './ProjectDetail';
+=======
+import CreateProjectForm from './CreateProjectForm'
+>>>>>>> Stashed changes
 import Dropzone from 'react-dropzone';
-
+ 
 import Nav from "./Nav";
 import img1 from '../assets/images/creativedesignerediting34199.jpg';
 import img6 from '../assets/images/profilepic.jpg';
@@ -40,7 +44,13 @@ class ProfilePage extends Component {
                     <h5 className='city-text'>Toronto Canada</h5>
                     <button className='orange-button hire-button'>Hire me</button>
                     <button className='white-button'>Message</button>
+<<<<<<< Updated upstream
                     <hr className='hr-prof'/>
+=======
+                    <hr/>
+                    <Button>Edit</Button>
+            
+>>>>>>> Stashed changes
                     <h6 className ='skill-title'>Skills: </h6>
                     <div className="row "> 
                             <div className="col-lg-3 ">
