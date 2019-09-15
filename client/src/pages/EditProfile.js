@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function EditProfile() {
+export default function EditProfile(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
@@ -45,7 +45,8 @@ export default function EditProfile() {
     console.log(data)
     userService.editProfile(data)
       .then(res => {
-        console.log(res)
+        props.updateUserProfile()
+        handleClose()
       })
   }
 

@@ -6,10 +6,8 @@ import { theme } from "./themes/theme";
 import LandingPage from "./pages/Landing";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
-import CreateProjectFormHook from "./pages/CreateProjectFormHook";
 import ProfilePage from "./pages/Profile";
 import DiscoverPage from "./pages/Discover";
-import CreateProjectForm from "./components/CreateProjectForm";
 import CreateProjectFormHook from "./components/CreateProjectFormHook";
 
 import NavBar from "./components/NavBar"

@@ -17,11 +17,16 @@ router.get("/all", (req, res) => {
    });
 });
 
+// @route GET /api/users/:user_id
+// @desc GET a specific user (include: all)
+// @access PUBLIC
+
 // Route to play with params
 router.get("/:userId", (req, res) => {
    let userId = req.params.userId;
    User.findByPk(userId).then(user => {
       console.log(user);
+      res.send(user)
    });
 });
 module.exports = router;

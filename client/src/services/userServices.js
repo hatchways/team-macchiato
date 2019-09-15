@@ -18,7 +18,7 @@ export const userService = {
    register,
    editProfile,
    // getAll,
-   // getById,
+   getById,
    // update,
    // delete: _delete
 };
@@ -159,14 +159,16 @@ function respondToConnection(userId, accept) {
 //    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
 // }
 
-// function getById(id) {
-//    const requestOptions = {
-//        method: 'GET',
-//        headers: authHeader()
-//    };
+function getById(id) {
+   const requestOptions = {
+       method: 'GET',
+       headers: {
+         'Content-Type': 'application/json',
+      },
+   };
 
-//    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
-// }
+   return fetch(`${apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+}
 
 // function update(user) {
 //    const requestOptions = {
