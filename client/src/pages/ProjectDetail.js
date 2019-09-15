@@ -88,8 +88,8 @@ export class ProjectDetail extends Component{
         </div>
            </Modal.Body>
             <div className='footer-button'>
-                 `<Button  className='submit-button' variant="danger" onClick={this.props.onHide}>Submit</Button>
-             </div>`
+                 <Button  className='submit-button' variant="danger" onClick={this.props.onHide}>Submit</Button>
+             </div>
          
     </Modal>
     

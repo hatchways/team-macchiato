@@ -89,6 +89,34 @@ hr{
   align: center;
 }
 
+hr{
+  width:900px;
+}
+
+.comm-line{
+  
+  width: 700px;
+}
+
+.comm-first{
+  
+  width: 700px;
+}
+.comm-second{
+  
+  width: 700px;
+}
+
+.comment-image{
+  margin-left: 10px;
+  margin-top: 40px;
+  border: circle;
+  border-radius: 30px;
+  width:30px;
+  length:30px;
+  align: center;
+}
+
 .name-text{
   margin-left: 60px;
   margin-top: 10px;
