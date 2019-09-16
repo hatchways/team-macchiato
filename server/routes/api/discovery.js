@@ -14,33 +14,27 @@ const isEmptyObj = object =>
 // @access  Public
 router.get("/", async (req, res) => {
   const { name } = req.query;
+  console.log(name === undefined ? "true" : "not true");
   console.log(req.query);
   console.log(isEmptyObj(req.query));
   console.log(req.query);
+  let filter = [];
   try {
-    if (req.query) {
-      User.findAll({
-        where: {
-          name: name
-        }
-      }).then(users => {
-        return res.json(users);
-      });
-    }
-
     User.findAll({
       include: [{ all: true }]
     }).then(users => {
-      return res.json(users);
+      if (name != undefined) {
+        filter = users.filter(user => user.name.includes(name));
+        console.log(filter);
+        return res.send(filter);
+      } else {
+        return res.send(users);
+      }
     });
     // SELECT * FROM Users WHERE name = "Daniel"
   } catch (err) {
     console.log(err);
   }
-});
-
-router.post("/", async (req, res) => {
-  console.log("hello");
 });
 
 module.exports = router;

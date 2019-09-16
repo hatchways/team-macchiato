@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import useDebounce from "./use-debounce";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -478,6 +479,10 @@ export default function Discovery() {
     skills: skills
   });
 
+  // debounce
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
   const handleChange = name => e => {
     setValues({ ...values, [name]: e.target.value });
   };
@@ -517,18 +522,25 @@ export default function Discovery() {
     : { background: "white", color: "black" };
   const classes = useStyles(props);
 
-  useEffect(() => {
-    userService.searchDiscovery().then(data => {
-      setLoading(false);
-      return setResults(data);
-    });
-    // fetch("http://localhost:3001/api/discovery")
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     setLoading(false);
-    //     return setResults(data);
-    //   });
-  }, []);
+  useEffect(
+    () => {
+      userService.searchDiscovery().then(data => {
+        setLoading(false);
+        return setResults(data);
+      });
+
+      if (debouncedSearchTerm) {
+        console.log("hello I don't know..");
+      }
+      // fetch("http://localhost:3001/api/discovery")
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     setLoading(false);
+      //     return setResults(data);
+      //   });
+    },
+    [debouncedSearchTerm]
+  );
 
   return (
     <div className={classes.wrapper}>

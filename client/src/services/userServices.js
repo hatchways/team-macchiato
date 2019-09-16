@@ -86,7 +86,7 @@ function getAll() {
   return fetch(`${apiUrl}/users/all`, requestOptions).then(handleResponse);
 }
 
-function searchDiscovery() {
+function searchDiscovery(search) {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -94,7 +94,9 @@ function searchDiscovery() {
     }
   };
 
-  return fetch(`${apiUrl}/discovery`).then(handleResponse);
+  return fetch(`${apiUrl}/discovery?name=Dan`, requestOptions).then(
+    handleResponse
+  );
 }
 
 function searchDiscoveryFilter(search) {
