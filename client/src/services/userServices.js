@@ -1,86 +1,100 @@
-const apiUrl = "http://localhost:3001/api"
+const apiUrl = "http://localhost:3001/api";
 
 function authHeader() {
-   // return authorization header with jwt token
-   let user = JSON.parse(localStorage.getItem('user'));
+  // return authorization header with jwt token
+  let user = JSON.parse(localStorage.getItem("user"));
 
-   if (user && user.token) {
-      return { 'Authorization': user.token };
-   } else {
-      return {};
-   }
+  if (user && user.token) {
+    return { Authorization: user.token };
+  } else {
+    return {};
+  }
 }
 
 export const userService = {
-   login,
-   logout,
-   register,
-   uploadProj,
-   // getAll,
-   // getById,
-   // update,
-   // delete: _delete
+  login,
+  logout,
+  register,
+  uploadProj,
+  getAll,
+  searchDiscovery
+  // getById,
+  // update,
+  // delete: _delete
 };
 
 function login(email, password) {
-   const requestOptions = {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ email, password })
-   };
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  };
 
-   return fetch(`${apiUrl}/auth/login`, requestOptions)
-       .then(handleResponse)
-       .then(user => {
-           // store user details and jwt token in local storage to keep user logged in between page refreshes
-           localStorage.setItem('user', JSON.stringify(user));
+  return fetch(`${apiUrl}/auth/login`, requestOptions)
+    .then(handleResponse)
+    .then(user => {
+      // store user details and jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem("user", JSON.stringify(user));
 
-           return user;
-       });
+      return user;
+    });
 }
 
 function logout() {
-   // remove user from local storage to log user out
-   localStorage.removeItem('user');
+  // remove user from local storage to log user out
+  localStorage.removeItem("user");
 }
 
 function register(user) {
-   const requestOptions = {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(user)
-   };
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user)
+  };
 
-   return fetch(`${apiUrl}/auth/register`, requestOptions).then(handleResponse);
+  return fetch(`${apiUrl}/auth/register`, requestOptions).then(handleResponse);
 }
 
 function uploadProj(proj) {
-   console.log("PROJECT")
-   console.log(proj)
-   console.log(proj.photos)
-   const requestOptions = {
-      method: 'POST',
-      headers: {
-         ...authHeader(),
-         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(proj),
-   };
-   fetch(`${apiUrl}/projects/`, requestOptions)
-      .then(res => res.text())
-      .then(text => console.log(text))
-   // fetch(`${apiUrl}/projects/`, requestOptions)
-   //    .then(ret => console.log(ret))
-   // console.log(proj)
+  console.log("PROJECT");
+  console.log(proj);
+  console.log(proj.photos);
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      ...authHeader(),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(proj)
+  };
+  fetch(`${apiUrl}/projects/`, requestOptions)
+    .then(res => res.text())
+    .then(text => console.log(text));
+  // fetch(`${apiUrl}/projects/`, requestOptions)
+  //    .then(ret => console.log(ret))
+  // console.log(proj)
 }
-// function getAll() {
-//    const requestOptions = {
-//        method: 'GET',
-//        headers: authHeader()
-//    };
+function getAll() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
 
-//    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
-// }
+  return fetch(`${apiUrl}/users/all`, requestOptions).then(handleResponse);
+}
+
+function searchDiscovery() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  return fetch(`${apiUrl}/discovery`).then(handleResponse);
+}
 
 // function getById(id) {
 //    const requestOptions = {
@@ -115,18 +129,18 @@ function uploadProj(proj) {
 // This happens if the JWT token expires or is no longer valid for any reason.
 
 function handleResponse(response) {
-   return response.text().then(text => {
-       const data = text && JSON.parse(text);
-       if (!response.ok) {
-           if (response.status === 401) {
-               // auto logout if 401 response returned from api
-               logout();
-           }
+  return response.text().then(text => {
+    const data = text && JSON.parse(text);
+    if (!response.ok) {
+      if (response.status === 401) {
+        // auto logout if 401 response returned from api
+        logout();
+      }
 
-           const error = (data && data.message) || response.statusText;
-           return Promise.reject(error);
-       }
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+    }
 
-       return data;
-   });
+    return data;
+  });
 }

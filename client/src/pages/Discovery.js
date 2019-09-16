@@ -26,6 +26,50 @@ import CardContent from "@material-ui/core/CardContent";
 // Chip?
 import Chip from "@material-ui/core/Chip";
 
+// Button?
+import Button from "@material-ui/core/Button";
+
+import { userService } from "../services/userServices";
+
+// Locations ?
+const locations = [
+  {
+    value: "Toronto",
+    label: "Tor"
+  },
+  {
+    value: "Brampton",
+    label: "Bramp"
+  },
+  {
+    value: "Oakville",
+    label: "Oak"
+  },
+  {
+    value: "Mississauga",
+    label: "Mis"
+  }
+];
+// Experience
+const experiences = [
+  {
+    value: "0 year experience",
+    label: "0"
+  },
+  {
+    value: "1 year experience",
+    label: "1"
+  },
+  {
+    value: "2 year experience",
+    label: "2"
+  },
+  {
+    value: "3 year experience",
+    label: "3"
+  }
+];
+
 const useStyles = makeStyles(theme => ({
   // Do this Wrapper stuff for now till we have more content on the page
   wrapper: {
@@ -64,7 +108,8 @@ const useStyles = makeStyles(theme => ({
     background: "white",
     border: "none",
     boxShadow: "none",
-    width: "100%"
+    width: "100%",
+    zIndex: "0"
   },
   filter: {
     width: "30%",
@@ -176,11 +221,57 @@ const useStyles = makeStyles(theme => ({
     display: "flex"
   },
   filter_modal_refine_section: {
-    width: "33.33%"
+    width: "33.33%",
+    margin: "auto"
+  },
+  filter_modal_refine_exp_loc: {
+    width: "50%",
+    margin: "auto"
+  },
+  menu: {
+    width: 200
   },
   filter_modal_button_search: {
     height: "25%",
     background: "yellow"
+  },
+  magic: {
+    zIndex: 1
+  },
+  filter_modal_refine_skill: {
+    height: "200px"
+  },
+  filter_modal_skill_label: {
+    width: "100%",
+    height: "100%"
+  },
+  container: {
+    border: "1px solid #ddd",
+    padding: "5px",
+    borderRadius: "5px",
+    background: "white",
+    height: "100%"
+    // width: "100%"
+  },
+
+  items: {
+    display: "inline-block",
+    padding: "2px",
+    border: "1px solid blue",
+    fontFamily: "Helvetica, sans-serif",
+    borderRadius: "5px",
+    marginRight: "5px",
+    cursor: "pointer"
+  },
+
+  input: {
+    outline: "none",
+    border: "none",
+    fontSize: "14px",
+    fontFamily: "Helvetica, sans-serif"
+  },
+  close_skill: {
+    zIndex: "1"
   }
 }));
 
@@ -248,6 +339,7 @@ const UserCard = props => {
 
 const FilterModal = props => {
   const classes = useStyles();
+
   return (
     <div
       className={`${classes.filter_modal} ${
@@ -256,20 +348,131 @@ const FilterModal = props => {
     >
       <div className={classes.filter_modal_refine}>
         <div className={classes.filter_modal_refine_section}>
-          <div>
-            <TextField />
-            <TextField />
+          <div className={classes.filter_modal_refine_exp_loc}>
+            <Typography variant="h6" component="h6">
+              Location:
+            </Typography>
+            <TextField
+              id="outlined-select-location-native"
+              select
+              className={classes.textField}
+              value={props.value.location}
+              onChange={props.onChange("location")}
+              SelectProps={{
+                native: true,
+                MenuProps: {
+                  className: classes.menu
+                }
+              }}
+              margin="normal"
+              variant="outlined"
+            >
+              {locations.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
+            <Typography variant="h6" component="h6">
+              Experience:
+            </Typography>
+            <TextField
+              id="outlined-select-location-native"
+              select
+              className={classes.textField}
+              value={props.value.experience}
+              onChange={props.onChange("experience")}
+              SelectProps={{
+                native: true,
+                MenuProps: {
+                  className: classes.menu
+                }
+              }}
+              margin="normal"
+              variant="outlined"
+            >
+              {experiences.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </TextField>
           </div>
         </div>
         <div className={classes.filter_modal_refine_section}>
-          location years
+          {/* <Typography variant="h6" component="h6">
+            Skills:
+          </Typography>
+          <TextField
+            id="outlined-multiline-static"
+            multiline
+            rows="8"
+            defaultValue="skills"
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+          >
+            <div className={classes.magic}>Hello</div>
+          </TextField> */}
+          <div className={classes.filter_modal_refine_skill}>
+            <Typography variant="h6" component="h6">
+              Skills:
+            </Typography>
+            <label className={classes.filter_modal_skill_label}>
+              <ul className={classes.container}>
+                {props.skills.map((skill, i) => (
+                  <li className={classes.items} key={i}>
+                    {skill}
+                    <span>
+                      <Icon
+                        className={classes.close_skill}
+                        onClick={e =>
+                          props.setSkills(
+                            props.skills.filter(
+                              (skill, i) => skill != e.target.id
+                            )
+                          )
+                        }
+                        path={mdiCloseCircle}
+                        size={1}
+                        id={skill}
+                        color="gray"
+                      />
+                      {console.log(props.skills)}
+                      {console.log()}
+                    </span>
+                  </li>
+                ))}
+                <input
+                  className={classes.input}
+                  value={props.input}
+                  onChange={e => props.handleInputChange(e)}
+                  onKeyDown={props.handleInputKeyDown(props.input)}
+                />
+              </ul>
+            </label>
+          </div>
         </div>
         <div className={classes.filter_modal_refine_section}>
-          location years
+          {["UX/UI", "React", "No Skill"].map(skill => {
+            return (
+              <div onClick={e => props.setSkills(props.skills.concat(skill))}>
+                {skill}
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className={classes.filter_modal_button_search}>
-        <h1>Button</h1>
+        <Button variant="contained" color="primary" className={classes.button}>
+          Apply Filters
+        </Button>
+        <Button variant="contained" color="primary" className={classes.button}>
+          Reset
+        </Button>
+        <Button variant="contained" color="primary" className={classes.button}>
+          Close
+        </Button>
       </div>
     </div>
   );
@@ -279,6 +482,43 @@ export default function Discovery() {
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [searchedUsers, setSearchedUsers] = React.useState([]);
+  const [location, setLocation] = React.useState("");
+  const [experience, setExpereince] = React.useState("");
+  const [skills, setSkills] = React.useState([]);
+  const [input, setInput] = React.useState("");
+  const [values, setValues] = React.useState({
+    experience: experience,
+    location: location,
+    skills: skills
+  });
+
+  const handleChange = name => e => {
+    setValues({ ...values, [name]: e.target.value });
+  };
+
+  const handleInputChange = e => {
+    setInput(e.target.value);
+
+    console.log(values);
+  };
+
+  const handleInputKeyDown = skill => event => {
+    if (event.keyCode === 13) {
+      if (skills.includes(skill)) {
+        console.log("skill is already added");
+      } else {
+        setSkills(skills.concat(skill));
+        // console.log("skills before", skills);
+        setInput("");
+      }
+    }
+    console.log(skills);
+    setValues({ ...values, skills: skills });
+  };
+
+  const handleDiscoverySearch = skill => e => {
+    setSearch(e.target.value);
+  };
 
   // Open Filter
   const [filter, setFilter] = React.useState(false);
@@ -292,12 +532,16 @@ export default function Discovery() {
   const classes = useStyles(props);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/discovery")
-      .then(response => response.json())
-      .then(data => {
-        setLoading(false);
-        return setSearchedUsers(data);
-      });
+    userService.searchDiscovery().then(data => {
+      setLoading(false);
+      return setSearchedUsers(data);
+    });
+    // fetch("http://localhost:3001/api/discovery")
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setLoading(false);
+    //     return setSearchedUsers(data);
+    //   });
   }, []);
 
   return (
@@ -311,8 +555,9 @@ export default function Discovery() {
               </IconButton>
               <InputBase
                 className={classes.input}
-                placeholder="UX/ UI"
+                placeholder="UX/UI"
                 value={search}
+                name="search"
                 onChange={e => setSearch(e.target.value)}
               />
               <Divider className={classes.divider} orientation="vertical" />
@@ -346,7 +591,18 @@ export default function Discovery() {
           </div>
         </div>
         {/* Open Filter Div */}
-        <FilterModal isActive={filter} />
+        <FilterModal
+          isActive={filter}
+          location={location}
+          experience={experience}
+          onChange={name => handleChange(name)}
+          value={values}
+          skills={skills}
+          input={input}
+          setSkills={skill => setSkills(skill)}
+          handleInputChange={input => handleInputChange(input)}
+          handleInputKeyDown={skill => handleInputKeyDown(skill)}
+        />
         <div className={classes.card_container}>
           {!loading
             ? searchedUsers.map(user => {
