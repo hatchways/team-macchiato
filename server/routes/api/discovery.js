@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
         let filter = users.filter(user =>
           user.name.toLocaleLowerCase().includes(name.toLocaleLowerCase())
         );
-        console.log(filter);
+
         return res.send(filter);
       } else {
         return res.send(users);

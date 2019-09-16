@@ -271,6 +271,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: "14px",
     fontFamily: "Helvetica, sans-serif"
   },
+  MuiInputBase: {
+    width: "80%"
+  },
   close_skill: {
     zIndex: "1"
   }
@@ -530,9 +533,8 @@ export default function Discovery() {
       });
 
       if (debouncedSearchTerm) {
-        setLoading(true);
+        // setLoading(true);
         userService.searchDiscovery(debouncedSearchTerm).then(data => {
-          setLoading(false);
           setResults(data);
         });
       } else {
@@ -557,15 +559,15 @@ export default function Discovery() {
               <IconButton className={classes.iconButton} aria-label="search">
                 <SearchIcon />
               </IconButton>
-              {/* Here */}
+
               <InputBase
                 className={classes.input}
+                disableUnderline={true}
                 placeholder="UX/UI"
                 value={searchTerm}
                 name="search"
                 onChange={e => setSearchTerm(e.target.value)}
               />
-              <Divider className={classes.divider} orientation="vertical" />
             </div>
             <div className={classes.square_close_container}>
               <Icon
@@ -595,7 +597,7 @@ export default function Discovery() {
             </div>
           </div>
         </div>
-        {/* Open Filter Div */}
+
         <FilterModal
           isActive={filter}
           location={location}
