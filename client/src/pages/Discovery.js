@@ -530,7 +530,13 @@ export default function Discovery() {
       });
 
       if (debouncedSearchTerm) {
-        console.log("hello I don't know..");
+        setLoading(true);
+        userService.searchDiscovery(debouncedSearchTerm).then(data => {
+          setLoading(false);
+          setResults(data);
+        });
+      } else {
+        setResults([]);
       }
       // fetch("http://localhost:3001/api/discovery")
       //   .then(response => response.json())

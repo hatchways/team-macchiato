@@ -94,7 +94,9 @@ function searchDiscovery(search) {
     }
   };
 
-  return fetch(`${apiUrl}/discovery?name=Dan`, requestOptions).then(
+  console.log(search);
+
+  return fetch(`${apiUrl}/discovery?name=${search}`, requestOptions).then(
     handleResponse
   );
 }

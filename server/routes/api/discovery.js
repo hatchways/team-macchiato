@@ -14,17 +14,16 @@ const isEmptyObj = object =>
 // @access  Public
 router.get("/", async (req, res) => {
   const { name } = req.query;
-  console.log(name === undefined ? "true" : "not true");
+  console.log(name === "undefined" ? "true" : "not true");
   console.log(req.query);
   console.log(isEmptyObj(req.query));
   console.log(req.query);
-  let filter = [];
   try {
     User.findAll({
       include: [{ all: true }]
     }).then(users => {
-      if (name != undefined) {
-        filter = users.filter(user => user.name.includes(name));
+      if (name != "undefined") {
+        let filter = users.filter(user => user.name.includes(name));
         console.log(filter);
         return res.send(filter);
       } else {
