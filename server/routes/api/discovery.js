@@ -39,4 +39,8 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  console.log("hello");
+});
+
 module.exports = router;

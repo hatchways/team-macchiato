@@ -400,20 +400,6 @@ const FilterModal = props => {
           </div>
         </div>
         <div className={classes.filter_modal_refine_section}>
-          {/* <Typography variant="h6" component="h6">
-            Skills:
-          </Typography>
-          <TextField
-            id="outlined-multiline-static"
-            multiline
-            rows="8"
-            defaultValue="skills"
-            className={classes.textField}
-            margin="normal"
-            variant="outlined"
-          >
-            <div className={classes.magic}>Hello</div>
-          </TextField> */}
           <div className={classes.filter_modal_refine_skill}>
             <Typography variant="h6" component="h6">
               Skills:
@@ -479,9 +465,9 @@ const FilterModal = props => {
 };
 
 export default function Discovery() {
-  const [search, setSearch] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-  const [searchedUsers, setSearchedUsers] = React.useState([]);
+  const [results, setResults] = React.useState([]);
   const [location, setLocation] = React.useState("");
   const [experience, setExpereince] = React.useState("");
   const [skills, setSkills] = React.useState([]);
@@ -517,7 +503,7 @@ export default function Discovery() {
   };
 
   const handleDiscoverySearch = skill => e => {
-    setSearch(e.target.value);
+    setSearchTerm(e.target.value);
   };
 
   // Open Filter
@@ -534,13 +520,13 @@ export default function Discovery() {
   useEffect(() => {
     userService.searchDiscovery().then(data => {
       setLoading(false);
-      return setSearchedUsers(data);
+      return setResults(data);
     });
     // fetch("http://localhost:3001/api/discovery")
     //   .then(response => response.json())
     //   .then(data => {
     //     setLoading(false);
-    //     return setSearchedUsers(data);
+    //     return setResults(data);
     //   });
   }, []);
 
@@ -553,12 +539,13 @@ export default function Discovery() {
               <IconButton className={classes.iconButton} aria-label="search">
                 <SearchIcon />
               </IconButton>
+              {/* Here */}
               <InputBase
                 className={classes.input}
                 placeholder="UX/UI"
-                value={search}
+                value={searchTerm}
                 name="search"
-                onChange={e => setSearch(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
               <Divider className={classes.divider} orientation="vertical" />
             </div>
@@ -567,7 +554,7 @@ export default function Discovery() {
                 path={mdiCloseCircle}
                 size={1}
                 color="gray"
-                onClick={e => setSearch("")}
+                onClick={e => setSearchTerm("")}
               />
             </div>
           </div>
@@ -605,7 +592,7 @@ export default function Discovery() {
         />
         <div className={classes.card_container}>
           {!loading
-            ? searchedUsers.map(user => {
+            ? results.map(user => {
                 return (
                   <UserCard
                     name={user.name}

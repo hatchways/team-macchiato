@@ -17,7 +17,8 @@ export const userService = {
   register,
   uploadProj,
   getAll,
-  searchDiscovery
+  searchDiscovery,
+  searchDiscoveryFilter
   // getById,
   // update,
   // delete: _delete
@@ -91,6 +92,18 @@ function searchDiscovery() {
     headers: {
       "Content-Type": "application/json"
     }
+  };
+
+  return fetch(`${apiUrl}/discovery`).then(handleResponse);
+}
+
+function searchDiscoveryFilter(search) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(search)
   };
 
   return fetch(`${apiUrl}/discovery`).then(handleResponse);
