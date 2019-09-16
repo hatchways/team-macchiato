@@ -23,7 +23,9 @@ router.get("/", async (req, res) => {
       include: [{ all: true }]
     }).then(users => {
       if (name != "undefined") {
-        let filter = users.filter(user => user.name.includes(name));
+        let filter = users.filter(user =>
+          user.name.toLocaleLowerCase().includes(name.toLocaleLowerCase())
+        );
         console.log(filter);
         return res.send(filter);
       } else {
