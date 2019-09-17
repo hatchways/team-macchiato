@@ -257,7 +257,8 @@ const useStyles = makeStyles(theme => ({
   filter_modal_button_search: {
     borderTop: "1px solid rgba(157, 157, 157, 0.3)",
     height: "25%",
-    background: "	#F7F8FC"
+    background: "	#F7F8FC",
+    margin: "auto"
   },
   magic: {
     zIndex: 1
