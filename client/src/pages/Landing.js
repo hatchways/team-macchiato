@@ -6,6 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 // import Ping from "./Ping";
 
+import DisplayProject from '../components/DisplayProjectComponent'
+
 const landinPageStyle = theme => ({
   landingContainer: {
     margin: theme.spacing(2)
@@ -18,6 +20,7 @@ class LandingPage extends Component {
     return (
       <div className={classes.landingContainer}>
         <Typography>Landing Page</Typography>
+        <DisplayProject />
       </div>
     );
   }

@@ -27,17 +27,42 @@ router.get("/user/:userId", async (req, res) => {
             userId: userId
          }
       }).then(projs => {
-         // Retrieve images from s3
-         let photos = projs.photos.map(async data => {
-            let key = data.Key
-            return awsController.handleRetrieve(key).Body
-         });
-
-         Promise.all(photos)
-            .then(photos => {
-               projs.photos = photos
-               res.send(projs)
+         projs = projs.map(async proj => {
+            let photos = proj.photos.map(async data => {
+               let obj = JSON.parse(data)
+               let key = obj.Key
+               if (key) {
+                  console.log(key)
+                  return awsController.handleRetrieve(key)
+                     .then(res => {
+                        return {
+                           ContentType: res.ContentType,
+                           Body: res.Body
+                        }
+                     })
+                     .catch(err => {
+                        console.log(err)
+                        throw "Failed to retrieve from s3: " + err
+                     })
+               }
+               console.log("Nope")
+               return '' // if no key, return empty string
             })
+
+            return Promise.all(photos)
+               .then(photos => {
+                  // console.log(photos)
+                  return {
+                     photos,
+                     desc: proj.desc,
+                     title: proj.title,
+                     link: proj.link,
+                  }
+               })
+         })
+         
+         Promise.all(projs)
+            .then(projs => res.send(projs))
       })
    } catch (err) {
       console.log(err)
@@ -50,7 +75,12 @@ const addToS3 = (photos, userId) => photos.map(async data => {
    let key = Date.now() + '_' + data.fileName
    let imageData = data.imageData
    return awsController.handleUpload(key, imageData, userId)
-});
+      .then(res => res)
+      .catch(err => {
+         console.log(err)
+         throw "Failed to upload to s3: " + err
+      })
+})
 
 // Upload new project
 router.post(
@@ -76,21 +106,22 @@ router.post(
             Bucket: 'teammacchiatoapp' 
          }
           */
+         let s3Photos = addToS3(photos, userId)
+         if (s3Photos) {
+            Promise.all()
+               .then(photoS3Data => {
+                  // res.send(photoS3Data)
+                  let project = {   // use photoS3
+                     photos: photoS3Data, title, desc, link, userId
+                  };
 
-         Promise.all(addToS3(photos, userId))
-            .then(photoS3Data => {
-               let project = {   // use photoS3
-                  photos: photoS3Data, title, desc, link, userId
-               };
-
-               // Possibly check if project already exists?
-               // - using title and link maybe                 LOW PRIO
-
-               Project.create(project).then(proj => {
-                  console.log(`Successfully created project with projId ${proj.id}`);
-                  return res.send(proj);
+                  Project.create(project).then(proj => {
+                     console.log(`Successfully created project with projId ${proj.id}`);
+                     return res.send(proj);
+                  })
                })
-            })
+         }
+         return
       } catch (err) {
          console.log(err)
          res.status(500).send(err)

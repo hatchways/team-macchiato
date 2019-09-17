@@ -11,6 +11,7 @@ const s3 = new aws.S3()
 export const awsController = {
    handleRetrieve,
    handleUpload,
+   handleDelete,
 }
 
 async function handleDelete(key) {
@@ -62,7 +63,7 @@ async function handleRetrieve(key) {
 }
 
 async function handleUpload(key, imageData, userId) {
-   let buf = new Buffer(imageData.replace(/^data:image\/\w+;base64,/, ""), 'base64')
+   let buf = new Buffer.from(imageData.replace(/^data:image\/\w+;base64,/, ""), 'base64')
    let fileType = imageData.split(';')[0].split(':')[1]
    // bucketName var below crates a "folder" for each user
    var bucketName = S3_BUCKET + '/user_' + userId
@@ -76,8 +77,12 @@ async function handleUpload(key, imageData, userId) {
    };
 
    return new Promise((resolve, reject) => {
+      let err = false
       s3.upload(params, function (err, data) {
-         if (err) reject({ error: err })
+         if (err) {
+            console.log(err)
+            reject({ error: err })
+         }
          resolve(data)
          // Example of what handleUpload returns
          /*

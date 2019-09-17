@@ -66,13 +66,11 @@ function register(user) {
 
 const hitProjRoute = (options) => {
    const requestOptions = options.requestOptions
-   fetch(`${apiUrl}/projects${options.route}`, requestOptions)
+   return fetch(`${apiUrl}/projects${options.route}`, requestOptions)
       .then(handleResponse)
-      .then(res => res.text())
-      .then(text => console.log(text))
 }
 function getProj(userId) {
-   hitProjRoute({
+   return hitProjRoute({
       requestOptions: {
          method: 'GET',
       },
@@ -80,7 +78,7 @@ function getProj(userId) {
    })
 }
 function uploadProj(proj) {
-   hitProjRoute({
+   return hitProjRoute({
       requestOptions: {
          method: 'POST',
          headers: {
@@ -93,7 +91,7 @@ function uploadProj(proj) {
    })
 }
 function updateProj(proj, projectId) {
-   hitProjRoute(proj, {
+   return hitProjRoute(proj, {
       requestOptions: {
          method: 'PUT',
          headers: {
