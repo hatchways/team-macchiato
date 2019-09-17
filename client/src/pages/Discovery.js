@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import DirectionsIcon from "@material-ui/icons/Directions";
@@ -16,6 +16,9 @@ import Icon from "@mdi/react";
 import { mdiCloseCircle } from "@mdi/js";
 import { mdiKarate } from "@mdi/js";
 import { mdiUfoOutline } from "@mdi/js";
+import { mdiMagnify } from "@mdi/js";
+import AccessAlarmsIcon from "@material-ui/icons/AccessAlarms";
+import CloseIcon from "@material-ui/icons/Close";
 
 // Grid? Nah
 
@@ -33,6 +36,8 @@ import Button from "@material-ui/core/Button";
 import { userService } from "../services/userServices";
 
 // Locations ?
+
+const buttons = {};
 const locations = [
   {
     value: "Toronto",
@@ -51,23 +56,31 @@ const locations = [
     label: "Mis"
   }
 ];
+const commonSkills = [
+  "UX Design",
+  "UI Design",
+  "Mobile",
+  "Product Design",
+  "Illustration",
+  "Motion Design"
+];
 // Experience
 const experiences = [
   {
-    value: "0 year experience",
-    label: "0"
+    value: "0",
+    label: "0 year experience"
   },
   {
-    value: "1 year experience",
-    label: "1"
+    value: "1",
+    label: "1 year experience"
   },
   {
-    value: "2 year experience",
-    label: "2"
+    value: "2",
+    label: "2 year experience"
   },
   {
-    value: "3 year experience",
-    label: "3"
+    value: "3",
+    label: "3 year experience"
   }
 ];
 
@@ -103,6 +116,11 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center"
   },
+  searchIcon: {
+    color: "#EBD1D2",
+    display: "inline-block",
+    margin: "20px"
+  },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -124,8 +142,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   square_close_container: {
-    padding: "20px",
-    cursor: "pointer"
+    padding: "10px",
+    cursor: "pointer",
+    margin: "0 20px",
+    borderRadius: "25%",
+    background: "lightgray"
   },
   card_container: {
     width: "100%",
@@ -217,13 +238,14 @@ const useStyles = makeStyles(theme => ({
   },
   filter_modal_refine: {
     height: "75%",
-    background: "tomato",
+    background: "	#F7F8FC",
     borderBottom: "rgba(157, 157, 157, 0.3)",
     display: "flex"
   },
   filter_modal_refine_section: {
     width: "33.33%",
-    margin: "auto"
+    margin: "auto",
+    padding: "20px"
   },
   filter_modal_refine_exp_loc: {
     width: "50%",
@@ -233,8 +255,9 @@ const useStyles = makeStyles(theme => ({
     width: 200
   },
   filter_modal_button_search: {
+    borderTop: "1px solid rgba(157, 157, 157, 0.3)",
     height: "25%",
-    background: "yellow"
+    background: "	#F7F8FC"
   },
   magic: {
     zIndex: 1
@@ -271,7 +294,14 @@ const useStyles = makeStyles(theme => ({
     fontSize: "14px",
     fontFamily: "Helvetica, sans-serif"
   },
-  MuiInputBase: {
+  commonSkill: {
+    background: "rgba(157, 157, 157, 0.3)",
+    display: "inline-block",
+    margin: "2px",
+    borderRadius: "5%",
+    padding: "2px 5px"
+  },
+  inputBaseSearch: {
     width: "80%"
   },
   close_skill: {
@@ -444,23 +474,31 @@ const FilterModal = props => {
           </div>
         </div>
         <div className={classes.filter_modal_refine_section}>
-          {["UX/UI", "React", "No Skill"].map(skill => {
+          <Typography variant="h6" component="h6">
+            Select from popular skills:
+          </Typography>
+          {commonSkills.map(skill => {
             return (
-              <div onClick={e => props.setSkills(props.skills.concat(skill))}>
-                {skill}
-              </div>
+              <span
+                className={classes.commonSkill}
+                onClick={e =>
+                  props.setSkills(props.skills.concat(skill.toUpperCase()))
+                }
+              >
+                {skill.toUpperCase()}
+              </span>
             );
           })}
         </div>
       </div>
       <div className={classes.filter_modal_button_search}>
-        <Button variant="contained" color="primary" className={classes.button}>
+        <Button variant="contained" color="#3ADB84" className={classes.button}>
           Apply Filters
         </Button>
-        <Button variant="contained" color="primary" className={classes.button}>
+        <Button variant="contained" color="#F6F9FB" className={classes.button}>
           Reset
         </Button>
-        <Button variant="contained" color="primary" className={classes.button}>
+        <Button variant="contained" color="#F6F9FB" className={classes.button}>
           Close
         </Button>
       </div>
@@ -525,6 +563,8 @@ export default function Discovery() {
     : { background: "white", color: "black" };
   const classes = useStyles(props);
 
+  // Initially load with non-filtered data
+  // Use debounce on search bar everytime the search term get's updated (0.5 second)
   useEffect(
     () => {
       userService.searchDiscovery().then(data => {
@@ -540,12 +580,6 @@ export default function Discovery() {
       } else {
         setResults([]);
       }
-      // fetch("http://localhost:3001/api/discovery")
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     setLoading(false);
-      //     return setResults(data);
-      //   });
     },
     [debouncedSearchTerm]
   );
@@ -556,26 +590,28 @@ export default function Discovery() {
         <div className={classes.flex}>
           <div className={classes.search_container}>
             <div className={classes.textField}>
-              <IconButton className={classes.iconButton} aria-label="search">
-                <SearchIcon />
-              </IconButton>
+              <div className={classes.searchIcon}>
+                <SearchIcon fontSize="large" />
+              </div>
 
               <InputBase
-                className={classes.input}
+                className={classes.inputBaseSearch}
                 disableUnderline={true}
                 placeholder="UX/UI"
                 value={searchTerm}
                 name="search"
                 onChange={e => setSearchTerm(e.target.value)}
+                onClick={e => setSearchTerm("")}
               />
             </div>
             <div className={classes.square_close_container}>
-              <Icon
+              <CloseIcon color="gray" onClick={e => setSearchTerm("")} />
+              {/* <Icon
                 path={mdiCloseCircle}
                 size={1}
                 color="gray"
                 onClick={e => setSearchTerm("")}
-              />
+              /> */}
             </div>
           </div>
           <div
