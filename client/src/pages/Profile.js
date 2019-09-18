@@ -150,10 +150,10 @@ class ProfilePage extends Component {
                             </div>
                             <div className="col-lg-5  ">
 
-                                {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
+                                 <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
 
                                     <img className='project-image' src={img1} />
-                                {/* </Button> */}
+                                </Button>
                                 {/* <ProjectDetail show={this.state.addModalShow}
                                     onHide={addModalclose} /> */}
                             </div>
@@ -162,34 +162,34 @@ class ProfilePage extends Component {
                             <div className="row  middle-row ">
                                 <div className="col-lg-5  ">
 
-                                    {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
+                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
 
                                         <img className='project-image' src={img1} />
 
-                                    {/* </Button>
-                                    <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */}
+                                     </Button>
+                                    {/* <ProjectDetail show={this.state.addModalShow}
+                                        onHide={addModalclose} /> */} */}
                                 </div>
                                 <div className="col-lg-5  ">
-                                    {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
+                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
                                         <img className='project-image' src={img1} />
-                                    {/* </Button>
-                                    <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */}
+                                     </Button>
+                                    {/* <ProjectDetail show={this.state.addModalShow}
+                                        onHide={addModalclose} /> */} */}
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-5 ">
 
-                                {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
+                                <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
 
                                     <img className='project-image' src={img1} />
 
-                                {/* </Button>
+                               </Button>
 
-                                <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} /> */}
+                                {/* <ProjectDetail show={this.state.addModalShow}
+                                    onHide={addModalclose} /> */} */}
                             </div>
 
                         </div>
