@@ -402,7 +402,15 @@ hr{
 }
 
 modal.Body{
-  paddin:0px;
+  padding:0px;
+}
+
+.edit-button{
+    border-block-color: white;
+    border:none;
+    line-height: 0%;
+    border-inline-color: white;
+    background-color: white; 
 }
 
 .modal-backdrop.fade {

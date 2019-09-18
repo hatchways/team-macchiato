@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 export default function EditProfile(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [location, setLocation] = React.useState("");
   const [imgSrc, setImgSrc] = React.useState(null);
@@ -39,8 +40,11 @@ export default function EditProfile(props) {
 
   const submitEditProfileData = () => {
     let data = {
+      name,
       title,
       location,
+      
+     
     }
     console.log(data)
     userService.editProfile(data)
@@ -86,8 +90,8 @@ export default function EditProfile(props) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
+      <Button className="edit-button" variant="outlined" color="primary" onClick={handleClickOpen}>
+         Edit
       </Button>
       <Dialog
         //Keep this open for a bit
@@ -104,12 +108,23 @@ export default function EditProfile(props) {
             autoFocus
             margin="dense"
             id="name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            label="name"
+            type="name"
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="title"
             value={title}
             onChange={e => setTitle(e.target.value)}
             label="title"
             type="title"
             fullWidth
           />
+          
           <TextField
             autoFocus
             margin="dense"
@@ -120,6 +135,7 @@ export default function EditProfile(props) {
             type="location"
             fullWidth
           />
+          
           <Dropzone
             onDrop={handleOnDrop}
             maxSize={imageMaxSize}

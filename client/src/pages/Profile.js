@@ -16,12 +16,15 @@ class ProfilePage extends Component {
         super(props);
         this.state = {
             addModalshow: false,
-            loading: true
+            loading: true,
+            openEdit: false
         }
         this.updateUserProfile = this.updateUserProfile.bind(this)
     }
     componentWillMount() {
         this.updateUserProfile()
+        console.log("ME: ")
+        console.log(this.props.currentUserInfo)
     }
 
     updateUserProfile = () => {
@@ -38,9 +41,23 @@ class ProfilePage extends Component {
             })
     }
 
+    updateUserProject = () => {
+        // let pathname = this.props.location.pathname
+        let otherUserId = this.state.otherUserId
+        userService.getById(otherUserId)
+            .then(user => {
+                console.log(user)
+                this.setState({
+                    user,
+                    loading: false
+                })
+            })
+    }
+
     render() {
-        let user = this.state.user
+        let user = this.state.user;
         let addModalclose = () => this.setState({ addModalShow: false });
+        let currentUser = this.props.currentUserInfo
         return (
             <div>
                 <Nav />
@@ -59,12 +76,33 @@ class ProfilePage extends Component {
 
 
 
-                        <h5 className='name-text'>{user && user.name}</h5>
-                        <h5 className='title-text'>{user && user.title}</h5>
-                        <h5 className='city-text'>{user && user.location}</h5>
+                        <h5 className='name-text'>{user && user[0].name}</h5>
+                        <h5 className='title-text'>{user && user[0].title}</h5>
+                        <h5 className='city-text'>{user && user[0].location}</h5>
                         <button className='orange-button hire-button'>Hire me</button>
                         <button className='white-button'>Message</button>
                         <hr className='hr-prof' />
+
+                        <div>
+                            
+                            <EditProfileForm
+
+                                    updateUserProfile={this.updateUserProfile}
+                                />
+                        {/* {
+                            user &&
+                                currentUser.id === user.id ?
+                               
+                                <EditProfileForm
+
+                                    updateUserProfile={this.updateUserProfile}
+                                />
+                               
+                                :
+                                ''
+                        } */}
+                       
+                        </div>
                         <hr />
 
 
@@ -92,9 +130,7 @@ class ProfilePage extends Component {
                             </div>
                         </div>
                         <hr className='hr-prof' />
-                        <EditProfileForm 
-                            updateUserProfile={this.updateUserProfile}
-                            />
+                        
                         <h6 className='about-title'>About</h6>
                         <p className='about-text'>I am a create designer from Toronto.I enjoy creating solutions for web anad mobile app.
                         Available  for fulltime, freelance or remote work opportunities.</p>
@@ -114,46 +150,46 @@ class ProfilePage extends Component {
                             </div>
                             <div className="col-lg-5  ">
 
-                                <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
 
                                     <img className='project-image' src={img1} />
-                                </Button>
-                                <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} />
+                                {/* </Button> */}
+                                {/* <ProjectDetail show={this.state.addModalShow}
+                                    onHide={addModalclose} /> */}
                             </div>
                         </div>
                         <div className="row">
                             <div className="row  middle-row ">
                                 <div className="col-lg-5  ">
 
-                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                    {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
 
                                         <img className='project-image' src={img1} />
 
-                                    </Button>
+                                    {/* </Button>
                                     <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} />
+                                        onHide={addModalclose} /> */}
                                 </div>
                                 <div className="col-lg-5  ">
-                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                    {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
                                         <img className='project-image' src={img1} />
-                                    </Button>
+                                    {/* </Button>
                                     <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} />
+                                        onHide={addModalclose} /> */}
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-5 ">
 
-                                <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                {/* <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
 
                                     <img className='project-image' src={img1} />
 
-                                </Button>
+                                {/* </Button>
 
                                 <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} />
+                                    onHide={addModalclose} /> */}
                             </div>
 
                         </div>
