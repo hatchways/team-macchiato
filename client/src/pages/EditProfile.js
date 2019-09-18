@@ -40,7 +40,7 @@ export default function EditProfile(props) {
   const submitEditProfileData = () => {
     let data = {
       title,
-      location
+      location,
     }
     console.log(data)
     userService.editProfile(data)
