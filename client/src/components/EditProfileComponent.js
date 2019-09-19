@@ -49,7 +49,7 @@ export default function EditProfile(props) {
     console.log(data)
     userService.editProfile(data)
       .then(res => {
-        props.updateUserProfile()
+        props.updateUserSummary()
         handleClose()
       })
   }

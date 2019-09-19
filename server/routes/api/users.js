@@ -33,10 +33,13 @@ router.get("/:userId", (req, res) => {
                model: Skill, as: "skills"
            }
         ],
-       where: { id: userId }
+       where: { id: userId },
+       attributes: [
+          'id', 'name', 'location',
+          'profile_pic', 'email', 'title'
+       ]
    }).then(user => {
-       console.log(user)
-      res.send(user)
+      res.send(user[0])
    });
 
    

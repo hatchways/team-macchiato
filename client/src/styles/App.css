@@ -84,9 +84,9 @@ hr{
   margin-top: 40px;
   border: circle;
   border-radius: 30px;
-  width:30px;
-  length:30px;
-  align: center;
+  width: 30px;
+  height: 30px;
+  text-align: center;
 }
 
 hr{
@@ -103,7 +103,6 @@ hr{
   width: 700px;
 }
 .comm-second{
-  
   width: 700px;
 }
 
@@ -113,12 +112,11 @@ hr{
   border: circle;
   border-radius: 30px;
   width:30px;
-  length:30px;
-  align: center;
+  height:30px;
+  text-align: center;
 }
 
 .name-text{
-  margin-left: 60px;
   margin-top: 10px;
 }
 
@@ -136,17 +134,7 @@ hr{
   text-align: center;
   
 }
-.hire-button{
-  margin-left:60px;
-}
 
-.white-button{
-  background-color: white;
-  border-radius: 60px;
-  font-size:10px;
-  text-align: center;
-  margin-left: 5px;
-}
 .black-button{
   background:rgb(36, 31, 31);
   border-color: none;
@@ -177,33 +165,28 @@ hr{
 
 .about-text{
   color: lightgrey;
-  font-size :10px;
+  font-size: 10px;
   align-content: center;
-  display:flex;
+  display: flex;
 }
 
 .title-text{
   color: lightgrey;
-  font-size :10px;
-  margin-left:50px;
+  font-size: 10px;
 }
 .city-text{
   color: lightgrey;
-  font-size :10px;
-  margin-left:80px;
+  font-size: 10px;
 }
 
 .about-title{
-
   font-size :15px;
-  margin-left:100px;
   margin-top: 80px;
 }
 .skill-title{
   margin-top: 50px;
   margin-top: 50px;
   font-size :10px;
-  margin-left:110px;
   font-weight: bold;
 }
 .skill-box{
