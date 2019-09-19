@@ -8,7 +8,6 @@ import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
 import ProfilePage from "./pages/Profile";
 import DiscoverPage from "./pages/Discover";
-import CreateProjectForm from "./components/CreateProjectForm";
 import CreateProjectFormHook from "./components/CreateProjectFormHook";
 
 import NavBar from "./components/NavBar"
@@ -71,7 +70,6 @@ class App extends Component {
               Below are temp routes
             */}
             <Route path="/discover" component={DiscoverPage} />
-            <Route path="/project" component={CreateProjectForm} />
             <Route path="/project-hook" component={CreateProjectFormHook} />
           </Switch>
         </BrowserRouter>

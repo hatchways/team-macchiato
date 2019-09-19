@@ -16,8 +16,9 @@ export const userService = {
    login,
    logout,
    register,
+   editProfile,
    // getAll,
-   // getById,
+   getById,
    // update,
    // delete: _delete
 };
@@ -63,6 +64,20 @@ function register(user) {
    return fetch(`${apiUrl}/auth/register`, requestOptions)
       .then(handleResponse);
 }
+function editProfile(data) {
+   const requestOptions = {
+      method: 'PUT',
+      headers: { 
+         ...authHeader(),
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+   };
+
+   return fetch(`${apiUrl}/users/editProfile`, requestOptions)
+      .then(handleResponse);
+} 
+
 
 const hitProjRoute = (options) => {
    const requestOptions = options.requestOptions
@@ -142,14 +157,16 @@ function respondToConnection(userId, accept) {
 //    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
 // }
 
-// function getById(id) {
-//    const requestOptions = {
-//        method: 'GET',
-//        headers: authHeader()
-//    };
+function getById(id) {
+   const requestOptions = {
+       method: 'GET',
+       headers: {
+         'Content-Type': 'application/json',
+      },
+   };
 
-//    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
-// }
+   return fetch(`${apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+}
 
 // function update(user) {
 //    const requestOptions = {

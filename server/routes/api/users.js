@@ -17,12 +17,29 @@ router.get("/all", (req, res) => {
    });
 });
 
+// @route GET /api/users/:user_id
+// @desc GET a specific user (include: all)
+// @access PUBLIC
+
 // Route to play with params
 router.get("/:userId", (req, res) => {
    let userId = req.params.userId;
-   User.findByPk(userId).then(user => {
-      console.log(user);
+   User.findAll({
+       include: [
+           {
+               model: Project
+           },
+           {
+               model: Skill, as: "skills"
+           }
+        ],
+       where: { id: userId }
+   }).then(user => {
+       console.log(user)
+      res.send(user)
    });
+
+   
 });
 module.exports = router;
 
@@ -31,7 +48,7 @@ module.exports = router;
 // @body    Any number of user attributes ... verification TBD
 // @access  Authorized
 router.put(
-   "/edit",
+   "/editProfile",
    passport.authenticate("jwt", { session: false }),
    (req, res) => {
       // - Users can only edit their own projects
@@ -45,7 +62,9 @@ router.put(
                return res.send(user)
             })
          }
-         return res.status(500).send("Error: User does not exist")
+         else {
+            return res.status(500).send("Error: User does not exist")
+         }
       })
    }
 );
