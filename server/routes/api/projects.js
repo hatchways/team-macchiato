@@ -46,6 +46,7 @@ const fetchProjPhotosFromS3 = projs => {
          .then(photos => {
             // console.log(photos)
             return {
+               id: proj.id,
                photos,
                desc: proj.desc,
                title: proj.title,

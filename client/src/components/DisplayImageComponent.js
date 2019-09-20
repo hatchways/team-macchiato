@@ -9,7 +9,6 @@ export default function (props) {
    let imageUrl = ''
    if (photo) {
       // photo = JSON.parse(photo)
-      console.log(photo)
       let imgType = photo.ContentType
       let arrayBuffer = photo.Body.data
 
@@ -18,18 +17,13 @@ export default function (props) {
       imageUrl = "https://via.placeholder.com/345x200"
    }
    return (
-      <div>
-         {/* <img src={imageUrl} />
-         <CardMedia style={{ height: props.height }}
-            src={imageUrl} title={props.title} /> */}
-         <CardMedia
-            component="img"
-            alt={props.title}
-            height={props.height}
-            image={imageUrl}
-            title={props.title}
-         />
-      </div>
+      <CardMedia
+         component="img"
+         alt={props.title}
+         // height={props.height}
+         image={imageUrl}
+         title={props.title}
+      />
    )
 }
 // class DisplayImageComponent extends Component {

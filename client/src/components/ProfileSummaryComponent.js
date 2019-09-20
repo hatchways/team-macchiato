@@ -5,17 +5,34 @@ import EditProfileForm from './ProfileSummaryEdit'
 import MyButton from './ButtonComponents'
 import Skill from './SkillComponent'
 import { Typography, Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
+
+const useStyles = makeStyles({
+   card: {
+      margin: 10,
+      maxWidth: '45%',
+   },
+   media: {
+      height: 200,
+   }
+})
 
 export default function ProfileSummaryComponent(props) {
+   const classes = useStyles()
+
    let { user, sameUser, updateUserSummary } = props
-   user.title = 'Professional Fortnite Player'
-   user.location = 'In my Mother\'s basement'
 
-   let skillPlaceholder = ['Design', 'Illustration', 'UI', 'UX', 'Product Design', 'Mobile']
-   let skills = skillPlaceholder.map(skill =>
-      <Skill key={skill}>{skill}</Skill>
+   if (!user.title || user.title === '') user.title = 'Professional Fortnite Player'
+   if (!user.location || user.location === '') user.location = 'In my Mother\'s basement'
+
+   let renderSkills = user.skills.map(skill =>
+      <Skill key={skill.id}>{skill.skill}</Skill>
    )
-
+   // let skillPlaceholder = ['Design', 'Illustration', 'UI', 'UX', 'Product Design', 'Mobile']
+   // renderSkills = skillPlaceholder.map(skill =>
+   //    <Skill key={skill}>{skill}</Skill>
+   // )
+   
    let centerMe = 'row justify-content-center align-items-center'
 
    let smallTextStyle = {
@@ -29,9 +46,9 @@ export default function ProfileSummaryComponent(props) {
    }
 
    let description = 'I am a create designer from Toronto. I enjoy creating solutions for web and mobile app. Available for fulltime, freelance or remote work opportunities.'
-
+   console.log(user)
    return (
-      <Box className=" col-lg-3 profile-detail">
+      <Box className=" col-lg-3 profile-detail" style={{ height: '100vh' }}>
          <br />
          <div className={centerMe}>
             <Pfp size={80} />
@@ -61,7 +78,7 @@ export default function ProfileSummaryComponent(props) {
             </MyButton>
             <MyButton>Message</MyButton>
          </div>
-         <br/>
+         <br />
          <div className={centerMe}>
             {// Only display this if user is viewing their own profile
                sameUser &&
@@ -77,7 +94,7 @@ export default function ProfileSummaryComponent(props) {
             display: 'flex',
             flexWrap: 'wrap'
          }}>
-            {skills}
+            {renderSkills}
          </Box>
          <hr className='hr-prof' />
          <Box textAlign="center" >

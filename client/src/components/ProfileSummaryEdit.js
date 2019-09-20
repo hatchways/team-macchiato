@@ -99,7 +99,7 @@ export default function EditProfile(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Create a New Project</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit Profile</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter the Fields and Click Submit!
@@ -147,7 +147,8 @@ export default function EditProfile(props) {
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
                   {imgSrc !== null ? <img src={imgSrc} /> : ""}
-                  <p>Drag 'n' drop some files here, or click to select files</p>
+                  {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
+                  <p>Drag 'n' drop some files here (Actually please don't, you'll break the app)</p>
                 </div>
               </section>
             )}
@@ -158,7 +159,7 @@ export default function EditProfile(props) {
             Cancel
           </Button>
           <Button onClick={submitEditProfileData} color="primary">
-            Subscribe
+            Save Changes
           </Button>
         </DialogActions>
       </Dialog>

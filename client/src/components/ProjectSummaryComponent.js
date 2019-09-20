@@ -1,23 +1,24 @@
 import React, { Component } from 'react'
 
-import { Card, CardContent, CardActionArea, CardActions } from '@material-ui/core'
-import { Typography, Button } from '@material-ui/core'
+import { Container, Card, CardContent, CardActionArea, CardActions } from '@material-ui/core'
+import { Typography, Button, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 
 import DisplayImage from './DisplayImageComponent'
 import MediaComponent from './MediaComponent'
 
-import { projectService } from '../services/userServices'
+import ProjectDetailModal from '../pages/ProjectDetail'
 
+import { projectService } from '../services/userServices'
 
 const useStyles = makeStyles({
    card: {
-      width: 345,
-      // maxWidth: 345,
+      margin: 10,
+      maxWidth: '45%',
    },
    media: {
       height: 200,
-   },
+   }
 })
 
 function ProjectSummary(props) {
@@ -25,10 +26,10 @@ function ProjectSummary(props) {
 
    let project = props.project
    let photo = project.photos[0]
-   console.log(photo)
+   console.log(project)
    return (
-      <Card className={classes.card}>
-         <CardActionArea>
+      <Card className={classes.card} id={'project_' + project.id}>
+         <CardActionArea onClick={props.onClick}>
             <DisplayImage
                photo={photo}
                height={200}
@@ -57,13 +58,14 @@ function ProjectSummary(props) {
 
 export default class ProjectSummaries extends Component {
    state = {
-      loading: true
+      loading: true,
+      showModal: false
    }
 
    componentWillMount() {
       projectService.getProj(this.props.userId)
          .then(res => {
-            console.log(res)
+            // console.log(res)
             // let photo = projectDeets[0].photos[0]
             this.setState({
                projects: res,
@@ -75,6 +77,14 @@ export default class ProjectSummaries extends Component {
          })
    }
 
+   handleClick = (e) => {
+      console.log(e.currentTarget.parentNode.id)
+      this.setState({ showModal: true })
+   }
+   handleModalClose = () => {
+      this.setState({ showModal: false })
+   }
+
    render() {
       const loading = this.state.loading
       if (loading) {
@@ -84,14 +94,40 @@ export default class ProjectSummaries extends Component {
       if (!projects || projects === []) {
          return 'There are no Projects'
       }
+
+      const projsContainer = {
+         display: 'flex',
+         flexDirection: 'row',
+         flexWrap: 'wrap',
+         // width: '50%',
+         maxWidth: '70%',
+         margin: '0 auto',
+      }
+      const mediaComponent = {
+         flexBasis: '33.3333333333 %',
+         // width: '33.3333333333 %',
+         maxWidth: '50%',
+         padding: '0 10px',
+         boxSizing: 'border-box',
+      }
       const displayProjects = this.state.projects.map(project =>
-         <ProjectSummary project={project} />
+         <ProjectSummary project={project}
+            onClick={this.handleClick}
+            style={mediaComponent}
+            key={project.id} />
       )
       return (
-         <div>
-            <MediaComponent />
+         <Container style={projsContainer} id="ProjectContainer">
+            <ProjectDetailModal show={this.state.showModal}
+               onHide={this.handleModalClose} />
+            {/* <MediaComponent style={mediaComponent} />
+            <MediaComponent style={mediaComponent} />
+            <MediaComponent style={mediaComponent} />
+            <MediaComponent style={mediaComponent} />
+            <MediaComponent style={mediaComponent} />
+            <MediaComponent style={mediaComponent} /> */}
             {displayProjects}
-         </div>
+         </Container>
       )
    }
 }
