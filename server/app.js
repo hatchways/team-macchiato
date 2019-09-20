@@ -13,11 +13,13 @@ import projectRouter from "./routes/api/projects";
 import relationshipRouter from "./routes/api/relationships";
 
 var app = express();
+var bodyParser = require("body-parser");
 
 // cors
 app.use(cors());
 
-app.use(bodyParser.json({ limit: '10mb' }))
+// What is this?
+app.use(bodyParser.json({ limit: "10mb" }));
 
 app.use(logger("dev"));
 app.use(json());

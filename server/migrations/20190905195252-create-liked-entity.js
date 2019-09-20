@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Liked_Entities', {
+    return queryInterface.createTable("Liked_Entities", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -20,8 +20,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: "Entities",
-          key: "entity_id",
-          as: "entity_id",
+          key: "id",
+          as: "entity_id"
         }
       },
       createdAt: {
@@ -35,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Liked_Entities');
+    return queryInterface.dropTable("Liked_Entities");
   }
 };

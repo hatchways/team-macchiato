@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  User.associate = function (models) {
+  User.associate = function(models) {
     User.hasMany(models.Project, { foreignKey: "user_id" });
 
     // User_Skill
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       as: "skills",
       foreignKey: "user_id"
     });
-    
+
     // Relationships
     User.belongsToMany(models.User, {
       through: models.Relationship,
@@ -35,16 +35,9 @@ module.exports = (sequelize, DataTypes) => {
 
     // Liked_Entity
     User.belongsToMany(models.Entity, {
-      throught: models.Liked_Entity,
-      as: "user_id",
+      through: models.Liked_Entity,
       foreignKey: "user_id"
     });
-
-    // User.belongsToMany(models.User, {
-    //    through: models.Relationship,
-    //    as: "initiator",
-    //    foreignKey: "action_user_id"
-    // });
   };
   return User;
 };
