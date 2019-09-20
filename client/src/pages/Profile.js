@@ -83,14 +83,14 @@ class ProfilePage extends Component {
                         <button className='white-button'>Message</button>
                         <hr className='hr-prof' />
 
-                        <div>
+                         <div>
                             
-                            <EditProfileForm
+                              <EditProfileForm
 
                                     updateUserProfile={this.updateUserProfile}
-                                />
-                        {/* {
-                            user &&
+                               />
+                             {/* {
+                              user &&
                                 currentUser.id === user.id ?
                                
                                 <EditProfileForm
@@ -168,14 +168,14 @@ class ProfilePage extends Component {
 
                                      </Button>
                                     {/* <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */} */}
+                                        onHide={addModalclose} /> */} 
                                 </div>
                                 <div className="col-lg-5  ">
                                     <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
                                         <img className='project-image' src={img1} />
                                      </Button>
                                     {/* <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */} */}
+                                        onHide={addModalclose} /> */} 
                                 </div>
                             </div>
                         </div>

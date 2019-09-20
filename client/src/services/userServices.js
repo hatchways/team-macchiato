@@ -193,7 +193,12 @@ function getById(id) {
 
 const handleResponse = (response) => {
    return response.text().then(text => {
-      const data = text && JSON.parse(text);
+       console.log(text);
+    console.log(text && typeof text == 'string')
+    const data = JSON.parse(`"${text}"`) ;
+    //   const data = (text && typeof text == 'string') ? JSON.parse(text) : text;
+    //   const data = text && JSON.parse(text);
+    //   console.log(data);
       if (!response.ok) {
          if (response.status === 401) {
             // auto logout if 401 response returned from api

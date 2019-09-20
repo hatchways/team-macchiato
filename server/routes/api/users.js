@@ -13,7 +13,9 @@ router.get("/all", (req, res) => {
    User.findAll({
       include: [{ all: true }]
    }).then(users => {
-      console.log(users);
+    //   console.log(users);
+      res.send(users);
+
    });
 });
 
