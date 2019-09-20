@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 // import Ping from "./Ping";
 
-import DisplayProject from '../components/DisplayProjectComponent'
+import DisplayImage from '../components/DisplayImageComponent'
 
 const landinPageStyle = theme => ({
   landingContainer: {
@@ -20,7 +20,6 @@ class LandingPage extends Component {
     return (
       <div className={classes.landingContainer}>
         <Typography>Landing Page</Typography>
-        <DisplayProject />
       </div>
     );
   }

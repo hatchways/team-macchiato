@@ -9,7 +9,8 @@ import img6 from '../assets/images/profilepic.jpg';
 
 import { userService } from '../services/userServices';
 
-import Profile from '../components/ProfileSummaryComponent'
+import ProfileSummary from '../components/ProfileSummaryComponent'
+import ProjectSummary from '../components/ProjectSummaryComponent'
 
 class ProfilePage extends Component {
 
@@ -26,7 +27,7 @@ class ProfilePage extends Component {
    componentWillMount() {
       this.updateUserSummary()
    }
-   
+
    updateUserSummary = () => {
       let pathname = this.props.location.pathname
       let otherUserId = pathname.split('/')[2]
@@ -60,6 +61,7 @@ class ProfilePage extends Component {
 
    render() {
       let user = this.state.user;
+      if (!user) return 'User Does Not Exist'
       let updateUserSummary = this.updateUserSummary;
       let addModalclose = () => this.setState({ addModalShow: false });
       let currentUser = this.props.currentUserInfo
@@ -69,69 +71,11 @@ class ProfilePage extends Component {
          <div>
             <div className="row">
                {/* <div className="gif-container"> */}
-               <Profile 
+               <ProfileSummary
                   user={user}
                   sameUser={currentUser.id === user.id}
                   updateUserSummary={updateUserSummary} />
-               <div className="col-lg-7 verticalLine ">
-                  <div className="row last-row">
-                     <div className="col-lg-5 ">
-
-                        <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
-                           <img className='project-image' src={img1} />
-                        </Button>
-
-                        <ProjectDetail show={this.state.addModalShow}
-                           onHide={addModalclose} />
-
-
-                     </div>
-                     <div className="col-lg-5  ">
-
-                        <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
-
-                                    <img className='project-image' src={img1} />
-                        </Button>
-                        {/* <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} /> */}
-                     </div>
-                  </div>
-                  <div className="row">
-                     <div className="row  middle-row ">
-                        <div className="col-lg-5  ">
-
-                           <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
-
-                              <img className='project-image' src={img1} />
-
-                           </Button>
-                           {/* <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */}
-                        </div>
-                        <div className="col-lg-5  ">
-                           <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
-                              <img className='project-image' src={img1} />
-                           </Button>
-                           {/* <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */}
-                        </div>
-                     </div>
-                  </div>
-                  <div className="row">
-                     <div className="col-lg-5 ">
-
-                        <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
-
-                                    <img className='project-image' src={img1} />
-
-                        </Button>
-
-                        {/* <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} /> */}
-                            </div>
-
-                  </div>
-               </div>
+               <ProjectSummary userId={user.id}/>
             </div>
          </div>
 

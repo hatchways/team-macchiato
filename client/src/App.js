@@ -20,11 +20,11 @@ class App extends Component {
 
   handleUpdateUserState(user) {
     if (!user) {
-      user = JSON.parse(localStorage.getItem('user')).user
+      user = JSON.parse(localStorage.getItem('user'))
       // If no user is in storage
       if (!user)
         return 'No user is logged in'
-      return this.setState({ user: JSON.parse(localStorage.getItem('user')).user })
+      return this.setState({ user: user.user })
     }
     // Directly update state to user param
     // CURRENTLY UNUSED 

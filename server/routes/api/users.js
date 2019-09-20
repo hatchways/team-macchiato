@@ -40,6 +40,9 @@ router.get("/:userId", (req, res) => {
        ]
    }).then(user => {
       res.send(user[0])
+   }).catch(err => {
+      console.log(err)
+      res.status(500).send(err)
    });
 
    

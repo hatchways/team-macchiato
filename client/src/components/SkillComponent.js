@@ -1,23 +1,15 @@
 import React, { Component } from 'react'
 import { styled } from '@material-ui/styles'
 
-import { Button } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 
-import { Link } from 'react-router-dom'
-
-const SkillComponent = styled(Button)({
-   width: 140,
-   height: 48,
-   borderRadius: 90,
+const SkillComponent = styled(Typography)({
+   padding: '10px 20px 10px 20px',
+   margin: '5px 4px 5px 4px',
+   borderRadius: 5,
+   border: '1px solid #d3d3d3',
    fontSize: 14,
-   textTransform: 'none',
-})
-
-const MyLink = styled(Link)({
-   textDecoration: 'none',
-   '&:hover': {
-      textDecoration: 'none',
-   }
+   textTransform: 'capitalize',
 })
 
 export default SkillComponent

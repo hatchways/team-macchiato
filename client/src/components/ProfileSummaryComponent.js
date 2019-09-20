@@ -1,14 +1,20 @@
 import React from 'react'
 
 import Pfp from './ProfilePicComponent'
-import EditProfileForm from './EditProfileComponent'
+import EditProfileForm from './ProfileSummaryEdit'
 import MyButton from './ButtonComponents'
+import Skill from './SkillComponent'
 import { Typography, Box } from '@material-ui/core'
 
 export default function ProfileSummaryComponent(props) {
    let { user, sameUser, updateUserSummary } = props
    user.title = 'Professional Fortnite Player'
    user.location = 'In my Mother\'s basement'
+
+   let skillPlaceholder = ['Design', 'Illustration', 'UI', 'UX', 'Product Design', 'Mobile']
+   let skills = skillPlaceholder.map(skill =>
+      <Skill key={skill}>{skill}</Skill>
+   )
 
    let centerMe = 'row justify-content-center align-items-center'
 
@@ -17,11 +23,15 @@ export default function ProfileSummaryComponent(props) {
       fontSize: 12,
       color: '#777',
    }
+   let medHeader = {
+      marginTop: 30,
+      marginBottom: 10
+   }
 
    let description = 'I am a create designer from Toronto. I enjoy creating solutions for web and mobile app. Available for fulltime, freelance or remote work opportunities.'
-   
+
    return (
-      <div className=" col-lg-3 profile-detail">
+      <Box className=" col-lg-3 profile-detail">
          <br />
          <div className={centerMe}>
             <Pfp size={80} />
@@ -36,10 +46,10 @@ export default function ProfileSummaryComponent(props) {
             </Typography>
          </div>
          <Box textAlign="center" fontWeight='fontWeightMedium'>
-            <Typography textAlign="center" style={smallTextStyle}>{user.title}</Typography>
+            <Typography style={smallTextStyle}>{user.title}</Typography>
          </Box>
-         <Box textAlign="center" >
-            <Typography textAlign="center" style={smallTextStyle}>{user.location}</Typography>
+         <Box textAlign="center">
+            <Typography style={smallTextStyle}>{user.location}</Typography>
          </Box>
          <div className={centerMe} style={{ marginTop: 20 }}>
             <MyButton style={{
@@ -51,7 +61,7 @@ export default function ProfileSummaryComponent(props) {
             </MyButton>
             <MyButton>Message</MyButton>
          </div>
-         <hr className='hr-prof' />
+         <br/>
          <div className={centerMe}>
             {// Only display this if user is viewing their own profile
                sameUser &&
@@ -60,25 +70,23 @@ export default function ProfileSummaryComponent(props) {
                />
             }
          </div>
-         <hr className='hr-prof' />
          <Box className={centerMe}>
-            <Typography variant='h6'>
-               Skills:
-            </Typography>
-            <hr />
-            <Typography>WORK IN PROGRESS</Typography>
+            <Typography variant='h6' style={medHeader}>Skills:</Typography>
+         </Box>
+         <Box className={centerMe} style={{
+            display: 'flex',
+            flexWrap: 'wrap'
+         }}>
+            {skills}
          </Box>
          <hr className='hr-prof' />
          <Box textAlign="center" >
-            <Typography variant='h6'>
-               About:
-            </Typography>
-            <hr />
+            <Typography variant='h6' style={medHeader}>About:</Typography>
             <Typography style={smallTextStyle}>
                {description}
             </Typography>
          </Box>
 
-      </div>
+      </Box>
    )
 }
