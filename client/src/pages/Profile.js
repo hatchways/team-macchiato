@@ -81,11 +81,9 @@ class ProfilePage extends Component {
                         <h5 className='city-text'>{user && user[0].location}</h5>
                         <button className='orange-button hire-button'>Hire me</button>
                         <button className='white-button'>Message</button>
-                        <hr className='hr-prof' />
-
                         <div>
                             
-                            <EditProfileForm
+                              <EditProfileForm 
 
                                     updateUserProfile={this.updateUserProfile}
                                 />
@@ -100,10 +98,13 @@ class ProfilePage extends Component {
                                
                                 :
                                 ''
-                        } */}
+                                } */}
                        
                         </div>
-                        <hr />
+                        <hr className='hr-prof' />
+
+                         
+                       
 
 
                         <h6 className='skill-title'>Skills: </h6>
@@ -132,8 +133,7 @@ class ProfilePage extends Component {
                         <hr className='hr-prof' />
                         
                         <h6 className='about-title'>About</h6>
-                        <p className='about-text'>I am a create designer from Toronto.I enjoy creating solutions for web anad mobile app.
-                        Available  for fulltime, freelance or remote work opportunities.</p>
+                        <p className='about-text'>{user && user[0].About}</p>
                     </div>
                     <div className="col-lg-7 verticalLine ">
                         <div className="row last-row">
@@ -189,7 +189,7 @@ class ProfilePage extends Component {
                                </Button>
 
                                 {/* <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} /> */} */}
+                                    onHide={addModalclose} /> */} 
                             </div>
 
                         </div>

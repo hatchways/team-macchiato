@@ -24,6 +24,7 @@ export default function EditProfile(props) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
   const [title, setTitle] = React.useState("");
+  const [About, setAbout] = React.useState("");
   const [location, setLocation] = React.useState("");
   const [imgSrc, setImgSrc] = React.useState(null);
   const imageMaxSize = 1000000000000;
@@ -43,6 +44,7 @@ export default function EditProfile(props) {
       name,
       title,
       location,
+       About,
       
      
     }
@@ -89,8 +91,8 @@ export default function EditProfile(props) {
   });
 
   return (
-    <div>
-      <Button className="edit-button" variant="outlined" color="primary" onClick={handleClickOpen}>
+    <div className='edit-div'>
+      <Button className="editprof-button"  color="primary" onClick={handleClickOpen}>
          Edit
       </Button>
       <Dialog
@@ -99,7 +101,7 @@ export default function EditProfile(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Create a New Project</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit Profile</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter the Fields and Click Submit!
@@ -135,6 +137,16 @@ export default function EditProfile(props) {
             type="location"
             fullWidth
           />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="About"
+            value={About}
+            onChange={e => setAbout(e.target.value)}
+            label="About"
+            type="About"
+            fullWidth
+          />
           
           <Dropzone
             onDrop={handleOnDrop}
@@ -158,7 +170,7 @@ export default function EditProfile(props) {
             Cancel
           </Button>
           <Button onClick={submitEditProfileData} color="primary">
-            Subscribe
+            Save Changes
           </Button>
         </DialogActions>
       </Dialog>
