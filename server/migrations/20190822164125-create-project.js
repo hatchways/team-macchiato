@@ -20,7 +20,7 @@ module.exports = {
       link: {
         type: Sequelize.STRING
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
         onDelete: "CASCADE",
         allowNull: false,
