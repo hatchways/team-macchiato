@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       as: "requester",
       foreignKey: "requester_id"
     });
+
     User.belongsToMany(models.User, {
       through: models.Relationship,
       as: "requestee",

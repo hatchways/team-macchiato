@@ -5,6 +5,8 @@ const passport = require("passport");
 const Project = require("../../models").Project;
 const Skill = require("../../models").Skill;
 const Entity = require("../../models").Entity;
+const Liked_Entity = require("../../models").Liked_Entity;
+const Entity_Comment = require("../../models").Entity_Comment;
 
 // Get all projects of a user
 router.get("/:userId", async (req, res) => {
@@ -52,6 +54,7 @@ router.post(
           entity_id: entity.id,
           user_id: userId
         };
+
         Project.create(project).then(proj => {
           console.log(`Successfully created project with projId ${proj.id}`);
           return res.send(proj);
@@ -99,6 +102,84 @@ router.put(
           });
         }
       });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  }
+);
+
+// Like Project
+router.post(
+  "/like",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const userId = req.user.id;
+    const { entity_id } = req.body;
+
+    try {
+      console.log(userId);
+      console.log(entity_id);
+
+      let likedEntity = await Liked_Entity.findOne({
+        where: {
+          user_id: userId,
+          entity_id: entity_id
+        }
+      });
+
+      if (!likedEntity) {
+        Liked_Entity.create({
+          user_id: userId,
+          entity_id: entity_id
+        }).then(like => {
+          console.log("like_created");
+        });
+      }
+
+      if (likedEntity) {
+        Liked_Entity.destroy({
+          where: { user_id: userId, entity_id: entity_id }
+        }).then(numOfDestroyedRows => {
+          console.log("Successfully removed Entity");
+          res.status(200).send({ removed: numOfDestroyedRows });
+        });
+      }
+
+      // if (userSkill) {
+      //   return res
+      //     .status(500)
+      //     .send({ error: `User already has skill '${skill.skill}'` });
+      // }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  }
+);
+
+router.post(
+  "/comment",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const userId = req.user.id;
+    const { target_entity_id, comment } = req.body;
+    try {
+      // Create a new entity
+      const entity_id = await Entity.create({}).then(entity => {
+        return entity.id;
+      });
+
+      if (entity_id) {
+        Entity_Comment.create({
+          comment,
+          user_id: userId,
+          entity_id: entity_id,
+          target_entity_id
+        }).then(entity_comment => {
+          res.status(200).send("Comment Created");
+        });
+      }
     } catch (err) {
       console.log(err);
       res.status(500).send(err);
