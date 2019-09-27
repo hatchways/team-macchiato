@@ -18,7 +18,7 @@ import List from "@material-ui/core/List";
 import CloseIcon from "@material-ui/icons/Close";
 
 // Services
-import { projectService } from "../services/userServices"
+import { projectService } from "../services/userServices";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
   },
   listItemButton: {
     cursor: "pointer",
-    background: "red",
     position: "absolute",
     top: "0",
     right: "0",
@@ -41,6 +40,9 @@ const useStyles = makeStyles(theme => ({
   },
   xIcon: {
     zIndex: "0"
+  },
+  reactDropZone: {
+    padding: "20px"
   }
 }));
 
@@ -69,25 +71,24 @@ export default function CreateProjectForm() {
 
     const getBase64 = async file => {
       return new Promise((resolve, reject) => {
-        const reader = new FileReader()
+        const reader = new FileReader();
 
-        reader.readAsDataURL(file)
+        reader.readAsDataURL(file);
 
         reader.onload = () => {
           if (!!reader.result) {
             resolve({
-               fileName: file.name,
-               imageData: reader.result
-            })
-         }
-          else {
-            reject(Error("Failed converting to base64"))
+              fileName: file.name,
+              imageData: reader.result
+            });
+          } else {
+            reject(Error("Failed converting to base64"));
           }
-        }
-      })
-    }
+        };
+      });
+    };
 
-    let encodedFiles = files.map(async file => getBase64(file))
+    let encodedFiles = files.map(async file => getBase64(file));
 
     Promise.all(encodedFiles)
       .then(res => {
@@ -95,12 +96,13 @@ export default function CreateProjectForm() {
           photos: res,
           title: title,
           desc: description,
-          link: link,
-        }
-        projectService.uploadProj(proj)
-      }).catch(err => {
-        console.error(err)
+          link: link
+        };
+        projectService.uploadProj(proj);
       })
+      .catch(err => {
+        console.error(err);
+      });
 
     setOpen(false);
     setTitle("");
@@ -186,7 +188,7 @@ export default function CreateProjectForm() {
           />
           {/* React DropZone */}
           <div>
-            <div {...getRootProps()}>
+            <div className={classes.reactDropZone} {...getRootProps()}>
               <input {...getInputProps()} />
               {!isDragActive && "Click here or drop a file to upload!"}
               {isDragActive && !isDragReject && "Drop it like it's hot!"}
