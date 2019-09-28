@@ -263,8 +263,13 @@ hr{
 }
 .container{
   margin-left: 10px;
-  width:300px;
+  width:100%;
 }
+
+.container-nav{
+    margin-left: 10px;
+    width:400px;
+  }
 
 .project-button{
   background-color:white;

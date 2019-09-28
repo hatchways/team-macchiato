@@ -7,7 +7,7 @@ function Nav(){
        <h5 className='top-text'> CREATIVE  HUB</h5>
        <button className='black-button sign-text'>Sign Up</button>
        <button className='orange-button login-button'>Login</button>
-       <div className='container' >
+       <div className='container-nav' >
              <div className='menu'></div>
              <div className='menu'></div>
              <div className='menu'></div>

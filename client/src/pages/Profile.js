@@ -4,11 +4,13 @@ import { Modal, Form, Button } from "react-bootstrap";
 import { ProjectDetail } from './ProjectDetail';
 import EditProfileForm from './EditProfile'
 import Dropzone from 'react-dropzone';
+import { Grid, Row, Col } from "react-flexbox-grid";
 
 import Nav from "./Nav";
 import img1 from '../assets/images/creativedesignerediting34199.jpg';
 import img6 from '../assets/images/profilepic.jpg';
 import { userService } from '../services/userServices';
+// import { Grid } from '@material-ui/core';
 
 class ProfilePage extends Component {
 
@@ -135,64 +137,66 @@ class ProfilePage extends Component {
                         <h6 className='about-title'>About</h6>
                         <p className='about-text'>{user && user[0].About}</p>
                     </div>
-                    <div className="col-lg-7 verticalLine ">
-                        <div className="row last-row">
-                            <div className="col-lg-5 ">
+                    <div className="col-lg-8 verticalLine ">
+                       <Grid> 
+                          <Row>
+                                 <Col lg={5}>
 
-                                <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
-                                    <img className='project-image' src={img1} />
-                                </Button>
+                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                       <img className='project-image' src={img1} />
+                                     </Button>
 
-                                <ProjectDetail show={this.state.addModalShow}
+                                   <ProjectDetail show={this.state.addModalShow}
                                     onHide={addModalclose} />
 
 
-                            </div>
-                            <div className="col-lg-5  ">
+                                 </Col>
+                                 <Col lg={5}>
 
-                                 <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
+                                      <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> 
 
-                                    <img className='project-image' src={img1} />
-                                </Button>
-                                {/* <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} /> */}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="row  middle-row ">
-                                <div className="col-lg-5  ">
+                                          <img className='project-image' src={img1} />
+                                       </Button>
+                                      
+                                   </Col>
+                            </Row>
+                          
+                           <Row>
+                                
+                                      <Col lg={5}>
 
-                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                           <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
 
-                                        <img className='project-image' src={img1} />
+                                                <img className='project-image' src={img1} />
 
-                                     </Button>
-                                    {/* <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */} */}
-                                </div>
-                                <div className="col-lg-5  ">
-                                    <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
-                                        <img className='project-image' src={img1} />
-                                     </Button>
-                                    {/* <ProjectDetail show={this.state.addModalShow}
-                                        onHide={addModalclose} /> */} */}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-lg-5 ">
+                                            </Button>
+                                           {/* <ProjectDetail show={this.state.addModalShow}
+                                            onHide={addModalclose} /> */} 
+                                       </Col>
+                                       <Col lg={5}>
+                                           <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}>
+                                                <img className='project-image' src={img1} />
+                                            </Button>
+                                           {/* <ProjectDetail show={this.state.addModalShow}
+                                            onHide={addModalclose} /> */} 
+                                       </Col>
+                                 
+                             </Row>
+                          
+                              <Row>
+                                   <Col lg={5}>
 
-                                <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> */}
+                                      <Button className='project-button' variant="primary" onClick={() => this.setState({ addModalShow: true })}> 
 
-                                    <img className='project-image' src={img1} />
+                                             <img className='project-image' src={img1} />
 
-                               </Button>
+                                      </Button>
 
-                                {/* <ProjectDetail show={this.state.addModalShow}
-                                    onHide={addModalclose} /> */} 
-                            </div>
+                                    
+                                    </Col>
 
-                        </div>
+                              </Row>
+                            </Grid>
                     </div>
                 </div>
             </div>
