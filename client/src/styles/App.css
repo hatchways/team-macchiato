@@ -178,19 +178,21 @@ hr{
 .about-text{
   color: lightgrey;
   font-size :10px;
-  align-content: center;
-  display:flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title-text{
   color: lightgrey;
   font-size :10px;
-  margin-left:50px;
+  margin-left:100px;
+  margin-bottom: 3px;
 }
 .city-text{
   color: lightgrey;
   font-size :10px;
-  margin-left:80px;
+  margin-left:100px;
 }
 
 .about-title{
@@ -261,8 +263,13 @@ hr{
 }
 .container{
   margin-left: 10px;
-  width:300px;
+  width:100%;
 }
+
+.container-nav{
+    margin-left: 10px;
+    width:400px;
+  }
 
 .project-button{
   background-color:white;
@@ -414,12 +421,19 @@ modal.Body{
   padding:0px;
 }
 
-.edit-button{
+.edit-div{
+ margin-left: 85px;
+}
+
+.editprof-button{
     border-block-color: white;
     border:none;
+    border-radius:2px;
     line-height: 0%;
     border-inline-color: white;
     background-color: white; 
+    padding:0px;
+   
 }
 
 .modal-backdrop.fade {

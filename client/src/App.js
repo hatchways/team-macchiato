@@ -17,14 +17,32 @@ import "./styles/App.css";
 import { userService } from './services/userServices'
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+          user: null
+        }
+      }
 
-  handleUpdateUserState(user) {
+//   handleUpdateUserState(user) {
+//     if (!user) {
+//       user = JSON.parse(localStorage.getItem('user')).user
+//       // If no user is in storage
+//       if (!user)
+//         return 'No user is logged in'
+//       return this.setState({ user: JSON.parse(localStorage.getItem('user')).user })
+//     }
+//     // Directly update state to user param
+//     // CURRENTLY UNUSED 
+//     return this.setState({ user: user })
+//   }
+handleUpdateUserState(user) {
     if (!user) {
-      user = JSON.parse(localStorage.getItem('user')).user
+      user = JSON.parse(localStorage.getItem('user'))
       // If no user is in storage
       if (!user)
         return 'No user is logged in'
-      return this.setState({ user: JSON.parse(localStorage.getItem('user')).user })
+      return this.setState({ user: user.user })
     }
     // Directly update state to user param
     // CURRENTLY UNUSED 
