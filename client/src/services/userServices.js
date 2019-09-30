@@ -12,16 +12,30 @@ function authHeader() {
 }
 
 export const userService = {
+  authHeader,
   login,
   logout,
   register,
   uploadProj,
-  getAll,
+  editProfile,
+  // getAll,
   searchDiscovery,
-  searchDiscoveryFilter
-  // getById,
+  searchDiscoveryFilter,
+  // getBy
+  getById
   // update,
   // delete: _delete
+};
+
+export const projectService = {
+  getProj,
+  uploadProj,
+  updateProj
+};
+
+export const connectionService = {
+  getPendingConnections,
+  respondToConnection
 };
 
 function login(email, password) {
@@ -40,12 +54,10 @@ function login(email, password) {
       return user;
     });
 }
-
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem("user");
 }
-
 function register(user) {
   const requestOptions = {
     method: "POST",
@@ -55,36 +67,98 @@ function register(user) {
 
   return fetch(`${apiUrl}/auth/register`, requestOptions).then(handleResponse);
 }
-
-function uploadProj(proj) {
-  console.log("PROJECT");
-  console.log(proj);
-  console.log(proj.photos);
+function editProfile(data) {
   const requestOptions = {
-    method: "POST",
+    method: "PUT",
     headers: {
       ...authHeader(),
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(proj)
+    body: JSON.stringify(data)
   };
-  fetch(`${apiUrl}/projects/`, requestOptions)
-    .then(res => res.text())
-    .then(text => console.log(text));
-  // fetch(`${apiUrl}/projects/`, requestOptions)
-  //    .then(ret => console.log(ret))
-  // console.log(proj)
+
+  return fetch(`${apiUrl}/users/editProfile`, requestOptions).then(
+    handleResponse
+  );
 }
-function getAll() {
+
+const hitProjRoute = options => {
+  const requestOptions = options.requestOptions;
+  return fetch(`${apiUrl}/projects${options.route}`, requestOptions).then(
+    handleResponse
+  );
+};
+function getProj(userId) {
+  return hitProjRoute({
+    requestOptions: {
+      method: "GET"
+    },
+    route: "/user/" + userId
+  });
+}
+function uploadProj(proj) {
+  return hitProjRoute({
+    requestOptions: {
+      method: "POST",
+      headers: {
+        ...authHeader(),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(proj)
+    },
+    route: "/upload"
+  });
+}
+function updateProj(proj, projectId) {
+  return hitProjRoute(proj, {
+    requestOptions: {
+      method: "PUT",
+      headers: {
+        ...authHeader(),
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(proj)
+    },
+    route: "/update/" + projectId
+  });
+}
+
+function getPendingConnections() {
   const requestOptions = {
     method: "GET",
     headers: {
+      ...authHeader(),
       "Content-Type": "application/json"
     }
   };
-
-  return fetch(`${apiUrl}/users/all`, requestOptions).then(handleResponse);
+  return fetch(`${apiUrl}/relationships/pending`, requestOptions).then(
+    handleResponse
+  );
+  // .then(text => {
+  //    console.log(text)
+  //    return text
+  // })
 }
+
+function respondToConnection(userId, accept) {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      ...authHeader(),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ accept })
+  };
+  return fetch(`${apiUrl}/relationships/${userId}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+// function getAll() {
+//    const requestOptions = {
+//        method: 'GET',
+//        headers: authHeader()
+//    };
 
 function searchDiscovery(search) {
   const requestOptions = {
@@ -113,14 +187,16 @@ function searchDiscoveryFilter(search) {
   return fetch(`${apiUrl}/discovery`).then(handleResponse);
 }
 
-// function getById(id) {
-//    const requestOptions = {
-//        method: 'GET',
-//        headers: authHeader()
-//    };
+function getById(id) {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
 
-//    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
-// }
+  return fetch(`${apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+}
 
 // function update(user) {
 //    const requestOptions = {
@@ -145,7 +221,7 @@ function searchDiscoveryFilter(search) {
 // the service checks if the http response from the api is 401 Unauthorized, logs the user out
 // This happens if the JWT token expires or is no longer valid for any reason.
 
-function handleResponse(response) {
+const handleResponse = response => {
   return response.text().then(text => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
@@ -160,4 +236,4 @@ function handleResponse(response) {
 
     return data;
   });
-}
+};

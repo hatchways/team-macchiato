@@ -1,3 +1,4 @@
+import regeneratorRuntime from "regenerator-runtime";
 import createError from "http-errors";
 import express, { json, urlencoded } from "express";
 import { join } from "path";
@@ -12,6 +13,8 @@ import userRouter from "./routes/api/users";
 import projectRouter from "./routes/api/projects";
 import discoveryRouter from "./routes/api/discovery";
 import relationshipRouter from "./routes/api/relationships";
+
+// import awsRouter from "./routes/api/awsController";
 
 var app = express();
 var bodyParser = require('body-parser')
@@ -39,6 +42,7 @@ app.use("/api/projects", projectRouter);
 app.use("/api/relationships", relationshipRouter);
 app.use("/api/discovery", discoveryRouter);
 app.use("/test", testRouter);
+// app.use("/sign_s3", awsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

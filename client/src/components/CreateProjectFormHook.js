@@ -18,7 +18,7 @@ import List from "@material-ui/core/List";
 import CloseIcon from "@material-ui/icons/Close";
 
 // Services
-import { userService } from "../services/userServices";
+import { userService, projectService } from "../services/userServices";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,7 +75,10 @@ export default function CreateProjectForm() {
 
         reader.onload = () => {
           if (!!reader.result) {
-            resolve(reader.result);
+            resolve({
+              fileName: file.name,
+              imageData: reader.result
+            });
           } else {
             reject(Error("Failed converting to base64"));
           }
@@ -93,7 +96,10 @@ export default function CreateProjectForm() {
           desc: description,
           link: link
         };
-        userService.uploadProj(proj);
+        projectService.uploadProj(proj);
+      })
+      .catch(err => {
+        console.error(err);
       })
       .catch(err => {
         console.error(err);

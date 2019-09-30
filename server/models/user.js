@@ -6,13 +6,16 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      profile_pic: DataTypes.STRING,
+      title: DataTypes.STRING,
+      location: DataTypes.STRING,
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE
     },
     {}
   );
   User.associate = function(models) {
-    User.hasMany(models.Project, { foreignKey: "user_id" });
+    User.hasMany(models.Project, { foreignKey: "userId" });
 
     User.belongsToMany(models.Skill, {
       through: models.UserSkill,
@@ -22,12 +25,12 @@ module.exports = (sequelize, DataTypes) => {
 
     User.belongsToMany(models.User, {
       through: models.Relationship,
-      as: "requester",
+      as: "requestee",
       foreignKey: "requester_id"
     });
     User.belongsToMany(models.User, {
       through: models.Relationship,
-      as: "requestee",
+      as: "requester",
       foreignKey: "requestee_id"
     });
     // User.belongsToMany(models.User, {

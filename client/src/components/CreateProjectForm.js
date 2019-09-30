@@ -10,6 +10,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+import { userService } from '../services/userServices'
+
 const useStyles = makeStyles(theme => ({
   root: {
     margin: "50px",
@@ -17,12 +19,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CreateProjectForm() {
+export default function EditProfile() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [link, setLink] = React.useState("");
+  const [location, setLocation] = React.useState("");
   const [imgSrc, setImgSrc] = React.useState(null);
   const imageMaxSize = 1000000000000;
   // Opens the modal
@@ -33,6 +34,20 @@ export default function CreateProjectForm() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  
+
+  const submitEditProfileData = () => {
+    let data = {
+      title,
+      location
+    }
+    console.log(data)
+    userService.editProfile(data)
+      .then(res => {
+        console.log(res)
+      })
+  }
 
   const onSubmit = e => {
     e.preventDefault();
@@ -97,21 +112,11 @@ export default function CreateProjectForm() {
           <TextField
             autoFocus
             margin="dense"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-            id="description"
-            label="description"
-            type="description"
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="link"
-            value={link}
-            onChange={e => setLink(e.target.value)}
-            label="link"
-            type="link"
+            value={location}
+            onChange={e => setLocation(e.target.value)}
+            id="location"
+            label="location"
+            type="location"
             fullWidth
           />
           <Dropzone
@@ -135,7 +140,7 @@ export default function CreateProjectForm() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={submitEditProfileData} color="primary">
             Subscribe
           </Button>
         </DialogActions>
