@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Project.associate = function(models) {
     // Project belongs to a User ~
-    Project.belongsTo(models.User, { foreignKey: "user_id" });
+    Project.belongsTo(models.User, { foreignKey: "userId" });
   };
   return Project;
 };
