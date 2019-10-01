@@ -223,11 +223,8 @@ function getById(id) {
 
 const handleResponse = response => {
   return response.text().then(text => {
-    if (text === "Unauthorized") {
-      logout();
-      return;
-    }
-    const data = text && JSON.parse(text);
+    if (text === "Unauthorized") return logout();
+    const data = text && typeof text == "string" ? JSON.parse(text) : text;
     if (!response.ok) {
       if (response.status === 401) {
         // auto logout if 401 response returned from api

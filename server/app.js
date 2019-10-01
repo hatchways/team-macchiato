@@ -22,9 +22,8 @@ var bodyParser = require('body-parser')
 // cors
 app.use(cors());
 
-
-// app.use(express.bodyParser({limit: '50mb'}));
-app.use(bodyParser.json({ limit: '5mb' }))
+// app.use(bodyParser.json({ limit: '5mb' }))
+app.use(bodyParser.json({ limit: '10mb' }))
 // app.use(bodyParser.json({ limit: '10mb' }))
 
 

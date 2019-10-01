@@ -96,7 +96,7 @@ export default function CreateProjectForm() {
           desc: description,
           link: link
         };
-        projectService.uploadProj(proj);
+        projectService.uploadProj(proj).then(res => res);
       })
       .catch(err => {
         console.error(err);
@@ -134,7 +134,14 @@ export default function CreateProjectForm() {
     rejectedFiles
   } = useDropzone({
     onDrop,
-    accept: "image/png",
+    accept: [
+      "image/png",
+      "image/gif",
+      "image/jpg",
+      "image/jpeg",
+      "video/mp4",
+      "video/webm"
+    ],
     minSize: 0,
     maxSize
   });
@@ -208,11 +215,12 @@ export default function CreateProjectForm() {
                       onClick={deleteFile}
                       id={file.name}
                       value={file}
+                      key={file.name}
                     >
                       <CloseIcon
                         className={classes.xIcon}
                         onClick={deleteFile}
-                        id={file.name}
+                        id={file.name + "_close"}
                         value={file}
                       />
                     </div>

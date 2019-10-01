@@ -34,11 +34,16 @@ router.get("/:userId", (req, res) => {
         as: "skills"
       }
     ],
-    where: { id: userId }
-  }).then(user => {
-    console.log(user);
-    res.send(user);
-  });
+    where: { id: userId },
+    attributes: ["id", "name", "location", "profile_pic", "email", "title"]
+  })
+    .then(user => {
+      res.send(user[0]);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    });
 });
 module.exports = router;
 
