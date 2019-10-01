@@ -23,6 +23,7 @@ const navBarStyle = theme => ({
       height: 90,
       paddingLeft: 50,
       paddingRight: 50,
+      boxShadow: 'none',
    },
    title: {
       display: 'block',
@@ -161,7 +162,7 @@ class NavBar extends Component {
          return null;
       }
       return (
-         <AppBar position="static">
+         <AppBar position="static" style={{ boxShadow: 'none' }}>
             <Toolbar className={classes.navBar}>
                {renderMenu}
                <Typography variant="h5" noWrap className={classes.title}>

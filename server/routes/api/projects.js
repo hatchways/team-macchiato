@@ -19,6 +19,45 @@ import { awsController } from "./awsController"
    ]
 }
 */
+const fetchProjPhotosFromS3 = projs => {
+   projs = projs.map(async proj => {
+      let photos = proj.photos.map(async data => {
+         let obj = JSON.parse(data)
+         let key = obj.Key
+         if (key) {
+            console.log(key)
+            return awsController.handleRetrieve(key)
+               .then(res => {
+                  return {
+                     ContentType: res.ContentType,
+                     Body: res.Body
+                  }
+               })
+               .catch(err => {
+                  console.log(err)
+                  throw "Failed to retrieve from s3: " + err
+               })
+         }
+         console.log("Nope")
+         return '' // if no key, return empty string
+      })
+
+      return Promise.all(photos)
+         .then(photos => {
+            // console.log(photos)
+            return {
+               id: proj.id,
+               photos,
+               desc: proj.desc,
+               title: proj.title,
+               link: proj.link,
+            }
+         })
+   })
+
+   return Promise.all(projs)
+}
+
 router.get("/user/:userId", async (req, res) => {
    try {
       const userId = req.params.userId
@@ -26,44 +65,11 @@ router.get("/user/:userId", async (req, res) => {
          where: {
             userId: userId
          }
-      }).then(projs => {
-         projs = projs.map(async proj => {
-            let photos = proj.photos.map(async data => {
-               let obj = JSON.parse(data)
-               let key = obj.Key
-               if (key) {
-                  console.log(key)
-                  return awsController.handleRetrieve(key)
-                     .then(res => {
-                        return {
-                           ContentType: res.ContentType,
-                           Body: res.Body
-                        }
-                     })
-                     .catch(err => {
-                        console.log(err)
-                        throw "Failed to retrieve from s3: " + err
-                     })
-               }
-               console.log("Nope")
-               return '' // if no key, return empty string
-            })
-
-            return Promise.all(photos)
-               .then(photos => {
-                  // console.log(photos)
-                  return {
-                     photos,
-                     desc: proj.desc,
-                     title: proj.title,
-                     link: proj.link,
-                  }
-               })
-         })
-         
-         Promise.all(projs)
-            .then(projs => res.send(projs))
       })
+         .then(fetchProjPhotosFromS3)
+         .then(projs => {
+            res.send(projs)
+         })
    } catch (err) {
       console.log(err)
       res.status(500).send(err)
@@ -108,7 +114,7 @@ router.post(
           */
          let s3Photos = addToS3(photos, userId)
          if (s3Photos) {
-            Promise.all()
+            Promise.all(s3Photos)
                .then(photoS3Data => {
                   // res.send(photoS3Data)
                   let project = {   // use photoS3

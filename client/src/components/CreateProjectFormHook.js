@@ -76,10 +76,10 @@ export default function CreateProjectForm() {
         reader.onload = () => {
           if (!!reader.result) {
             resolve({
-               fileName: file.name,
-               imageData: reader.result
+              fileName: file.name,
+              imageData: reader.result
             })
-         }
+          }
           else {
             reject(Error("Failed converting to base64"))
           }
@@ -98,6 +98,7 @@ export default function CreateProjectForm() {
           link: link,
         }
         projectService.uploadProj(proj)
+          .then(res => res)
       }).catch(err => {
         console.error(err)
       })
@@ -131,7 +132,7 @@ export default function CreateProjectForm() {
     rejectedFiles
   } = useDropzone({
     onDrop,
-    accept: "image/png",
+    accept: ["image/png", "image/gif", "image/jpg", "image/jpeg", "video/mp4", "video/webm"],
     minSize: 0,
     maxSize
   });
@@ -205,11 +206,12 @@ export default function CreateProjectForm() {
                       onClick={deleteFile}
                       id={file.name}
                       value={file}
+                      key={file.name}
                     >
                       <CloseIcon
                         className={classes.xIcon}
                         onClick={deleteFile}
-                        id={file.name}
+                        id={file.name+'_close'}
                         value={file}
                       />
                     </div>

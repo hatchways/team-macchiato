@@ -2,10 +2,7 @@ export default function (imgType, arrayBuffer) {
    let blob = new Blob([new Uint8Array(arrayBuffer)], { type: imgType })
    let urlCreator = window.URL || window.webkitURL
    let imageUrl = urlCreator.createObjectURL(blob)
-   return {
-      imageUrl,
-      urlCreator
-   }
+   return imageUrl
 }
 
 // Also this:
