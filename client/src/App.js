@@ -19,16 +19,13 @@ import { userService } from "./services/userServices";
 class App extends Component {
   handleUpdateUserState(user) {
     if (!user) {
-      user = JSON.parse(localStorage.getItem("user")).user;
+      user = JSON.parse(localStorage.getItem("user"));
       // If no user is in storage
       if (!user) return "No user is logged in";
-      return this.setState({
-        user: JSON.parse(localStorage.getItem("user")).user
-      });
     }
     // Directly update state to user param
     // CURRENTLY UNUSED
-    return this.setState({ user: user });
+    return this.setState({ user: user.user });
   }
 
   // true to get App to update its own state by fetching user from localStorage
