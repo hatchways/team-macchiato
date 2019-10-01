@@ -1,0 +1,12 @@
+TEAM_NAME="Aecio, Shums, Marco, Allan, Dan, Kidist"
+
+DB_USERNAME="macchiato_user"
+DB_PASSWORD="12345"
+DB_NAME="macchiato"
+
+SECRET="SECRET"
+
+S3_BUCKET="teammacchiatoapp"
+AWS_ACCESS_KEY="AKIA54GIIWKUMKYLUC73"
+AWS_SECRET_ACCESS_KEY="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"
+AWS_REGION="us-east-2"

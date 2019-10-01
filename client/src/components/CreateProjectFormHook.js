@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Dropzone from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,7 +18,7 @@ import List from "@material-ui/core/List";
 import CloseIcon from "@material-ui/icons/Close";
 
 // Services
-import { projectService } from "../services/userServices"
+import { userService, projectService } from "../services/userServices";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -69,25 +69,24 @@ export default function CreateProjectForm() {
 
     const getBase64 = async file => {
       return new Promise((resolve, reject) => {
-        const reader = new FileReader()
+        const reader = new FileReader();
 
-        reader.readAsDataURL(file)
+        reader.readAsDataURL(file);
 
         reader.onload = () => {
           if (!!reader.result) {
             resolve({
               fileName: file.name,
               imageData: reader.result
-            })
+            });
+          } else {
+            reject(Error("Failed converting to base64"));
           }
-          else {
-            reject(Error("Failed converting to base64"))
-          }
-        }
-      })
-    }
+        };
+      });
+    };
 
-    let encodedFiles = files.map(async file => getBase64(file))
+    let encodedFiles = files.map(async file => getBase64(file));
 
     Promise.all(encodedFiles)
       .then(res => {
@@ -95,13 +94,16 @@ export default function CreateProjectForm() {
           photos: res,
           title: title,
           desc: description,
-          link: link,
-        }
-        projectService.uploadProj(proj)
-          .then(res => res)
-      }).catch(err => {
-        console.error(err)
+          link: link
+        };
+        projectService.uploadProj(proj).then(res => res);
       })
+      .catch(err => {
+        console.error(err);
+      })
+      .catch(err => {
+        console.error(err);
+      });
 
     setOpen(false);
     setTitle("");
@@ -132,7 +134,14 @@ export default function CreateProjectForm() {
     rejectedFiles
   } = useDropzone({
     onDrop,
-    accept: ["image/png", "image/gif", "image/jpg", "image/jpeg", "video/mp4", "video/webm"],
+    accept: [
+      "image/png",
+      "image/gif",
+      "image/jpg",
+      "image/jpeg",
+      "video/mp4",
+      "video/webm"
+    ],
     minSize: 0,
     maxSize
   });
@@ -142,7 +151,7 @@ export default function CreateProjectForm() {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
+        Create
       </Button>
       <Dialog
         //Keep this open for a bit
@@ -211,7 +220,7 @@ export default function CreateProjectForm() {
                       <CloseIcon
                         className={classes.xIcon}
                         onClick={deleteFile}
-                        id={file.name+'_close'}
+                        id={file.name + "_close"}
                         value={file}
                       />
                     </div>
