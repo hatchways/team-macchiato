@@ -170,7 +170,6 @@ class NavBar extends Component {
                </Typography>
                <div className={classes.grow} />
                {user ?
-                  // <div>
                   <div className={classes.sectionDesktop}>
                      <LinkButton to="/discover" buttonClass={classes.coloredButton} buttonInner="Discover" />
                      {/* OnClick, show a menu of up to n (maybe have it scrollable) notifications/requests */}

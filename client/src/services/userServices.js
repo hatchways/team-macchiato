@@ -1,3 +1,5 @@
+//@ts-check
+
 const apiUrl = "http://localhost:3001/api"
 
 function authHeader() {
@@ -26,7 +28,7 @@ export const userService = {
 export const projectService = {
    getProj,
    uploadProj,
-   updateProj,
+   // updateProj,
 }
 
 export const connectionService = {
@@ -105,19 +107,19 @@ function uploadProj(proj) {
       route: '/upload'
    })
 }
-function updateProj(proj, projectId) {
-   return hitProjRoute(proj, {
-      requestOptions: {
-         method: 'PUT',
-         headers: {
-            ...authHeader(),
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(proj),
-      },
-      route: '/update/' + projectId
-   })
-}
+// function updateProj(proj, projectId) {
+//    return hitProjRoute(proj, {
+//       requestOptions: {
+//          method: 'PUT',
+//          headers: {
+//             ...authHeader(),
+//             'Content-Type': 'application/json',
+//          },
+//          body: JSON.stringify(proj),
+//       },
+//       route: '/update/' + projectId
+//    })
+// }
 
 function getPendingConnections() {
    const requestOptions = {
@@ -193,6 +195,8 @@ function getById(id) {
 
 const handleResponse = (response) => {
    return response.text().then(text => {
+      if (text === 'Unauthorized')
+         return logout()
       const data = (text && typeof text == 'string') ? JSON.parse(text) : text;
       if (!response.ok) {
          if (response.status === 401) {
