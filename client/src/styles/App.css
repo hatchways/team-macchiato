@@ -1,0 +1,418 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+nav {
+  display: flex;
+  justify-content: space-round;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  background:rgb(36, 31, 31);
+  color: whitesmoke;
+
+}
+
+.nav-links{
+  width:50%;
+  display: flex;
+  justify-content: space-round;
+  align-items: center;
+  list-style :none;
+}
+
+.profile-image{
+  margin-left: 100px;
+  margin-top: 40px;
+  border: circle;
+  border-radius: 50px;
+  width:50px;
+  height:50px;
+  align-content: center;
+}
+
+hr{
+  width:900px;
+}
+
+.comm-line{
+  
+  width: 700px;
+}
+
+.comm-first{
+  
+  width: 700px;
+}
+.comm-second{
+  
+  width: 700px;
+}
+
+.comment-image{
+  margin-left: 10px;
+  margin-top: 40px;
+  border: circle;
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+hr{
+  width:900px;
+}
+
+.comm-line{
+  
+  width: 700px;
+}
+
+.comm-first{
+  
+  width: 700px;
+}
+.comm-second{
+  width: 700px;
+}
+
+.comment-image{
+  margin-left: 10px;
+  margin-top: 40px;
+  border: circle;
+  border-radius: 30px;
+  width:30px;
+  height:30px;
+  text-align: center;
+}
+
+.name-text{
+  margin-top: 10px;
+}
+
+.profile-detail{
+ border:line;
+ border-right-color:grey;
+ margin-left:40px;
+
+}
+.orange-button{
+  background-color: coral;
+  border-radius: 60px;
+  color: whitesmoke;
+  font-size:10px;
+  text-align: center;
+  
+}
+
+.black-button{
+  background:rgb(36, 31, 31);
+  border-color: none;
+  border:none;
+  font-size:10px;
+  text-align: center;
+  margin-left: 700px;
+  width: 250px;
+ 
+}
+.sign-text{
+  color:whitesmoke;
+}
+.verticalLine {
+  border-left: thick solid #f0efef;
+}
+.col-lg-3{
+  border:box;
+  border-right-color:grey;
+}
+.project-image{
+  
+  height: 100%;
+  width: 100%;
+  border-radius: 7%;  
+  box-sizing: border-box;
+}
+
+.about-text{
+  color: lightgrey;
+  font-size: 10px;
+  align-content: center;
+  display: flex;
+}
+
+.title-text{
+  color: lightgrey;
+  font-size: 10px;
+}
+.city-text{
+  color: lightgrey;
+  font-size: 10px;
+}
+
+.about-title{
+  font-size :15px;
+  margin-top: 80px;
+}
+.skill-title{
+  margin-top: 50px;
+  margin-top: 50px;
+  font-size :10px;
+  font-weight: bold;
+}
+.skill-box{
+  box-sizing: border-box;
+  border-color: grey;
+  border:line;
+  margin:10px;
+  padding: 3px 5px 3px 5px;
+  font-size :10px;
+  font-weight: bold;
+ 
+}
+
+.skill-product{
+  width:110px;
+
+}
+
+.skill-UI{
+  margin-left: 30px;
+
+}
+.skill-row{
+  margin-left:10px;
+}
+.login-button{
+  margin-right:30px;
+  margin-left: 30px;
+}
+.top-text{
+  margin-left:30px;
+  width: 100%;
+}
+.last-row{
+ margin-top: 20px;
+ margin-left: auto;
+ margin-right: auto;
+ margin-bottom: 10px;
+} 
+.middle-row{
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.mid-row{
+  margin-left: auto;
+  margin-right: auto;
+}
+.menu {
+  width: 20px;
+  height: 3px;
+  background-color: rgb(238, 230, 230);
+  margin: 5px 0;
+}
+.container{
+  margin-left: 10px;
+  width:300px;
+}
+
+.project-button{
+  background-color:white;
+  border-color: white;
+  line-height: 0%;
+  margin: 10px 30px 10px 50px;
+  padding: 20px 10px 20px 10px;
+  height: 100%;
+  width: 100%;
+  
+}
+
+ .project-button:hover{
+  background-color:white;
+  border-color: white;
+  border:none;
+  line-height: 0%;
+}
+
+.detail-prof{
+  font-size: 16px;
+    margin-top: 9px;
+   
+    margin-bottom: 2px;
+}
+
+.detail-profpic{
+  font-size: 15px;
+  
+  margin-top: 2px;
+  margin-left: 5px;
+  padding: 2px;
+}
+
+.detail-title{
+  display: flex;
+  
+}
+
+.detail-pic{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+}
+
+.like-button{
+   height:25px;
+   width:min-content;
+   margin-top: 12px;
+   border-radius: 20px;
+   margin-left: 25px;
+   background-color: white;
+   border-block-color: white;
+   border-color: white;
+   border:none;
+   line-height: 0%;
+}
+.like-button:hover {
+    background-color: white;
+    border-color: white;
+    border:none;
+    line-height: 0%;
+  }
+
+.submit-button{
+  height: 35px;
+  width: 100px;
+  margin-top: 12px;
+  border-radius: 20px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+  background-color: coral;
+  border-block-color: white;
+}
+
+.footer-button{
+  margin-left: 12px;
+  width: 120px;
+  margin-top: 10px;
+}
+
+.first-image{
+  padding:0px;
+  margin:0px
+}
+
+
+.second-image{
+  padding:0px;
+  margin:0px
+}
+
+.like-text{
+  color: black;
+  font-size: 12px;
+  margin-left: 10px;
+  border-block-color: white;
+  
+}
+.hr-prof{
+  width:300px;
+}
+
+.input-box{
+  height: 70px;
+  width: 250px;
+}
+.comment-desc{
+ margin-left: 20px;
+ margin-right: 20px;
+ margin-top:20px;
+}
+.detail-message{
+  font-size: 10px;
+}
+
+.detaildate-text{
+  margin-left:5px;
+  color: darkgrey;
+  font-size :10px;
+}
+
+.detailname-text{
+  font-size: 10px;
+  margin-top: 9px;
+  margin-left: 1px;
+  margin-bottom: 2px;
+}
+
+.detailtitle-text{
+  color: darkgrey;
+  font-size :10px;
+ 
+}
+
+.comment-add{
+  margin-top:40px;
+  width:700px;
+}
+
+.detailcomment-text{
+  color: darkgrey;
+  font-size :10px;
+  margin-left:4px;
+}
+
+modal.Body{
+  padding:0px;
+}
+
+.edit-button{
+    border-block-color: white;
+    border:none;
+    line-height: 0%;
+    border-inline-color: white;
+    background-color: white; 
+}
+
+.modal-backdrop.fade {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  }
+  .modal-backdrop.fade.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  }
+  
+  
+ 

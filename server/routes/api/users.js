@@ -10,20 +10,44 @@ const User_Skill = require("../../models").User_Skill;
 // @desc    Get all users (include: projects & skill)
 // @access  Public
 router.get("/all", (req, res) => {
-  console.log("wth");
+
   User.findAll({
     include: [{ all: true }]
   }).then(users => {
-    console.log(users);
+    res.json(users);
+
   });
 });
+
+// @route GET /api/users/:user_id
+// @desc GET a specific user (include: all)
+// @access PUBLIC
 
 // Route to play with params
 router.get("/:userId", (req, res) => {
   let userId = req.params.userId;
-  User.findByPk(userId).then(user => {
-    console.log(user);
-  });
+
+  User.findAll({
+    include: [
+      {
+        model: Project
+      },
+      {
+        model: Skill,
+        as: "skills"
+      }
+    ],
+    where: { id: userId },
+    attributes: ["id", "name", "location", "profile_pic", "email", "title"]
+  })
+    .then(user => {
+      res.send(user[0]);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+
 });
 module.exports = router;
 
@@ -32,7 +56,7 @@ module.exports = router;
 // @body    Any number of user attributes ... verification TBD
 // @access  Authorized
 router.put(
-  "/edit",
+  "/editProfile",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     // - Users can only edit their own projects
@@ -45,8 +69,11 @@ router.put(
           console.log(`User with id ${user.id} updated`);
           return res.send(user);
         });
+
+      } else {
+        return res.status(500).send("Error: User does not exist");
       }
-      return res.status(500).send("Error: User does not exist");
+
     });
   }
 );
@@ -77,12 +104,13 @@ router.post(
         }
       });
 
+
       let createUserSkill = (user, skill) => {
-        // Create User_Skill
-        let user_id = user.id;
-        let skill_id = skill.id;
+        // Create UserSkill
+        let userId = user.id;
+        let skillId = skill.id;
         console.log(`User '${user.name}' has added skill '${skill.skill}'`);
-        User_Skill.create({ user_id, skill_id }).then(userSkill =>
+        UserSkill.create({ userId, skillId }).then(userSkill =>
           res.send(userSkill)
         );
       };
@@ -96,10 +124,12 @@ router.post(
 
       // Skill already exists, so...
       // Check if userSkill already exists
-      let userSkill = await User_Skill.findOne({
+
+      let userSkill = await UserSkill.findOne({
         where: {
-          user_id: user.id,
-          skill_id: skill.id
+          userId: user.id,
+          skillId: skill.id
+
         }
       });
       if (userSkill) {
@@ -135,10 +165,12 @@ router.delete(
           .send({ error: `Skill ${skillName} Does Not Exist` });
       }
 
+
       let userSkill = await User_Skill.findOne({
         where: {
           user_id: userId,
           skill_id: skill.id
+
         }
       });
       if (!userSkill) {
@@ -149,8 +181,10 @@ router.delete(
 
       // Finally, remove skill
       // return res.send({ skill: skill, userId: userId })
+
       User_Skill.destroy({
         where: { user_id: userId, skill_id: skill.id }
+
       }).then(numOfDestroyedRows => {
         console.log("Successfully removed User Skill");
         res.status(200).send({ removed: numOfDestroyedRows });

@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     // Project belongs to a User ~
     Project.belongsTo(models.User, { foreignKey: "user_id" });
     Project.belongsTo(models.Entity, { foreignKey: "entity_id" });
+
   };
   return Project;
 };
