@@ -25,6 +25,11 @@ router.post(
          // Check if relationship already exists between two users
          Relationship.findOne({
             where: {
+               // Allows declined invites to be re-sent
+               [or]: [
+                  { status: PENDING },
+                  { status: ACCEPTED }
+               ],
                [or]: [
                   {
                      requester_id: init_id,
@@ -72,6 +77,7 @@ router.put(
       try {
          const accepterId = req.user.id;
          const requesterId = req.params.userId  // /:userId is the friend request to accept
+         const accept = req.body.accept
 
          Relationship.findOne({
             where: {
@@ -85,7 +91,8 @@ router.put(
                console.log(`Friend request from ${requesterId} to ${accepterId} DOES NOT EXIST`)
                return res.status(400).json({ error: `Friend request from ${requesterId} to ${accepterId} DOES NOT EXIST` })
             }
-            rel.update({ status: ACCEPTED })
+            let status = accept ? ACCEPTED : DECLINED
+            rel.update({ status })
                .then(rel => {
                   console.log(`${rel.requestee_id} has accepted friend request from ${rel.requester_id}!`);
                   return res.send(rel)
@@ -99,54 +106,70 @@ router.put(
 );
 
 // Fetch all pending requests where you are the accepter/requester
+//  Returns user data of matching
+const fetchAllWhere = (status, option) => (req, res) => {
+   try {
+      const userId = req.user.id
+
+      Relationship.findAll({
+         where: {
+            status: status,
+            ...option(userId)
+         }
+      }).then(rel => {
+         User.findAll({
+            where: {
+               [or]: rel.map(r => { return { id: r.requester_id } })
+            },
+            include: [
+               {
+                  model: User,
+                  as: 'requestee',
+                  attributes: ['id'],
+                  through: {
+                     // where: {
+                     //    status: PENDING,
+                     //    requestee_id: userId
+                     // }
+                     attributes: ['createdAt']
+                  }
+               }
+            ],
+            attributes: ['id', 'name'],
+         }).then(data => {
+            
+            return res.send(data)
+         })
+      })
+   } catch (err) {
+      res.status(500).send(err)
+   }
+}
+// Where user is the accepter
 router.get(
    "/pending",
    passport.authenticate("jwt", { session: false }),
-   (req, res) => {
-      try {
-         const userId = req.user.id;
-
-         Relationship.findAll({
-            where: {
-               status: PENDING,
-               [or]: [
-                  { requester_id: userId },
-                  { requestee_id: userId },
-               ]
-            }
-         }).then(rel => {
-            return res.send(rel)
-         })
-      } catch (err) {
-         console.log(err)
-         res.status(500).send(err)
-      }
-   }
+   fetchAllWhere(PENDING, userId => { return { 'requestee_id': userId } })
+);
+// Where user is the requester
+router.get(
+   "/pending/req",
+   passport.authenticate("jwt", { session: false }),
+   fetchAllWhere(PENDING, userId => { return { 'requester_id': userId } })
 );
 
 // Fetch all of your connections
 router.get(
    "/connections",
    passport.authenticate("jwt", { session: false }),
-   (req, res) => {
-      try {
-         const userId = req.user.id;
-         Relationship.findAll({
-            where: {
-               status: ACCEPTED,
-               [or]: [
-                  { requester_id: userId },
-                  { requestee_id: userId },
-               ]
-            }
-         }).then(rel => {
-            return res.send(rel)
-         })
-      } catch (err) {
-         console.log(err);
-         res.status(500).send(err)
+   fetchAllWhere(ACCEPTED, userId => {
+      return {
+         '[or]': [
+            { 'requester_id': userId },
+            { 'requestee_id': userId }
+         ]
       }
-   }
+   })
 );
 
 module.exports = router;
