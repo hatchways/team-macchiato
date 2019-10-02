@@ -14,11 +14,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 
-// Icons
+//Icons
 import CloseIcon from "@material-ui/icons/Close";
-
-// Services
-import { projectService } from "../services/userServices";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,16 +29,24 @@ const useStyles = makeStyles(theme => ({
   },
   listItemButton: {
     cursor: "pointer",
+    // background: "red",
     position: "absolute",
+    // top: "0",
     right: "0",
     padding: "0 10px",
     zIndex: "1"
+  },
+  xIcon: {
+    zIndex: "100"
+  },
+  reactDropZone: {
+    padding: "20px"
   }
 }));
 
 export default function CreateProjectForm() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [link, setLink] = React.useState("");
@@ -57,46 +62,9 @@ export default function CreateProjectForm() {
     setOpen(false);
   };
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
     //Fetch Or Axios
-    // const { photos, title, desc, link } = proj;
-
-    const getBase64 = async file => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.readAsDataURL(file);
-
-        reader.onload = () => {
-          if (!!reader.result) {
-            resolve({
-              fileName: file.name,
-              imageData: reader.result
-            });
-          } else {
-            reject(Error("Failed converting to base64"));
-          }
-        };
-      });
-    };
-
-    let encodedFiles = files.map(async file => getBase64(file));
-
-    Promise.all(encodedFiles)
-      .then(res => {
-        let proj = {
-          photos: res,
-          title: title,
-          desc: description,
-          link: link
-        };
-        projectService.uploadProj(proj).then(res => res);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-
     setOpen(false);
     setTitle("");
     setDescription("");
@@ -112,13 +80,8 @@ export default function CreateProjectForm() {
   );
 
   const deleteFile = e => {
-    console.log("wtf");
     const deleteFileName = e.target.id;
-    console.log(deleteFileName);
-    const newFiles = files.filter(
-      file => `${file.name}_close` != deleteFileName
-    );
-    console.log(newFiles);
+    const newFiles = files.filter(file => file.name != deleteFileName);
     return setFiles(newFiles);
   };
 
@@ -131,17 +94,11 @@ export default function CreateProjectForm() {
     rejectedFiles
   } = useDropzone({
     onDrop,
-    accept: [
-      "image/png",
-      "image/gif",
-      "image/jpg",
-      "image/jpeg",
-      "video/mp4",
-      "video/webm"
-    ],
+    accept: "image/png",
     minSize: 0,
     maxSize
   });
+
   const isFileTooLarge =
     rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
 
@@ -193,7 +150,7 @@ export default function CreateProjectForm() {
           />
           {/* React DropZone */}
           <div>
-            <div {...getRootProps()}>
+            <div className={classes.reactDropZone} {...getRootProps()}>
               <input {...getInputProps()} />
               {!isDragActive && "Click here or drop a file to upload!"}
               {isDragActive && !isDragReject && "Drop it like it's hot!"}
@@ -212,12 +169,11 @@ export default function CreateProjectForm() {
                       onClick={deleteFile}
                       id={file.name}
                       value={file}
-                      key={file.name}
                     >
                       <CloseIcon
                         className={classes.xIcon}
                         onClick={deleteFile}
-                        id={file.name + "_close"}
+                        id={file.name}
                         value={file}
                       />
                     </div>
