@@ -66,7 +66,7 @@ router.get("/user/:userId", async (req, res) => {
     const userId = req.params.userId;
     Project.findAll({
       where: {
-        userId: userId
+        user_id: userId
       }
     })
       .then(fetchProjPhotosFromS3)
