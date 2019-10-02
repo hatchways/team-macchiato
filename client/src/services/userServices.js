@@ -17,6 +17,8 @@ export const userService = {
   logout,
   register,
   editProfile,
+  searchDiscovery,
+  searchDiscoveryFilter,
   // getAll,
   getById
   // update,
@@ -148,6 +150,32 @@ function respondToConnection(userId, accept) {
   return fetch(`${apiUrl}/relationships/${userId}`, requestOptions).then(
     handleResponse
   );
+}
+function searchDiscovery(search) {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  console.log(search);
+
+  return fetch(`${apiUrl}/discovery?name=${search}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function searchDiscoveryFilter(search) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(search)
+  };
+
+  return fetch(`${apiUrl}/discovery`).then(handleResponse);
 }
 
 // function getAll() {
