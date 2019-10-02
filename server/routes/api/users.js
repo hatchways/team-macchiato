@@ -4,16 +4,17 @@ const User = require("../../models").User;
 const passport = require("passport");
 const Project = require("../../models").Project;
 const Skill = require("../../models").Skill;
-const UserSkill = require("../../models").UserSkill;
+const User_Skill = require("../../models").User_Skill;
 
 // @route   GET /api/users/all
 // @desc    Get all users (include: projects & skill)
 // @access  Public
 router.get("/all", (req, res) => {
+  console.log("wth");
   User.findAll({
     include: [{ all: true }]
   }).then(users => {
-    res.json(users);
+    console.log(users);
   });
 });
 
@@ -99,11 +100,11 @@ router.post(
       });
 
       let createUserSkill = (user, skill) => {
-        // Create UserSkill
-        let userId = user.id;
-        let skillId = skill.id;
+        // Create User_Skill
+        let user_id = user.id;
+        let skill_id = skill.id;
         console.log(`User '${user.name}' has added skill '${skill.skill}'`);
-        UserSkill.create({ userId, skillId }).then(userSkill =>
+        User_Skill.create({ user_id, skill_id }).then(userSkill =>
           res.send(userSkill)
         );
       };
@@ -117,10 +118,10 @@ router.post(
 
       // Skill already exists, so...
       // Check if userSkill already exists
-      let userSkill = await UserSkill.findOne({
+      let userSkill = await User_Skill.findOne({
         where: {
-          userId: user.id,
-          skillId: skill.id
+          user_id: user.id,
+          skill_id: skill.id
         }
       });
       if (userSkill) {
@@ -156,10 +157,10 @@ router.delete(
           .send({ error: `Skill ${skillName} Does Not Exist` });
       }
 
-      let userSkill = await UserSkill.findOne({
+      let userSkill = await User_Skill.findOne({
         where: {
-          userId: userId,
-          skillId: skill.id
+          user_id: userId,
+          skill_id: skill.id
         }
       });
       if (!userSkill) {
@@ -170,8 +171,8 @@ router.delete(
 
       // Finally, remove skill
       // return res.send({ skill: skill, userId: userId })
-      UserSkill.destroy({
-        where: { userId: userId, skillId: skill.id }
+      User_Skill.destroy({
+        where: { user_id: userId, skill_id: skill.id }
       }).then(numOfDestroyedRows => {
         console.log("Successfully removed User Skill");
         res.status(200).send({ removed: numOfDestroyedRows });
@@ -182,3 +183,5 @@ router.delete(
     }
   }
 );
+
+module.exports = router;

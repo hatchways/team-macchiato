@@ -11,21 +11,19 @@ import testRouter from "./routes/test";
 import authRouter from "./routes/api/auth";
 import userRouter from "./routes/api/users";
 import projectRouter from "./routes/api/projects";
-import discoveryRouter from "./routes/api/discovery";
 import relationshipRouter from "./routes/api/relationships";
 
 // import awsRouter from "./routes/api/awsController";
 
 var app = express();
-var bodyParser = require('body-parser')
+var bodyParser = require("body-parser");
 
 // cors
 app.use(cors());
 
 // app.use(bodyParser.json({ limit: '5mb' }))
-app.use(bodyParser.json({ limit: '10mb' }))
+app.use(bodyParser.json({ limit: "10mb" }));
 // app.use(bodyParser.json({ limit: '10mb' }))
-
 
 app.use(logger("dev"));
 app.use(json());
@@ -39,7 +37,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/projects", projectRouter);
 app.use("/api/relationships", relationshipRouter);
-app.use("/api/discovery", discoveryRouter);
 app.use("/test", testRouter);
 // app.use("/sign_s3", awsRouter);
 

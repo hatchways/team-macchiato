@@ -7,56 +7,58 @@ import LandingPage from "./pages/Landing";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUp";
 import ProfilePage from "./pages/Profile";
-import DiscoverPage from "./pages/Discovery";
+import DiscoverPage from "./pages/Discover";
 import CreateProjectFormHook from "./components/CreateProjectFormHook";
 
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar"
 
 import "./styles/App.css";
 
-import { userService } from "./services/userServices";
+import { userService } from './services/userServices'
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props){
+    super(props)
     this.state = {
       user: null
-    };
+    }
   }
+
   handleUpdateUserState(user) {
     if (!user) {
-      user = JSON.parse(localStorage.getItem("user"));
+      user = JSON.parse(localStorage.getItem('user'))
       // If no user is in storage
-      if (!user) return "No user is logged in";
-      return this.setState({ user: user.user });
+      if (!user)
+        return 'No user is logged in'
+      return this.setState({ user: user.user })
     }
     // Directly update state to user param
-    // CURRENTLY UNUSED
-    return this.setState({ user: user.user });
+    // CURRENTLY UNUSED 
+    return this.setState({ user: user })
   }
 
   // true to get App to update its own state by fetching user from localStorage
   // false to logout user (With App updating state to reflect this)
   updateAuthenticationStatus = authenticated => {
     if (authenticated) {
-      this.handleUpdateUserState();
+      this.handleUpdateUserState()
     } else {
-      this.setState({ user: null });
-      userService.logout();
+      this.setState({ user: null })
+      userService.logout()
     }
-  };
+  }
 
   componentWillMount() {
     // Fetch user data from localStorage
-    this.handleUpdateUserState();
+    this.handleUpdateUserState()
   }
 
   render() {
     let userProps = {
       updateAuthenticationStatus: this.updateAuthenticationStatus,
-      currentUserInfo: this.state.user
+      currentUserInfo: this.state.user,
       // Email, Id, and Name
-    };
+    }
     return (
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
@@ -65,18 +67,10 @@ class App extends Component {
           <Switch>
             <Route path="/" component={LandingPage} exact />
             <Route path="/signup" component={SignUpPage} />
-            <AppliedRoute
-              path="/login"
-              component={LoginPage}
-              props={userProps}
-            />
-            <AppliedRoute
-              path="/profile/:profileId"
-              component={ProfilePage}
-              props={userProps}
-            />
-            {/* Any further Routes we add that require user state, use an AppliedRoute Component and pass in props (as an obj)
-
+            <AppliedRoute path="/login" component={LoginPage} props={userProps} />
+            <AppliedRoute path="/profile/:profileId" component={ProfilePage} props={userProps}/>
+            {/* Any further Routes we add that require user state, use an AppliedRoute Component and pass in props (as an obj) 
+              
               All routes may be subject to restructuring
 
               Below are temp routes
@@ -91,8 +85,7 @@ class App extends Component {
 }
 
 // Simple component to pass props through
-const AppliedRoute = ({ component: C, props: cProps, ...rest }) => (
+const AppliedRoute = ({ component: C, props: cProps, ...rest }) =>
   <Route {...rest} render={props => <C {...props} {...cProps} />} />
-);
 
 export default App;

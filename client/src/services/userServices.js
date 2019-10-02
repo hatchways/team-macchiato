@@ -16,12 +16,8 @@ export const userService = {
   login,
   logout,
   register,
-  uploadProj,
   editProfile,
   // getAll,
-  searchDiscovery,
-  searchDiscoveryFilter,
-  // getBy
   getById
   // update,
   // delete: _delete
@@ -160,32 +156,8 @@ function respondToConnection(userId, accept) {
 //        headers: authHeader()
 //    };
 
-function searchDiscovery(search) {
-  const requestOptions = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  console.log(search);
-
-  return fetch(`${apiUrl}/discovery?name=${search}`, requestOptions).then(
-    handleResponse
-  );
-}
-
-function searchDiscoveryFilter(search) {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(search)
-  };
-
-  return fetch(`${apiUrl}/discovery`).then(handleResponse);
-}
+//    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+// }
 
 function getById(id) {
   const requestOptions = {
@@ -223,7 +195,6 @@ function getById(id) {
 
 const handleResponse = response => {
   return response.text().then(text => {
-    if (text === "Unauthorized") return logout();
     const data = text && typeof text == "string" ? JSON.parse(text) : text;
     if (!response.ok) {
       if (response.status === 401) {
