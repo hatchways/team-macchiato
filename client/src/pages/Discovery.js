@@ -20,8 +20,6 @@ import { mdiMagnify } from "@mdi/js";
 import AccessAlarmsIcon from "@material-ui/icons/AccessAlarms";
 import CloseIcon from "@material-ui/icons/Close";
 
-// Grid? Nah
-
 // Card?
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
