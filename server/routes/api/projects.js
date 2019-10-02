@@ -127,7 +127,7 @@ router.post(
             title,
             desc,
             link,
-            userId
+            user_id: userId
           };
 
           Project.create(project).then(proj => {
@@ -168,7 +168,7 @@ router.post(
           user_id: userId,
           entity_id: entity_id
         }).then(like => {
-          console.log("like_created");
+          res.status(200);
         });
       }
 
