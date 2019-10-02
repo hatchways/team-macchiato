@@ -93,6 +93,9 @@ const useStyles = makeStyles(theme => ({
     gridTemplateColumns: "1fr 1fr 1fr",
     gridGap: "30px 20px",
     padding: "1rem 3rem"
+  },
+  inputBaseSearch: {
+    width: "90%"
   }
 }));
 
