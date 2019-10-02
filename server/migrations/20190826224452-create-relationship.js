@@ -27,14 +27,6 @@ module.exports = {
          status: {
             type: Sequelize.SMALLINT
          },
-         // action_user_id: {
-         //    type: Sequelize.INTEGER,
-         //    references: {
-         //       model: "Users",
-         //       key: "id",
-         //       as: "initiator_id"
-         //    }
-         // },
          createdAt: {
             allowNull: false,
             type: Sequelize.DATE

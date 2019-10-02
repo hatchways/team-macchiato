@@ -16,15 +16,14 @@ import relationshipRouter from "./routes/api/relationships";
 // import awsRouter from "./routes/api/awsController";
 
 var app = express();
-var bodyParser = require('body-parser')
+var bodyParser = require("body-parser");
 
 // cors
 app.use(cors());
 
 // app.use(bodyParser.json({ limit: '5mb' }))
-app.use(bodyParser.json({ limit: '10mb' }))
+app.use(bodyParser.json({ limit: "10mb" }));
 // app.use(bodyParser.json({ limit: '10mb' }))
-
 
 app.use(logger("dev"));
 app.use(json());
