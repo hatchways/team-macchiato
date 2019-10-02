@@ -121,18 +121,22 @@ router.post(
       if (s3Photos) {
         Promise.all(s3Photos).then(photoS3Data => {
           // res.send(photoS3Data)
-          let project = {
-            // use photoS3
-            photos: photoS3Data,
-            title,
-            desc,
-            link,
-            user_id: userId
-          };
-
-          Project.create(project).then(proj => {
-            console.log(`Successfully created project with projId ${proj.id}`);
-            return res.send(proj);
+          Entity.create({}).then(entity => {
+            let project = {
+              // use photoS3
+              photos: photoS3Data,
+              title,
+              desc,
+              link,
+              user_id: userId,
+              entity_id: entity.id
+            };
+            Project.create(project).then(proj => {
+              console.log(
+                `Successfully created project with projId ${proj.id}`
+              );
+              return res.send(proj);
+            });
           });
         });
       }
@@ -168,7 +172,7 @@ router.post(
           user_id: userId,
           entity_id: entity_id
         }).then(like => {
-          res.status(200);
+          console.log("like_created");
         });
       }
 
