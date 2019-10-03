@@ -17,6 +17,7 @@ import List from "@material-ui/core/List";
 // Icons
 import CloseIcon from "@material-ui/icons/Close";
 
+import MyButton from './ButtonComponents'
 // Services
 import { projectService } from "../services/userServices";
 
@@ -39,9 +40,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CreateProjectForm() {
+export default function CreateProjectForm(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [link, setLink] = React.useState("");
@@ -97,6 +98,7 @@ export default function CreateProjectForm() {
         console.error(err);
       });
 
+    props.updateUserSummary();
     setOpen(false);
     setTitle("");
     setDescription("");
@@ -147,9 +149,9 @@ export default function CreateProjectForm() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button>
+      <MyButton variant="outlined" color="primary" onClick={handleClickOpen}>
+        Add Project
+      </MyButton>
       <Dialog
         //Keep this open for a bit
         open={open}

@@ -58,8 +58,10 @@ router.put(
   (req, res) => {
     // - Users can only edit their own projects
     const userId = req.user.id;
-    const data = req.body;
-
+    let data = req.body;
+    for (let [key, val] of Object.entries(data)) {
+      if (!val || val == '') delete data[key]
+    }
     User.findByPk(userId).then(user => {
       if (user) {
         user.update(data).then(user => {
@@ -98,7 +100,7 @@ router.post(
           skill: skillName
         }
       });
-
+      console.log(skillName)
       let createUserSkill = (user, skill) => {
         // Create User_Skill
         let user_id = user.id;

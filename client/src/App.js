@@ -24,16 +24,12 @@ class App extends Component {
     };
   }
 
-  handleUpdateUserState(user) {
-    if (!user) {
-      user = JSON.parse(localStorage.getItem("user"));
-      // If no user is in storage
-      if (!user) return "No user is logged in";
-      return this.setState({ user: user.user });
-    }
-    // Directly update state to user param
-    // CURRENTLY UNUSED
-    return this.setState({ user: user });
+  handleUpdateUserState() {
+    let user = JSON.parse(localStorage.getItem('user'))
+    // If no user is in storage
+    if (!user)
+      return 'No user is logged in'
+    return this.setState({ user: user.user })
   }
 
   // true to get App to update its own state by fetching user from localStorage
@@ -53,6 +49,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state)
     let userProps = {
       updateAuthenticationStatus: this.updateAuthenticationStatus,
       currentUserInfo: this.state.user
@@ -61,21 +58,13 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <BrowserRouter>
-          <NavBar authDetails={this.state.user} />
+          <NavBar authDetails={this.state.user} updateAuthStatus={this.updateAuthenticationStatus} />
           {/* TODO: Make landing page redirect to somewhere useful */}
           <Switch>
             <Route path="/" component={LandingPage} exact />
             <Route path="/signup" component={SignUpPage} />
-            <AppliedRoute
-              path="/login"
-              component={LoginPage}
-              props={userProps}
-            />
-            <AppliedRoute
-              path="/profile/:profileId"
-              component={ProfilePage}
-              props={userProps}
-            />
+            <AppliedRoute path="/login" component={LoginPage} props={userProps} />
+            <AppliedRoute path="/profile/:profileId" component={ProfilePage} props={userProps} />
             {/* Any further Routes we add that require user state, use an AppliedRoute Component and pass in props (as an obj) 
               
               All routes may be subject to restructuring

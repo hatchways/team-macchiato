@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core'
-import { Box, Avatar } from '@material-ui/core'
-import { MenuItem, CircularProgress } from '@material-ui/core'
+import { Container, Avatar } from '@material-ui/core'
+import { MenuItem, LinearProgress } from '@material-ui/core'
 import { MailOutlined, NotificationsOutlined, AccountCircle, More } from '@material-ui/icons'
-import { Check, Clear } from '@material-ui/icons'
+import { Check, Clear, ExitToAppOutlined } from '@material-ui/icons'
 import { withStyles } from '@material-ui/styles'
 
 import { withRouter, Link } from 'react-router-dom'
@@ -69,6 +69,9 @@ const navBarStyle = theme => ({
       color: 'white',
       backgroundImage: 'linear-gradient(to right, #ff9400, #ff3963)',
    },
+   progressWrapper: {
+      flexGrow: 1
+   },
 })
 
 class NavBar extends Component {
@@ -78,11 +81,6 @@ class NavBar extends Component {
       this.state = {
          anchorEl: null,
       }
-      this.updatePendingConnections = this.updatePendingConnections.bind(this)
-      this.handleMenuOpen = this.handleMenuOpen.bind(this)
-      this.handleMenuClose = this.handleMenuClose.bind(this)
-      this.handleAccept = this.handleAccept.bind(this)
-      this.handleDeny = this.handleDeny.bind(this)
    }
 
    componentWillMount() {
@@ -90,7 +88,7 @@ class NavBar extends Component {
          this.updatePendingConnections()
       }
    }
-   updatePendingConnections() {
+   updatePendingConnections = () => {
       connectionService.getPendingConnections()
          .then(res => {
             this.setState({ notifs: res })
@@ -98,22 +96,27 @@ class NavBar extends Component {
    }
 
    // Sets anchor position to caller
-   handleMenuOpen(e) {
+   handleNotificationsMenuOpen = (e) => {
       let id = e.currentTarget.id
       console.log(id)
 
       this.setState({ anchorEl: e.currentTarget })
    }
-   handleMenuClose() { this.setState({ anchorEl: null }) }
+   handleNotificationsMenuClose = () => { this.setState({ anchorEl: null }) }
+   
+   handleLogout = () => { 
+      this.props.updateAuthStatus(false)
+      console.log(this.props.history)
+   }
 
-   handleAccept(e) {
+   handleAccept = (e) => {
       let requester_id = e.currentTarget.parentNode.id
       connectionService.respondToConnection(requester_id, true)
          .then(res => {
             this.updatePendingConnections()
          })
    }
-   handleDeny(e) {
+   handleDeny = (e) => {
       let requester_id = e.currentTarget.parentNode.id
       connectionService.respondToConnection(requester_id, false)
          .then(res => {
@@ -129,6 +132,7 @@ class NavBar extends Component {
       const avatarSrc = "https://api.adorable.io/avatars/30/abel@adorable.io.png";
 
       let notifs = this.state.notifs
+      console.log(notifs)
       let menuNotifications = notifs ?
          notifs.map(n =>
             <StyledMenuItem key={n.id.toString()} id={n.id}>
@@ -143,13 +147,16 @@ class NavBar extends Component {
                   <Clear />
                </IconButton>
             </StyledMenuItem>) :
-         <CircularProgress className={classes.progress} />
+         <div className={classes.progressWrapper}>
+            <br />
+            <LinearProgress />
+         </div>
       // Placeholder
-      const renderMenu = (
+      const renderNotificationsMenu = (
          <Menu
             anchorEl={this.state.anchorEl}
             open={!!this.state.anchorEl}
-            onClose={this.handleMenuClose}>
+            onClose={this.handleNotificationsMenuClose}>
             <MenuHeader>
                <Typography>Notifications</Typography>
             </MenuHeader>
@@ -163,7 +170,7 @@ class NavBar extends Component {
       return (
          <AppBar position="static" style={{ boxShadow: 'none' }}>
             <Toolbar className={classes.navBar}>
-               {renderMenu}
+               {renderNotificationsMenu}
                <Typography variant="h5" noWrap className={classes.title}>
                   C R E A T I V E &nbsp; H U B
                </Typography>
@@ -172,14 +179,14 @@ class NavBar extends Component {
                   <div className={classes.sectionDesktop}>
                      <LinkButton to="/discover" buttonClass={classes.coloredButton} buttonInner="Discover" />
                      {/* OnClick, show a menu of up to n (maybe have it scrollable) notifications/requests */}
-                     <IconButton id="notif" color="inherit" onClick={this.handleMenuOpen} style={{ marginLeft: 10 }}>
+                     <IconButton id="notif" color="inherit" onClick={this.handleNotificationsMenuOpen} style={{ marginLeft: 10 }}>
                         <Badge badgeContent={this.state.notifs && this.state.notifs.length} color="secondary">
                            <NotificationsOutlined />
                         </Badge>
                      </IconButton>
                      {/*  */}
-                     <IconButton id="mail" color="inherit" onClick={this.handleMenuOpen} style={{ marginLeft: 10 }}>
-                        <Badge badgeContent={4} color="secondary">
+                     <IconButton id="mail" color="inherit" onClick={this.handleNotificationsMenuOpen} style={{ marginLeft: 10 }}>
+                        <Badge badgeContent={0} color="secondary">
                            <MailOutlined />
                         </Badge>
                      </IconButton>
@@ -188,6 +195,9 @@ class NavBar extends Component {
                            <> <Avatar alt="avatar" src={avatarSrc} className={classes.avatar} />
                               <Typography className={classes.profileName}>Profile</Typography></>
                         )} />
+                     <IconButton id="logout" color="inherit" onClick={this.handleLogout} >
+                        <ExitToAppOutlined />
+                     </IconButton>
                   </div>
                   //    Responsive WIP
                   //    <div className={classes.sectionMobile}>
@@ -199,10 +209,10 @@ class NavBar extends Component {
                   //    </div>
                   // </div>
                   :
-                  <div className={classes.sectionDesktop}>
+                  <React.Fragment className={classes.sectionDesktop}>
                      <LinkButton to="/signup" buttonClass={classes.signUpButton} buttonInner="Sign Up" />
                      <LinkButton to="/login" buttonClass={classes.coloredButton} buttonInner="Log In" />
-                  </div>
+                  </React.Fragment>
                }
             </Toolbar>
          </AppBar>

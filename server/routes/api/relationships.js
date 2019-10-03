@@ -105,6 +105,30 @@ router.put(
    }
 );
 
+router.get(
+   "/:userId",
+   passport.authenticate("jwt", { session: false }),
+   (req, res) => {
+      try {
+         const userId = req.user.id
+         const userId2 = req.params.userId;
+
+         Relationship.findOne({
+            where: {
+               [or]: [
+                  { 'requester_id': userId, 'requestee_id': userId2 },
+                  { 'requestee_id': userId, 'requester_id': userId2 },
+               ]
+            }
+         }).then(rel => {
+            res.send(rel)
+         })
+      } catch (err) {
+         res.status(500).send(err)
+      }
+   }
+);
+
 // Fetch all pending requests where you are the accepter/requester
 //  Returns user data of matching
 const fetchAllWhere = (status, option) => (req, res) => {
@@ -137,7 +161,7 @@ const fetchAllWhere = (status, option) => (req, res) => {
             ],
             attributes: ['id', 'name'],
          }).then(data => {
-            
+
             return res.send(data)
          })
       })

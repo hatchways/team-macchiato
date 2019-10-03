@@ -19,6 +19,7 @@ export const userService = {
   editProfile,
   searchDiscovery,
   searchDiscoveryFilter,
+  addSkill,
   // getAll,
   getById
   // update,
@@ -33,6 +34,8 @@ export const projectService = {
 
 export const connectionService = {
   getPendingConnections,
+  getStatusBetween,
+  sendConnectionRequest,
   respondToConnection
 };
 
@@ -80,6 +83,24 @@ function editProfile(data) {
   );
 }
 
+function addSkill(skill) {
+   const requestOptions = {
+      method: "POST",
+      headers: {
+         ...authHeader(),
+         "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ skillName: skill })
+   };
+
+   return fetch(`${apiUrl}/users/newSkill`, requestOptions)
+      .then(handleResponse)
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Projects ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 const hitProjRoute = options => {
   const requestOptions = options.requestOptions;
   return fetch(`${apiUrl}/projects${options.route}`, requestOptions).then(
@@ -121,6 +142,10 @@ function updateProj(proj, projectId) {
   });
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Connections /////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 function getPendingConnections() {
   const requestOptions = {
     method: "GET",
@@ -129,15 +154,35 @@ function getPendingConnections() {
       "Content-Type": "application/json"
     }
   };
-  return fetch(`${apiUrl}/relationships/pending`, requestOptions).then(
-    handleResponse
-  );
+  return fetch(`${apiUrl}/relationships/pending`, requestOptions)
+   .then(handleResponse);
   // .then(text => {
   //    console.log(text)
   //    return text
   // })
 }
-
+function getStatusBetween(userId) {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      ...authHeader(),
+      "Content-Type": "application/json"
+    }
+  };
+  return fetch(`${apiUrl}/relationships/${userId}`, requestOptions)
+    .then(handleResponse);
+}
+function sendConnectionRequest(userId) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      ...authHeader(),
+      "Content-Type": "application/json"
+    }
+  };
+  return fetch(`${apiUrl}/relationships/${userId}`, requestOptions)
+    .then(handleResponse);
+}
 function respondToConnection(userId, accept) {
   const requestOptions = {
     method: "PUT",
@@ -151,6 +196,7 @@ function respondToConnection(userId, accept) {
     handleResponse
   );
 }
+
 function searchDiscovery(search) {
   const requestOptions = {
     method: "GET",
@@ -175,7 +221,8 @@ function searchDiscoveryFilter(search) {
     body: JSON.stringify(search)
   };
 
-  return fetch(`${apiUrl}/discovery`).then(handleResponse);
+  return fetch(`${apiUrl}/discovery`, requestOptions)
+   .then(handleResponse);
 }
 
 // function getAll() {

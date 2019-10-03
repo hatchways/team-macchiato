@@ -15,6 +15,7 @@
     "react-router-dom": "^5.0.1",
     "react-s3-uploader": "^4.8.0",
     "react-scripts": "3.0.1",
+    "react-select": "^3.0.5",
     "restuta-react-dropzone-s3-uploader": "^0.20.4"
   },
   "scripts": {

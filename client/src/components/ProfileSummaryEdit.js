@@ -2,13 +2,14 @@ import React, { useState, useCallback } from "react";
 import Dropzone from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+
+import Button from './ButtonComponents';
 
 import { userService } from '../services/userServices'
 
@@ -36,22 +37,27 @@ export default function EditProfile(props) {
     setOpen(false);
   };
 
-  
+
 
   const submitEditProfileData = () => {
     let data = {
       name,
       title,
       location,
-      
-     
+
+
     }
     console.log(data)
     userService.editProfile(data)
       .then(res => {
+        console.log(res)
         props.updateUserSummary()
         handleClose()
       })
+      
+    setName('')
+    setTitle('')
+    setLocation('')
   }
 
   const onSubmit = e => {
@@ -90,8 +96,12 @@ export default function EditProfile(props) {
 
   return (
     <div>
-      <Button className="edit-button" variant="outlined" color="primary" onClick={handleClickOpen}>
-         Edit
+      <Button style={{
+        marginLeft: 10,
+        color: 'white',
+        backgroundImage: 'linear-gradient(to right, #ff9400, #ff3963)'
+      }} onClick={handleClickOpen}>
+        Edit Profile
       </Button>
       <Dialog
         //Keep this open for a bit
@@ -124,7 +134,7 @@ export default function EditProfile(props) {
             type="title"
             fullWidth
           />
-          
+
           <TextField
             autoFocus
             margin="dense"
@@ -135,7 +145,7 @@ export default function EditProfile(props) {
             type="location"
             fullWidth
           />
-          
+
           <Dropzone
             onDrop={handleOnDrop}
             maxSize={imageMaxSize}
