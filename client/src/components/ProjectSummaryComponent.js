@@ -91,7 +91,7 @@ export default class ProjectSummaries extends Component {
          return 'Loading Projects...'
       }
       const projects = this.state.projects
-      if (!projects || projects === []) {
+      if (!projects || projects.length === 0) {
          return 'There are no Projects'
       }
 

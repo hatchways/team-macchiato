@@ -93,7 +93,6 @@ class NavBar extends Component {
    updatePendingConnections() {
       connectionService.getPendingConnections()
          .then(res => {
-            // console.log(res)
             this.setState({ notifs: res })
          })
    }
