@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 // import '../node_modules/font-awesome/css/font-awesome.min.css'; 
 
-
 import { Modal, Form, Button } from "react-bootstrap";
 import img1 from '../assets/images/creativedesignerediting34199.jpg';
 import img6 from '../assets/images/profilepic.jpg';
 // import FontAwesome from  '../node_modules/font-awesome/css/font-awesome.min.css';
+
+import { DisplayImageAsImage } from '../components/DisplayImageComponent'
 
 export default class ProjectDetail extends Component {
   constructor(props) {
@@ -14,6 +15,8 @@ export default class ProjectDetail extends Component {
   }
 
   render() {
+    let centerMe = 'row justify-content-center align-items-center'
+
     return (
       <Modal
         {...this.props}
@@ -28,8 +31,8 @@ export default class ProjectDetail extends Component {
                 <img className='profile-image detail-profpic' src={img6} /> </div>
               <div className="col-lg-7 ">
                 <h4 className='detail-prof'>
-                  Mobile Application UI/UX design
-                   </h4>
+                  {this.props.projectDetails.title}
+                </h4>
                 <h5 className='detailtitle-text'> By David Rommel</h5>
               </div>
               <div className="col-lg-1 ">
@@ -39,16 +42,15 @@ export default class ProjectDetail extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="row">
-            <img className=' detail-pic' src={img1} />
+          <div className={centerMe}>
+            <DisplayImageAsImage photo={this.props.projectDetails.photos[0]} />
           </div>
           <div className='row comment-desc'>
             <div className="row ">
               <div> <i className='fa fa-spinner fa-spin'></i> 283</div>
               <div>
-                <p className='detail-message'> Hey Everyone!</p>
-                <p className='detail-message'> I just created an application to share and explore content with friends. All with in one app.what do you think about the UI and UX?
-                </p>
+                <br />
+                <p>{this.props.projectDetails.desc}</p>
               </div>
               <div>
                 <p className='detaildate-text'> 20 July 2019</p>

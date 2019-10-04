@@ -60,7 +60,8 @@ function ProjectSummary(props) {
 export default class ProjectSummaries extends Component {
    state = {
       loading: true,
-      showModal: false
+      showModal: true,
+      projectToShow: 0
    }
 
    componentWillMount() {
@@ -78,9 +79,10 @@ export default class ProjectSummaries extends Component {
          })
    }
 
-   handleClick = (e) => {
-      console.log(e.currentTarget.parentNode.id)
-      this.setState({ showModal: true })
+   handleClick = (i) => {
+      console.log("You have clicked on " + i)
+      console.log(this.state.projects[i])
+      this.setState({ showModal: true, projectToShow: i })
    }
    handleModalClose = () => {
       this.setState({ showModal: false })
@@ -103,16 +105,17 @@ export default class ProjectSummaries extends Component {
          padding: '0 10px',
          boxSizing: 'border-box',
       }
-      const displayProjects = this.state.projects.map(project =>
+      const displayProjects = this.state.projects.map((project, i) =>
          <ProjectSummary project={project}
-            onClick={this.handleClick}
+            onClick={() => this.handleClick(i)}
             style={mediaComponent}
             key={project.id} />
       )
       return (
          <>
             <ProjectDetailModal show={this.state.showModal}
-               onHide={this.handleModalClose} />
+               onHide={this.handleModalClose}
+               projectDetails={this.state.projects[this.state.projectToShow]} />
             <Masonry elementType={'div'}>
                {/* <MediaComponent style={mediaComponent} />
                <MediaComponent style={mediaComponent} /> */}

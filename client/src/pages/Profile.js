@@ -93,7 +93,7 @@ class ProfilePage extends Component {
       if (loading) return ''
       return (
          <Row style={{ width: '100%' }}>
-            <Col md={3}>
+            <Col md={3} sm={4}>
                <ProfileSummary
                   user={user}
                   currentUser={currentUser}
@@ -101,7 +101,7 @@ class ProfilePage extends Component {
                   status={this.state.status}
                   updateUserSummary={this.updateUserSummary} />
             </Col>
-            <Col md={9} style={{ height: 'calc(100vh - 90px)', overflow: 'auto' }} className="mx-auto">
+            <Col style={{ height: 'calc(100vh - 90px)', overflow: 'auto' }} className="mx-auto">
                <ProjectSummary userId={user.id} />
             </Col>
          </Row>

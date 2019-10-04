@@ -33,6 +33,23 @@ export default function (props) {
       // />
    )
 }
+
+export function DisplayImageAsImage(props) {
+   let photo = props.photo
+   let imageUrl = ''
+   if (photo) {
+      // photo = JSON.parse(photo)
+      let imgType = photo.ContentType
+      let arrayBuffer = photo.Body.data
+
+      imageUrl = imageFromBuffer(imgType, arrayBuffer)
+   } else {
+      imageUrl = "https://via.placeholder.com/345x200"
+   }
+   return (
+      <img src={imageUrl} />
+   )
+}
 // class DisplayImageComponent extends Component {
 //    state = {
 //       src: '',
