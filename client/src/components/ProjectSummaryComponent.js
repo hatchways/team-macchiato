@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 
-import { Container, Card, CardContent, CardActionArea, CardActions } from '@material-ui/core'
+import { Grid, Container, Card, CardContent, CardActionArea, CardActions } from '@material-ui/core'
 import { Typography, Button, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
+
+import Masonry from 'react-masonry-component'
 
 import DisplayImage from './DisplayImageComponent'
 import MediaComponent from './MediaComponent'
@@ -14,12 +16,12 @@ import { projectService } from '../services/userServices'
 const useStyles = makeStyles({
    card: {
       margin: 10,
-      maxWidth: '45%',
+      width: 345,
    },
    media: {
-      height: 200,
-   }
-})
+      height: 140,
+   },
+});
 
 function ProjectSummary(props) {
    const classes = useStyles()
@@ -32,7 +34,6 @@ function ProjectSummary(props) {
          <CardActionArea onClick={props.onClick}>
             <DisplayImage
                photo={photo}
-               height={200}
                title={project.title}
             />
             <CardContent>
@@ -95,14 +96,6 @@ export default class ProjectSummaries extends Component {
          return 'There are no Projects'
       }
 
-      const projsContainer = {
-         display: 'flex',
-         flexDirection: 'row',
-         flexWrap: 'wrap',
-         // width: '50%',
-         maxWidth: '70%',
-         margin: '0 auto',
-      }
       const mediaComponent = {
          flexBasis: '33.3333333333 %',
          // width: '33.3333333333 %',
@@ -117,17 +110,15 @@ export default class ProjectSummaries extends Component {
             key={project.id} />
       )
       return (
-         <Container style={projsContainer} id="ProjectContainer">
+         <>
             <ProjectDetailModal show={this.state.showModal}
                onHide={this.handleModalClose} />
-            {/* <MediaComponent style={mediaComponent} />
-            <MediaComponent style={mediaComponent} />
-            <MediaComponent style={mediaComponent} />
-            <MediaComponent style={mediaComponent} />
-            <MediaComponent style={mediaComponent} />
-            <MediaComponent style={mediaComponent} /> */}
-            {displayProjects}
-         </Container>
+            <Masonry elementType={'div'}>
+               {/* <MediaComponent style={mediaComponent} />
+               <MediaComponent style={mediaComponent} /> */}
+               {displayProjects}
+            </Masonry>
+         </>
       )
    }
 }

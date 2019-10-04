@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link } from "react-router-dom";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Form, Button, Col, Row } from "react-bootstrap";
 import { ProjectDetail } from './ProjectDetail';
 import Dropzone from 'react-dropzone';
 
@@ -92,17 +92,19 @@ class ProfilePage extends Component {
       let loading = this.state.loading
       if (loading) return ''
       return (
-         <div>
-            <div className="row">
+         <Row style={{ width: '100%' }}>
+            <Col md={3}>
                <ProfileSummary
                   user={user}
                   currentUser={currentUser}
                   sameUser={sameUser}
                   status={this.state.status}
                   updateUserSummary={this.updateUserSummary} />
+            </Col>
+            <Col md={9} style={{ height: 'calc(100vh - 90px)', overflow: 'auto' }} className="mx-auto">
                <ProjectSummary userId={user.id} />
-            </div>
-         </div>
+            </Col>
+         </Row>
 
       );
    }

@@ -78,7 +78,7 @@ export default function ProfileSummaryComponent(props) {
          })
    }
    return (
-      <Box className=" col-lg-3 profile-detail" style={{ height: '100vh' }}>
+      <Box className="profile-detail" style={{ height: '80vh' }}>
          <br />
          <div className={centerMe}>
             <Pfp size={80} />

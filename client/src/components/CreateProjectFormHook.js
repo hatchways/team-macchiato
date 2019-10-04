@@ -92,13 +92,17 @@ export default function CreateProjectForm(props) {
           desc: description,
           link: link
         };
-        projectService.uploadProj(proj).then(res => res);
+        projectService.uploadProj(proj)
+      })
+      .then(res => {
+        console.log(res);
+        console.log("Updated Projects!");
+        props.updateUserSummary();
       })
       .catch(err => {
         console.error(err);
       });
 
-    props.updateUserSummary();
     setOpen(false);
     setTitle("");
     setDescription("");

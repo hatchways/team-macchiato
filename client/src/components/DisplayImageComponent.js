@@ -18,12 +18,19 @@ export default function (props) {
    }
    return (
       <CardMedia
-         component="img"
-         alt={props.title}
-         // height={props.height}
+         style={{ height: 300 }}
          image={imageUrl}
          title={props.title}
       />
+      // The Above display image as background of div
+      // This is display image as img
+      // <CardMedia
+      //    component="img"
+      //    alt={props.title}
+      //    // height={props.height}
+      //    image={imageUrl}
+      //    title={props.title}
+      // />
    )
 }
 // class DisplayImageComponent extends Component {
